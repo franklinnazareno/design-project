@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Switch, TouchableOpacity, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const PreferenceDetails = ({ preference }) => {
   const { dispatch } = usePreferencesContext()
+  const { user } = useAuthContext()
 
   const [preferences, setPreferences] = useState(preference.preferences);
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(null)
+
 
   const handlePreferenceToggle = (index) => {
     const newPreferences = [...preferences];
     newPreferences[index].enabled = !newPreferences[index].enabled;
+    if (!newPreferences[index].enabled) {
+      newPreferences[index].value = 0
+    }
+    if (newPreferences[index].enabled && newPreferences[index].value == 0) {
+      newPreferences[index].value = 1
+    }
     setPreferences(newPreferences);
   };
 
@@ -22,13 +33,19 @@ const PreferenceDetails = ({ preference }) => {
   };
 
   const handleSavePreferences = async () => {
+    if(!user) {
+      return
+    }
+
+    setLoading(true)
 
     const updatedPreferences = { preferences }
 
-    const response = await fetch('http://10.0.2.2:4000/api/preferences/641848bd9b6c19acbb808ed7', {
+    const response = await fetch('http://10.0.2.2:4000/api/preferences/' + preference._id, {
       method: 'PATCH',
       body: JSON.stringify(updatedPreferences),
       headers: {
+        'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json'
       }
     })
@@ -36,14 +53,15 @@ const PreferenceDetails = ({ preference }) => {
 
     if (!response.ok) {
       setError(json.error)
+      setLoading(false)
     }
     if (response.ok) {
       setError(null)
+      setSuccess(true)
       dispatch({type: 'UPDATE_PREFERENCES', payload: json})
+      setLoading(false)
     }
   };
-
-
 
   return (
     <View style={styles.preferenceDetails}>
@@ -68,12 +86,14 @@ const PreferenceDetails = ({ preference }) => {
         </View>
       ))}
       <TouchableOpacity
+        disabled={loading}
         style={styles.saveButton}
         onPress={handleSavePreferences}
       >
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
       {error && <Text style={styles.error}>{error}</Text>}
+      {success && <Text style={styles.success}>Successfully changed preferences</Text>}
     </View>
   );
 };
@@ -116,6 +136,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  error: {
+      color: 'red',
+      fontSize: 16
+  },
+  success: {
+      color: 'green',
+      fontSize: 16
+  }
 });
 
 export default PreferenceDetails;
