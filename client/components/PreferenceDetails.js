@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { usePreferencesContext } from '../hooks/usePreferencesContext';
 
 const PreferenceDetails = ({ preference }) => {
+  const { dispatch } = usePreferencesContext()
+
   const [preferences, setPreferences] = useState(preference.preferences);
+  const [error, setError] = useState(null)
 
   const handlePreferenceToggle = (index) => {
     const newPreferences = [...preferences];
@@ -17,9 +21,29 @@ const PreferenceDetails = ({ preference }) => {
     setPreferences(newPreferences);
   };
 
-  const handleSavePreferences = () => {
-    // handle saving here
+  const handleSavePreferences = async () => {
+
+    const updatedPreferences = { preferences }
+
+    const response = await fetch('http://10.0.2.2:4000/api/preferences/641848bd9b6c19acbb808ed7', {
+      method: 'PATCH',
+      body: JSON.stringify(updatedPreferences),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json = await response.json()
+
+    if (!response.ok) {
+      setError(json.error)
+    }
+    if (response.ok) {
+      setError(null)
+      dispatch({type: 'UPDATE_PREFERENCES', payload: json})
+    }
   };
+
+
 
   return (
     <View style={styles.preferenceDetails}>
@@ -36,7 +60,7 @@ const PreferenceDetails = ({ preference }) => {
           <Slider
             disabled={!pref.enabled}
             value={pref.value}
-            minimumValue={1}
+            minimumValue={0}
             maximumValue={5}
             step={1}
             onValueChange={value => handleSliderChange(index, value)}
@@ -49,6 +73,7 @@ const PreferenceDetails = ({ preference }) => {
       >
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
+      {error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };
