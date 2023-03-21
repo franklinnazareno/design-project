@@ -8,6 +8,8 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Navbar from './components/Navbar';
+import DrawNav from './navigation/DrawNav';
+import MenuNav from './navigation/MenuNav';
 
 const Stack = createNativeStackNavigator();
 
