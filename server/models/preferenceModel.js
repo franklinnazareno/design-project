@@ -16,6 +16,10 @@ const preferenceSchema = new Schema({
             { name: 'pwd', value: 5, enabled: true },
             { name: 'major-roads', value: 5, enabled: true }
         ]
+    },
+    user_id: {
+        type: String,
+        required: true
     }
 });
 

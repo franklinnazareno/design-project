@@ -3,19 +3,11 @@ const mongoose = require('mongoose')
 
 // get a single preference
 const getPreference = async (req, res) => {
-    const { id } = req.params
+    const user_id = req.user._id
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such preference'})
-    }
+    const preference = await Preference.find({user_id})
 
-    const preference = await Preference.findById(id)
-
-    if (!preference) {
-        return res.status(404).json({error: 'No such preference'})
-    }
-
-    res.status(200).json(preference)
+    res.status(200).json(preference[0])
 }
 
 // create new preference
@@ -24,7 +16,8 @@ const createPreference = async (req, res) => {
 
     // add doc to db
     try {
-        const preference = await Preference.create({preferences})
+        const user_id = req.user._id
+        const preference = await Preference.create({preferences, user_id})
         res.status(200).json(preference)
     } catch(error) {
         res.status(400).json({error: error.message})

@@ -4,11 +4,15 @@ const {
     createPreference,
     updatePreference
 } = require('../controllers/preferenceController')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
 
+// require auth for all preference routes
+router.use(requireAuth)
+
 // GET a single preference
-router.get('/:id', getPreference)
+router.get('/', getPreference)
 
 // POST a new preference
 router.post('/', createPreference)
