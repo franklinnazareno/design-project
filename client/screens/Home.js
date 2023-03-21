@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { usePreferencesContext } from '../hooks/usePreferencesContext';
 
 // components
 import PreferenceDetails from '../components/PreferenceDetails';
 
 const Home = () => {
-    const [preference, setPreference] = useState(null)
+    // const [preference, setPreference] = useState(null)
     const [loading, setLoading] = useState(true)
+
+    const { preferences, dispatch } = usePreferencesContext()
 
     useEffect(() => {
         const fetchPreference = async () => {
@@ -14,13 +17,13 @@ const Home = () => {
             const json = await response.json()
 
             if (response.ok) {
-                setPreference(json)
+                dispatch({type: 'SET_PREFERENCES', payload: json})
             }
             setLoading(false)
         }
 
         fetchPreference()
-    }, [])
+    }, [dispatch])
 
   return (
     <View style={styles.home}>
@@ -28,7 +31,7 @@ const Home = () => {
             {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-                <PreferenceDetails preference={preference} />
+                <PreferenceDetails preference={preferences} />
             )}
         </View>
     </View>
