@@ -14,9 +14,9 @@ const MenuNav =() => {
             <HomeStack.Screen name='YES' component={MapScreen} 
             options={{
             headerStyle: {
-            backgroundColor: colors.primary,
+            backgroundColor: "green",
             },
-            headerTintColor: colors.white,
+            headerTintColor: "white",
             headerTitleStyle: {
             fontWeight: 'bold',
             },
