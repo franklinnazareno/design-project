@@ -4,26 +4,32 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { navigate } from './rootnav';
+import { MAP_LIST, USER_DETAIL } from '../../context/initialRoutenNames';
 import styles from './styles';
-import MapScreen from '../../screens/MapScreen';
+import Container from '../../components/commons/Contain';
+import Navbar from '../../components/Navbar';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useLogout } from '../../hooks/useLogout';
 
 const SideMenu = ({navigation}) => {
+    const { logout } = useLogout()
+
     const menuItems=[
 
         {
             icons:<MaterialCommunityIcons  padding={10} size={25} name="map-search"/>,
             name: 'Map',
             onPress: () => {
-                navigation.navigate(MapScreen);
+                navigation.navigate(MAP_LIST);
             },
             },
-            // {
-            // icons:<MaterialCommunityIcons padding={10} size={25} name="account-settings"/>,
-            // name: 'User Preference',
-            // onPress: () => {
-            //     navigation.navigate(USER_DETAIL);
-            // },
-            // },
+            {
+            icons:<MaterialCommunityIcons padding={10} size={25} name="account-settings"/>,
+            name: 'User Preference',
+            onPress: () => {
+                navigation.navigate(USER_DETAIL);
+            },
+            },
             // {
             // icons:<MaterialCommunityIcons padding={10} size={25} name="cog"/>,
             // name: 'Settings',
@@ -31,26 +37,30 @@ const SideMenu = ({navigation}) => {
             //     navigation.navigate(SETTINGS);
             // },
             // },
-            // {
-            // icons:<MaterialCommunityIcons padding={10} size={25} name="logout"/>,
-            // name: 'Logout'
-            // },     
+            {
+            icons:<MaterialCommunityIcons padding={10} size={25} name="logout"/>,
+            name: 'Logout',
+            onPress: () => {
+                    logout();
+                },
+            },     
     ];
     return (
         <SafeAreaView>
-            <View>
-            {/* <ImageBackground
+            <Container>
+            <ImageBackground
             //resizeMode='contain' 
             height={70} 
             width={70} 
             source={require('../../assets/images/Reg4.png')}
             style={[styles.regImage]}
             > 
+            
             <Image  
-            height={70} 
-            width={70} 
+            height={20} 
+            width={20} 
             source={require('../../assets/images/pd-logo2.png')}
-            style={[styles.logoImage]}/> */}
+            style={[styles.logoImage]}/>
             
             <View>
                 {menuItems.map(({ name, icons, onPress,key})=> (
@@ -62,8 +72,8 @@ const SideMenu = ({navigation}) => {
                     </View>
                 ))}
             </View>
-            {/* </ImageBackground> */}
-            </View>
+            </ImageBackground>
+            </Container>
         </SafeAreaView>
         );
 }
