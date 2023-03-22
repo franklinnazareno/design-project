@@ -8,10 +8,6 @@ export const preferencesReducer = (state, action) => {
             return {
                 preferences: action.payload
             }
-        case 'UPDATE_PREFERENCES':
-            return {
-                preferences: action.payload
-            }
         default:
             return state
     }
