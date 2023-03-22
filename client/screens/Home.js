@@ -5,7 +5,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import Login from './Login';
 
 // components
-import PreferenceDetails from '../components/PreferenceDetails';
+import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
 
 const PrefDetail = () => {
     const [loading, setLoading] = useState(true)
