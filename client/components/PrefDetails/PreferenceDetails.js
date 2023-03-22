@@ -6,6 +6,7 @@ import { moderateScale } from 'react-native-size-matters';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import styles from './styles';
 import colors from '../../assets/themes/colors';
+import BottomNavComp from '../BottomSearchNav/BottomMapSearchNav';
 
 
 const PreferenceDetails = ({ preference }) => {
@@ -113,9 +114,7 @@ const PreferenceDetails = ({ preference }) => {
       {error && <Text style={styles.error}>{error}</Text>}
       {success && <Text style={styles.success}>Successfully changed preferences</Text>}
     </View>
+    
   );
 };
-
-
-
 export default PreferenceDetails;

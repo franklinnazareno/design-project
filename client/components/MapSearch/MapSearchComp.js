@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import styles from './styles'
 import Container from '../commons/Contain'
 import Input from '../inputs'
@@ -9,6 +8,7 @@ import CustomButton from '../CustomButton'
 
 const MapSearchComp = () => {
   return (
+    
     <Container>
 
         <View style={styles.Current}>
