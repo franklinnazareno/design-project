@@ -65,28 +65,11 @@ const LoginComp = () => {
                 value={password}
             />
             </View>
-
-            
-                {/* <CustomButton
+                <CustomButton
                 disabled={isLoading}
                 primary
                 title="Log In"
-                onPress={handleSubmit}/> */}
-            <View>
-            <TouchableOpacity
-                disabled={isLoading}
-                title="Log In"
-                onPress={handleSubmit}
-                style={[{backgroundColor: isLoading ? "gray" : colors.primary} ,styles.wrapper]}
-                textStyle={{
-                color: isLoading ? "#CCCCCC" : "#FFFFFF",
-                fontWeight: "bold",
-                fontSize: 18,
-                }}
-                >
-                <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                </View>
+                onPress={handleSubmit}/>  
 
             <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.signupLink}>
                 <Text style={styles.signupLink}>Click here to sign up</Text>

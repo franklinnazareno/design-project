@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, ActivityIndicator } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
 import { set } from "react-native-reanimated";
 import colors from "../../assets/themes/colors";
 import styles from "./styles";
@@ -43,6 +42,9 @@ const CustomButton = ({
               style={{
                 color: disabled ? "black" : colors.white,
                 paddingLeft: loading ? 5 : 0,
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: colors.white
               }}
             >
               {title}

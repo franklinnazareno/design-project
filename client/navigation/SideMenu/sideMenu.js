@@ -1,14 +1,10 @@
-import { View, Text, Image, ImageBackground } from 'react-native'
+import { View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { navigate } from './rootnav';
 import { MAP_LIST, USER_DETAIL } from '../../context/initialRoutenNames';
 import styles from './styles';
 import Container from '../../components/commons/Contain';
-import Navbar from '../../components/Navbar';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLogout } from '../../hooks/useLogout';
 
 const SideMenu = ({navigation}) => {

@@ -4,7 +4,6 @@ import Slider from '@react-native-community/slider';
 import { usePreferencesContext } from '../../hooks/usePreferencesContext';
 import { moderateScale } from 'react-native-size-matters';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import CustomSwitch from '../commons/CustomSwitch/Index';
 import styles from './styles';
 import colors from '../../assets/themes/colors';
 
