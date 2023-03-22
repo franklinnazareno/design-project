@@ -71,9 +71,4 @@ export default styles = ScaledSheet.create({
         alignSelf:'center',
         marginTop:'1@s',
     },
-    buttonText:{
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.white
-    }
 })

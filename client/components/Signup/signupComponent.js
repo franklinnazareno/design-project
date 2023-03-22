@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, TextInput, Button, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import colors from '../../assets/themes/colors';
 import { useSignup } from '../../hooks/useSignup';
 import Container from '../commons/Contain';
+import CustomButton from '../CustomButton';
 import Input from '../inputs';
 import styles from './styles';
 
@@ -47,22 +47,12 @@ const SignupComp = () => {
       />
       </View>
 
-      {/* <Button disabled={isLoading} title="Sign up" onPress={handleSubmit} /> */}
-      <View>
-            <TouchableOpacity
-                disabled={isLoading}
-                title="Log In"
-                onPress={handleSubmit}
-                style={[{backgroundColor: isLoading ? "gray" : colors.primary} ,styles.wrapper]}
-                textStyle={{
-                color: isLoading ? "#CCCCCC" : "#FFFFFF",
-                fontWeight: "bold",
-                fontSize: 18,
-                }}
-                >
-                <Text style={styles.buttonText}>Signup</Text>
-                </TouchableOpacity>
-                </View>
+      <CustomButton 
+      disabled={isLoading} 
+      title="Sign up" 
+      primary 
+      onPress={handleSubmit}/>
+      
       {error && <Text style={styles.error}>{error}</Text>}
     </View>
     </ImageBackground>
