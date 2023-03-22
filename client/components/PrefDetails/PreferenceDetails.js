@@ -43,7 +43,6 @@ const PreferenceDetails = ({ preference }) => {
     }
 
     setLoading(true)
-    console.log(loading)
 
     const updatedPreferences = { preferences }
 
