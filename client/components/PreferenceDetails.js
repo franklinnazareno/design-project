@@ -33,11 +33,13 @@ const PreferenceDetails = ({ preference }) => {
   };
 
   const handleSavePreferences = async () => {
+    
     if(!user) {
       return
     }
 
     setLoading(true)
+    console.log(loading)
 
     const updatedPreferences = { preferences }
 

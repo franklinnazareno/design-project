@@ -24,7 +24,9 @@
     "react-native-screens": "^3.20.0",
     "react-native-size-matters": "^0.4.0",
     "react-native-size-matters-ch": "^0.4.1",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "tailwindcss": "^1.9.6",
+    "tw-tailwind": "^1.0.21"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
