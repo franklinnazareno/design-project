@@ -1,21 +1,18 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
-import MapSearchComp from '../components/MapSearch/MapSearchComp'
+import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 
 const MapScreen = () => {
   return (
-    <View>
-        <View style={{height: 225}}>
-           <MapSearchComp>
-            
-           </MapSearchComp>
-        </View>
-
-        <View style={{height: 700}}>
+    <View>    
+        <View style={{height:700}}>          
             <MapComponent></MapComponent>
         </View>
-        </View>
+        <View>
+          <BottomNavComp></BottomNavComp>
+        </View>  
+       </View>
   )
 }
 
