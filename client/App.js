@@ -16,20 +16,29 @@ const Stack = createNativeStackNavigator();
 function App() {
   const { user } = useAuthContext();
 
+  // Render the DrawerNav component only if the user is logged in
+  if (user) {
+    return (
+      <NavigationContainer>
+        <DrawNav />
+      </NavigationContainer>
+    );
+  }
+
+  // Otherwise, render the authentication screens
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ header: () => <Navbar /> }}
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
         />
-        {!user ? (
-          <>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Signup" component={Signup} />
-          </>
-        ) : null}
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
