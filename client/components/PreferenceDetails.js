@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
@@ -58,10 +58,17 @@ const PreferenceDetails = ({ preference }) => {
     if (response.ok) {
       setError(null)
       setSuccess(true)
-      dispatch({type: 'UPDATE_PREFERENCES', payload: json})
+      dispatch({type: 'SET_PREFERENCES', payload: json})
       setLoading(false)
     }
   };
+
+  useEffect(() => {
+    const currentPreferences = preference.preferences;
+    if (JSON.stringify(preferences) !== JSON.stringify(currentPreferences)) {
+      setPreferences(currentPreferences);
+    }
+  }, [preference, preferences]);
 
   return (
     <View style={styles.preferenceDetails}>
