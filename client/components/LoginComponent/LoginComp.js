@@ -18,9 +18,7 @@ const LoginComp = () => {
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
-    console.log("handleSubmit called");
     await login(email, password)
-
   };
 
   return (
