@@ -7,7 +7,7 @@ import Login from './Login';
 // components
 import PreferenceDetails from '../components/PreferenceDetails';
 
-const Home = () => {
+const PrefDetail = () => {
     const [loading, setLoading] = useState(true)
 
     const { preferences, dispatch } = usePreferencesContext()
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Home;
+export default PrefDetail;

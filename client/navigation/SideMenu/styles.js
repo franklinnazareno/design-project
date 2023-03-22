@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
 
@@ -6,7 +6,7 @@ export default ScaledSheet.create ({
 
 logoImage:{
     height: '150@s',
-    width: '450@s',
+    width: '500@s',
     marginTop:'5@s',
     alignSelf:'center',
 },
@@ -26,9 +26,8 @@ itemsText: {
     paddingHorizontal:'1@s'
 },
 regImage:{
-    height:'700@s',
-    width:'400@s',
-    flex:1,
+    height:'780@s',
+    width:'239@s',
     alignSelf:'center',
     
 },
