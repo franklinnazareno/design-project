@@ -12,16 +12,16 @@ export default ScaledSheet.create ({
 
     preferenceDetails: {
         backgroundColor: colors.white,
-        padding: '10@s',
-        marginTop:'-50@s',
+        padding: '5@s',
+        marginTop:'-60@s',
         marginBottom: '1@s',
         borderRadius: '10@s',
-        height:'400@s',
+        height:'450@s',
         width:'300@s',
         alignSelf:'center'
   },
     subPreferenceDetails: {
-        marginLeft: '20@s',
+        marginLeft: '15@s',
   },
     preferenceRow: {
         marginTop:'5@s',

@@ -19,6 +19,7 @@ export default ScaledSheet.create ({
       modal: {
         justifyContent: "flex-end",
         margin: 0,
+        height:10,
       },
       modalContent: {
         backgroundColor: colors.white,
@@ -64,5 +65,20 @@ export default ScaledSheet.create ({
         marginTop:'10@s',
         marginBottom: '10@s',
         alignSelf:'center',
+      },
+      error: {
+        color: 'red',
+        fontSize: 16,
+        paddingLeft:'10@s',
+      },
+      instruction:{
+        backgroundColor: colors.grey,
+        padding: '5@s',
+        marginTop:'1@s',
+        marginBottom: '1@s',
+        borderRadius: '10@s',
+        height:'200@s',
+        width:'300@s',
+        alignSelf:'center'
       }
 })
