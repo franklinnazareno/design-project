@@ -9,8 +9,6 @@ import Config from "react-native-config";
 const BottomNavComp = ({ preference }) => {
   const [source, setSource] = useState('')
   const [destination, setDestination] = useState('')
-  const [sourceCoords, setSourceCoords] = useState(null)
-  const [destinationCoords, setDestinationCoords] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -32,13 +30,11 @@ const BottomNavComp = ({ preference }) => {
 
       if (sourceResponse.ok && destinationResponse.ok) {
         if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-          console.log("Unable to find the current location. Try another search.")
+          setError("Unable to find the current location. Try another search.")
           setLoading(false)
         } else {
           const { center: sourceCenter } = sourceData.features[0]
           const { center: destinationCenter } = destinationData.features[0]
-          setSourceCoords(sourceCenter)
-          setDestinationCoords(destinationCenter)
           const data = preference.preferences
           const enabledPreferences = data.filter(item => item.enabled === true)
           const enabledNameValue = enabledPreferences.map(item => ({
@@ -49,11 +45,11 @@ const BottomNavComp = ({ preference }) => {
           setLoading(false)
         }
       } else {
-        console.log("Unable to connect to location services.")
+        setError("Unable to connect to location services.")
         setLoading(false)
       }
     } catch (error) {
-      console.log("Error fetching data", error)
+      setError("Error fetching data", error)
       setLoading(false)
     }
   }
