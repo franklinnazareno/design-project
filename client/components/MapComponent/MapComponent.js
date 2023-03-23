@@ -24,7 +24,6 @@ const MapComponent = () => {
               }}>
               <MaterialIcon style={{padding: 15, color:'white'}} size={30} name="menu"></MaterialIcon>
             </TouchableOpacity>
-            
           ),
         });
       }, []);

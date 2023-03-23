@@ -55,8 +55,8 @@ const BottomNavComp = ({ preference }) => {
   }
 
   return (
-    
     <View style={styles.flexView}>
+      
       <StatusBar />
       <View >
         {/* Ignore this it is for modal */}
@@ -103,7 +103,8 @@ const BottomNavComp = ({ preference }) => {
         </View>
 
         {/* Custom Button OnPress does not work use touchableopacity */}
-       <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/>   
+       <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
+       {error && <Text style={styles.error}>{error}</Text>}  
 
         {/* remove this */}
        <Image  
@@ -112,10 +113,71 @@ const BottomNavComp = ({ preference }) => {
             source={require('../../assets/images/frank.png')}
             style={[styles.logoImage]}/>
 
+           
+            <ScrollView style={styles.instruction}>
+            <Text >
+              jdkjgvhdjkshvfgdgdshrfhbdfkghvnadkghdksghdk
+              slhgjljgd'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
+              dgdgjgjfjfgdh
+              jdhghhdfghsdfghjksdghdgfhsdgfhdfgh
+              sfgdgsafhksafhjk
+              
+              fskljdfhfasfhalsafhsfhlsafhsadfhssh
+              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
+              ssdfg
+              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
+              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
+              jdkjgvhdjk
+              shvfgdgdshrfhbdfkghvnadkghdksghdk
+              slhgjljgd'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
+              dgdgjgjfjfgdhjdhg
+              
+              
+              hhdfghsdfghjksdghdgfhsdgfhdfgh
+              sfgdgsafhksafhjkfskljdfhfasfhalsafhsfhlsafhsadfhssh
+              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
+              ssdfg
+              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
+              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
+              jdkjgvhdjkshvfgd
+              gdshrfhbdfk
+              ghvnadkghdksghdk
+              slhgjljg
+              
+              d'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
+              dgdgjgjfjfgdhjdhg
+              hhdfghsdfghjksdghdgfhsdgfhdfgh
+              sfgdgsafhksafhjkfskljdfhfasfhalsafhsfhlsafhsadfhssh
+              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
+              ssdfg
+              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
+              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
+              jdkjgvhdjkshvfgdgdshrfhbdfkghvnadkghdksghdk
+              slhgjljgd'
+              
+              
+              gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
+              dgdgjgjfjfgdhjdhghhdfghsdfghjksdghdgfhsdgfhdfgh
+              sfgdgsafhksafh
+              jkfskljdfhfasfhalsafhsfhlsafhsadfhssh
+              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
+              ssdfg
+              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
+              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
+            </Text>
+            </ScrollView>
+           
+
+            
+
+            
+
           </View> 
         </View>
       </Modal> 
+      
     </View>
+    
     
   );
 }
