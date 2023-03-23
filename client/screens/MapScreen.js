@@ -4,6 +4,8 @@ import MapComponent from '../components/MapComponent/MapComponent'
 import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import ExtraNavigation from '../components/BottomSearchNav/Extra/ExtraNav'
+
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -39,6 +41,8 @@ const MapScreen = () => {
         <View style={{ height: 700 }}>
           <MapComponent />
           <BottomNavComp preference={preferences} />
+          
+          
         </View>
       )}
     </View>
