@@ -12,9 +12,14 @@ const BottomNavComp = ({ preference }) => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible2, setModalVisible2] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const slideModal = () => {
+    setModalVisible2(!isModalVisible2);
   };
 
   const handleSubmit = async () => {
@@ -67,6 +72,7 @@ const BottomNavComp = ({ preference }) => {
 
       {/* Modal for the up and down bouncy animation */}
       <Modal
+      propagateSwipe={true}
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}
         isVisible={isModalVisible}
@@ -80,11 +86,15 @@ const BottomNavComp = ({ preference }) => {
         backdropTransitionOutTiming={500}
         style={styles.modal}
       >
+        
         {/* Ignore this its just styles for modal */}
+        
         <View style={styles.modalContent}>
           <View style={styles.center}>
             <View style={styles.barIcon} />
 
+        <ScrollView nestedScrollEnabled = {true}>
+        <TouchableOpacity>
         {/* Inputs for map starts here */}
         <View style={styles.Current}>
         <Input
@@ -107,75 +117,87 @@ const BottomNavComp = ({ preference }) => {
        {error && <Text style={styles.error}>{error}</Text>}  
 
         {/* remove this */}
-       <Image  
-            height={70} 
-            width={70} 
-            source={require('../../assets/images/frank.png')}
-            style={[styles.logoImage]}/>
+       {/* <Image  
+        height={70} 
+        width={70} 
+        source={require('../../assets/images/frank.png')}
+        style={[styles.logoImage]}/> */}
 
-           
-            <ScrollView style={styles.instruction}>
-            <Text >
-              jdkjgvhdjkshvfgdgdshrfhbdfkghvnadkghdksghdk
-              slhgjljgd'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
-              dgdgjgjfjfgdh
-              jdhghhdfghsdfghjksdghdgfhsdgfhdfgh
-              sfgdgsafhksafhjk
-              
-              fskljdfhfasfhalsafhsfhlsafhsadfhssh
-              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
-              ssdfg
-              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
-              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
-              jdkjgvhdjk
-              shvfgdgdshrfhbdfkghvnadkghdksghdk
-              slhgjljgd'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
-              dgdgjgjfjfgdhjdhg
-              
-              
-              hhdfghsdfghjksdghdgfhsdgfhdfgh
-              sfgdgsafhksafhjkfskljdfhfasfhalsafhsfhlsafhsadfhssh
-              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
-              ssdfg
-              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
-              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
-              jdkjgvhdjkshvfgd
-              gdshrfhbdfk
-              ghvnadkghdksghdk
-              slhgjljg
-              
-              d'gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
-              dgdgjgjfjfgdhjdhg
-              hhdfghsdfghjksdghdgfhsdgfhdfgh
-              sfgdgsafhksafhjkfskljdfhfasfhalsafhsfhlsafhsadfhssh
-              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
-              ssdfg
-              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
-              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
-              jdkjgvhdjkshvfgdgdshrfhbdfkghvnadkghdksghdk
-              slhgjljgd'
-              
-              
-              gjjgdlgjdgjdgjdlgjgdlgjdsl;gjlsgd
-              dgdgjgjfjfgdhjdhghhdfghsdfghjksdghdgfhsdgfhdfgh
-              sfgdgsafhksafh
-              jkfskljdfhfasfhalsafhsfhlsafhsadfhssh
-              gdfzggggdgfdgfdgfsdgsfdfgsdgsdgsfgdsdgdgsdggddg
-              ssdfg
-              lgdsgghjdghjdgsfhjkdfghjksdfghjklsdgsfhjkldgfhjkdfd
-              hjkdghjfsdfghjsfhjksghjklsdgkhjlglg
-            </Text>
-            </ScrollView>
-           
 
-            
+        <ScrollView 
+        nestedScrollEnabled = {true}
+        style={styles.instruction}>
+        <TouchableOpacity>
+        <Text style={styles.instructText}>
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          Turn Left
+          Turn Right
+          Continue Straight
+          
 
-            
+        </Text>
+        </TouchableOpacity>
+        </ScrollView>
+       
 
-          </View> 
+        {/* --------------- */}
+    
+        </TouchableOpacity>
+        </ScrollView>
+      
+          </View>   
         </View>
       </Modal> 
       
+        
+        
     </View>
     
     

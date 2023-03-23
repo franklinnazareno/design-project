@@ -4,7 +4,7 @@ import {Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, ProviderPropType} from '@splicer97/react-native-osmdroid';
 import Container from '../commons/Contain';
-import BottomNavComp from '../BottomSearchNav/BottomMapSearchNav';
+
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height;
@@ -42,6 +42,8 @@ const MapComponent = () => {
           zoomEnabled
           minZoomLevel={16}
           rotateEnabled={false} >
+          
+          
           <Polyline
             coordinates={[
               { latitude: 14.6357955 , longitude: 121.094495},
