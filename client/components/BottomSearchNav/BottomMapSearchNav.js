@@ -1,16 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, StatusBar, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import Modal from "react-native-modal";
 import CustomButton from "../CustomButton";
 import Input from "../inputs";
 import styles from "./styles";
+import Config from "react-native-config";
 
-const BottomNavComp= () =>{
+const BottomNavComp = ({ preference }) => {
+  const [source, setSource] = useState('')
+  const [destination, setDestination] = useState('')
+  const [sourceCoords, setSourceCoords] = useState(null)
+  const [destinationCoords, setDestinationCoords] = useState(null)
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    try {
+      const encodedSource = encodeURIComponent(source);
+      const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+      const sourceData = await sourceResponse.json()
+ 
+      const encodedDestination = encodeURIComponent(destination);
+      const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+      const destinationData = await destinationResponse.json()
+
+      if (sourceResponse.ok && destinationResponse.ok) {
+        if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+          console.log("Unable to find the current location. Try another search.")
+          setLoading(false)
+        } else {
+          const { center: sourceCenter } = sourceData.features[0]
+          const { center: destinationCenter } = destinationData.features[0]
+          setSourceCoords(sourceCenter)
+          setDestinationCoords(destinationCenter)
+          const data = preference.preferences
+          const enabledPreferences = data.filter(item => item.enabled === true)
+          const enabledNameValue = enabledPreferences.map(item => ({
+            name: item.name,
+            value: item.value
+          }))
+          console.log(enabledNameValue, sourceCenter, destinationCenter)
+          setLoading(false)
+        }
+      } else {
+        console.log("Unable to connect to location services.")
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log("Error fetching data", error)
+      setLoading(false)
+    }
+  }
 
   return (
     
@@ -47,17 +93,21 @@ const BottomNavComp= () =>{
         <View style={styles.Current}>
         <Input
         label="Current Location"
-        placeholder='Location' />
+        placeholder='Location'
+        onChangeText={(text) => setSource(text)}
+        value={source} />
         </View>
 
         <View style={styles.Destination}>
         <Input
         label="Destination"
-        placeholder='Destination'/>
+        placeholder='Destination'
+        onChangeText={(text) => setDestination(text)}
+        value={destination} />
         </View>
 
         {/* Custom Button OnPress does not work use touchableopacity */}
-       <CustomButton primary title='Find Path'/>   
+       <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/>   
 
         {/* remove this */}
        <Image  

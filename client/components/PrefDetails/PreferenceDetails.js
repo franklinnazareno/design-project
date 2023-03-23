@@ -91,7 +91,7 @@ const PreferenceDetails = ({ preference }) => {
                 value={pref.enabled}
                 onValueChange={() => handlePreferenceToggle(index)}
             />
-            <Text style={styles.preferenceName}>{pref.name}</Text>
+            <Text style={styles.preferenceName}>{pref.display}</Text>
           </View>
           <Slider
             disabled={!pref.enabled}
