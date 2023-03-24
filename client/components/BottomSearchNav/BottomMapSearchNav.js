@@ -32,60 +32,60 @@ const BottomNavComp = ({ preference }) => {
     setModalVisible2(!isModalVisible2);
   };
 
-  const handleSubmit = async () => {
-    setLoading(true)
-    try {
-      const encodedSource = encodeURIComponent(source);
-      const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-      const sourceData = await sourceResponse.json()
+  // const handleSubmit = async () => {
+  //   setLoading(true)
+  //   try {
+  //     const encodedSource = encodeURIComponent(source);
+  //     const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+  //     const sourceData = await sourceResponse.json()
     
-      const encodedDestination = encodeURIComponent(destination);
-      const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-      const destinationData = await destinationResponse.json()
+  //     const encodedDestination = encodeURIComponent(destination);
+  //     const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+  //     const destinationData = await destinationResponse.json()
 
-      if (sourceResponse.ok && destinationResponse.ok) {
-        if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-          setError("Unable to find the current location. Try another search.")
-          setLoading(false)
-        } else {
-          const { center: sourceCoords } = sourceData.features[0]
-          const { center: destCoords } = destinationData.features[0]
-          const data = preference.preferences
-          const preferences = data.map(item => ({
-            name: item.name,
-            value: item.value
-          }))
-          const postData = { preferences, sourceCoords, destCoords }
-          console.log(JSON.stringify(postData))
-          const response = await fetch('http://10.0.2.2:8888/route/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postData)
-          })
-          const json = await response.json()
+  //     if (sourceResponse.ok && destinationResponse.ok) {
+  //       if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+  //         setError("Unable to find the current location. Try another search.")
+  //         setLoading(false)
+  //       } else {
+  //         const { center: sourceCoords } = sourceData.features[0]
+  //         const { center: destCoords } = destinationData.features[0]
+  //         const data = preference.preferences
+  //         const preferences = data.map(item => ({
+  //           name: item.name,
+  //           value: item.value
+  //         }))
+  //         const postData = { preferences, sourceCoords, destCoords }
+  //         console.log(JSON.stringify(postData))
+  //         const response = await fetch('http://10.0.2.2:8888/route/', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json'
+  //           },
+  //           body: JSON.stringify(postData)
+  //         })
+  //         const json = await response.json()
 
-          if (!response.ok) {
-            setLoading(false)
-            setError(json.error)
-          }
+  //         if (!response.ok) {
+  //           setLoading(false)
+  //           setError(json.error)
+  //         }
 
-          if (response.ok) {
-            console.log(json)
-            setLoading(false)
-            setError(null)
-          }
-        }
-      } else {
-        setError("Unable to connect to location services.")
-        setLoading(false)
-      }
-    } catch (error) {
-      setError("Error fetching data", error)
-      setLoading(false)
-    }
-  }
+  //         if (response.ok) {
+  //           console.log(json)
+  //           setLoading(false)
+  //           setError(null)
+  //         }
+  //       }
+  //     } else {
+  //       setError("Unable to connect to location services.")
+  //       setLoading(false)
+  //     }
+  //   } catch (error) {
+  //     setError("Error fetching data", error)
+  //     setLoading(false)
+  //   }
+  // }
 
   return (
     <View style={styles.flexView}>
@@ -101,7 +101,7 @@ const BottomNavComp = ({ preference }) => {
       {/* Modal for the up and down bouncy animation */}
       <Modal
         propagateSwipe={true}
-        // coverScreen={false}
+        coverScreen={false}
         // hasBackdrop={false}
         backdropOpacity={0}
         transparent={true}
@@ -131,7 +131,7 @@ const BottomNavComp = ({ preference }) => {
           <ScrollView horizontal={true}
           pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
             <TouchableOpacity activeOpacity={1}>
-          <TestBlock></TestBlock>
+          <TestBlock preference={preference}></TestBlock >
           </TouchableOpacity>
           </ScrollView>
           

@@ -34,9 +34,7 @@ export default ScaledSheet.create ({
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
         minHeight: '250@s',
-        paddingBottom: '20@s',
-        height:2,
-        
+        paddingBottom: '1@s',
         
       },
       center: {
