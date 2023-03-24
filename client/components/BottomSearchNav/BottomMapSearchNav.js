@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Button, StatusBar, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
+import { 
+Button,
+StatusBar,
+StyleSheet,
+Text,
+View,
+TouchableOpacity,
+ScrollView,
+Image,
+TouchableWithoutFeedback } from "react-native";
 import Modal from "react-native-modal";
 import CustomButton from "../CustomButton";
 import Input from "../inputs";
 import styles from "./styles";
 import Config from "react-native-config";
+import TestBlock from "./test/test";
 
 const BottomNavComp = ({ preference }) => {
   const [source, setSource] = useState('')
@@ -72,7 +82,11 @@ const BottomNavComp = ({ preference }) => {
 
       {/* Modal for the up and down bouncy animation */}
       <Modal
-      propagateSwipe={true}
+        propagateSwipe={true}
+        // coverScreen={false}
+        // hasBackdrop={false}
+        backdropOpacity={0}
+        transparent={true}
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}
         isVisible={isModalVisible}
@@ -88,116 +102,23 @@ const BottomNavComp = ({ preference }) => {
       >
         
         {/* Ignore this its just styles for modal */}
-        
         <View style={styles.modalContent}>
-          <View style={styles.center}>
-            <View style={styles.barIcon} />
+        <View style={styles.center}>
+        <View style={styles.barIcon} />
 
-        <ScrollView nestedScrollEnabled = {true}>
-        <TouchableOpacity>
-        {/* Inputs for map starts here */}
-        <View style={styles.Current}>
-        <Input
-        label="Current Location"
-        placeholder='Location'
-        onChangeText={(text) => setSource(text)}
-        value={source} />
-        </View>
-
-        <View style={styles.Destination}>
-        <Input
-        label="Destination"
-        placeholder='Destination'
-        onChangeText={(text) => setDestination(text)}
-        value={destination} />
-        </View>
-
-        {/* Custom Button OnPress does not work use touchableopacity */}
-       <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
-       {error && <Text style={styles.error}>{error}</Text>}  
-
-        {/* remove this */}
-       {/* <Image  
-        height={70} 
-        width={70} 
-        source={require('../../assets/images/frank.png')}
-        style={[styles.logoImage]}/> */}
-
-
-        <ScrollView 
-        nestedScrollEnabled = {true}
-        style={styles.instruction}>
-        <TouchableOpacity>
-        <Text style={styles.instructText}>
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
-          Turn Left
-          Turn Right
-          Continue Straight
+        
           
-
-        </Text>
-        </TouchableOpacity>
-        </ScrollView>
-       
-
-        {/* --------------- */}
-    
-        </TouchableOpacity>
-        </ScrollView>
-      
-          </View>   
+          </View>
+             
+          <ScrollView horizontal={true}
+          pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
+            <TouchableOpacity activeOpacity={1}>
+          <TestBlock></TestBlock>
+          </TouchableOpacity>
+          </ScrollView>
+          
         </View>
       </Modal> 
-      
-        
-        
     </View>
     
     
