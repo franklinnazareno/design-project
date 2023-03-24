@@ -1,24 +1,31 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
 
+
+
 export default ScaledSheet.create ({
     Current: {
         marginTop: '1@s',
         width:'300@s',
-        alignSelf:'center'
+        alignSelf:'center',
+       
     },
     Destination: {
         marginTop: '-15@s',
         width:'300@s',
-        alignSelf:'center'
+        alignSelf:'center',
+       
     },
         flexView: {  
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
+        
       },
       modal: {
         justifyContent: "flex-end",
         margin: 0,
+        
+       
       },
       modalContent: {
         backgroundColor: colors.white,
@@ -26,9 +33,10 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '400@s',
+        minHeight: '250@s',
         paddingBottom: '20@s',
         height:2,
+        
         
       },
       center: {
@@ -82,12 +90,25 @@ export default ScaledSheet.create ({
         marginBottom: '1@s',
         borderRadius: '10@s',
         height:'150@s',
-        width:'300@s',
-        alignSelf:'center',
+        
         elevation:'15@s',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+        
+        
+        
       },
       instructText: {
         fontWeight:'5@s',
         fontSize:'16@s',
+        
+        
+      },
+      boxloader:{
+        marginTop:25,
+        flex:1,
+        
+        
       }
 })
