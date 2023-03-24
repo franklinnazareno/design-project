@@ -6,7 +6,7 @@ import Input from '../../inputs';
 
 var deviceWidth = Dimensions.get('window').width;
 
-const TestBlock = () => {
+const TestBlock = ({preference}) => {
   const [source, setSource] = useState('')
   const [destination, setDestination] = useState('')
   const [error, setError] = useState(null)
@@ -18,26 +18,51 @@ const TestBlock = () => {
       const encodedSource = encodeURIComponent(source);
       const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
       const sourceData = await sourceResponse.json()
- 
+    
       const encodedDestination = encodeURIComponent(destination);
       const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
       const destinationData = await destinationResponse.json()
+
+      console.log(sourceResponse.ok && destinationResponse.ok)
 
       if (sourceResponse.ok && destinationResponse.ok) {
         if (sourceData.features.length === 0 || destinationData.features.length === 0) {
           setError("Unable to find the current location. Try another search.")
           setLoading(false)
         } else {
-          const { center: sourceCenter } = sourceData.features[0]
-          const { center: destinationCenter } = destinationData.features[0]
+          const { center: sourceCoords } = sourceData.features[0]
+          const { center: destCoords } = destinationData.features[0]
           const data = preference.preferences
-          const enabledPreferences = data.filter(item => item.enabled === true)
-          const enabledNameValue = enabledPreferences.map(item => ({
+          console.log(data)
+          const preferences = data.map(item => ({
             name: item.name,
             value: item.value
           }))
-          console.log(enabledNameValue, sourceCenter, destinationCenter)
-          setLoading(false)
+          const postData = { preferences, sourceCoords, destCoords }
+
+          // console.log(JSON.stringify(postData))
+          console.log(postData)
+
+          const response = await fetch('http://10.0.2.2:8888/route/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+          })
+          const json = await response.json()
+          
+
+          if (!response.ok) {
+            setLoading(false)
+            setError(json.error)
+          }
+
+          if (response.ok) {
+            console.log(json)
+            setLoading(false)
+            setError(null)
+          }
         }
       } else {
         setError("Unable to connect to location services.")
@@ -73,7 +98,9 @@ const TestBlock = () => {
 
               {/* Custom Button OnPress does not work use touchableopacity */}
               <View style={styles.boxloader}>
+
               <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
+
               {error && <Text style={styles.error}>{error}</Text>}  
               </View>
           </View>
@@ -116,33 +143,25 @@ const styles = StyleSheet.create({
   firstView: {
     width: deviceWidth,
     alignSelf:'flex-start'
-    
   },
   secondView: {
     width: deviceWidth,
-    
   },
   thirdView: {
     width: deviceWidth,
-    
   },
   forthView: {
     width: deviceWidth,
-    
   },
   Current: {
     marginTop: -10,
     width:300,
-    
     alignSelf:'center'
-    
-   
 },
     Destination: {
     marginTop: -25,
     width:300,
     alignSelf:'center',
-   
 },
 boxloader:{
   marginTop:-10,
