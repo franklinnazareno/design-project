@@ -28,7 +28,7 @@ const BottomNavComp = ({ preference }) => {
       const encodedSource = encodeURIComponent(source);
       const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
       const sourceData = await sourceResponse.json()
- 
+    
       const encodedDestination = encodeURIComponent(destination);
       const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
       const destinationData = await destinationResponse.json()
@@ -38,16 +38,34 @@ const BottomNavComp = ({ preference }) => {
           setError("Unable to find the current location. Try another search.")
           setLoading(false)
         } else {
-          const { center: sourceCenter } = sourceData.features[0]
-          const { center: destinationCenter } = destinationData.features[0]
+          const { center: sourceCoords } = sourceData.features[0]
+          const { center: destCoords } = destinationData.features[0]
           const data = preference.preferences
-          const enabledPreferences = data.filter(item => item.enabled === true)
-          const enabledNameValue = enabledPreferences.map(item => ({
+          const preferences = data.map(item => ({
             name: item.name,
             value: item.value
           }))
-          console.log(enabledNameValue, sourceCenter, destinationCenter)
-          setLoading(false)
+          const postData = { preferences, sourceCoords, destCoords }
+          console.log(JSON.stringify(postData))
+          const response = await fetch('http://10.0.2.2:8888/route/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+          })
+          const json = await response.json()
+
+          if (!response.ok) {
+            setLoading(false)
+            setError(json.error)
+          }
+
+          if (response.ok) {
+            console.log(json)
+            setLoading(false)
+            setError(null)
+          }
         }
       } else {
         setError("Unable to connect to location services.")
@@ -124,7 +142,7 @@ const BottomNavComp = ({ preference }) => {
         style={[styles.logoImage]}/> */}
 
 
-        <ScrollView 
+        {/* <ScrollView 
         nestedScrollEnabled = {true}
         style={styles.instruction}>
         <TouchableOpacity>
@@ -184,7 +202,7 @@ const BottomNavComp = ({ preference }) => {
 
         </Text>
         </TouchableOpacity>
-        </ScrollView>
+        </ScrollView> */}
        
 
         {/* --------------- */}
