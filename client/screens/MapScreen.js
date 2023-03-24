@@ -6,7 +6,6 @@ import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 
-
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
 
