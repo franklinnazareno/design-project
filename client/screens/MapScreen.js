@@ -4,6 +4,7 @@ import MapComponent from '../components/MapComponent/MapComponent'
 import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import styles from './styles'
 
 
 const MapScreen = () => {
@@ -42,7 +43,8 @@ const MapScreen = () => {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <View style={{ height: 700 }}>
+        
+        <View style={styles.Box}>
           <MapComponent coordsData={coords} />
           <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} />
           
