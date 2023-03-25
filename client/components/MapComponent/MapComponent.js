@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, ProviderPropType} from '@splicer97/react-native-osmdroid';
@@ -13,9 +13,16 @@ const LONGITUDE = 121.0917;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const MapComponent = () => {
+const MapComponent = ({ coordsData }) => {
     const {setOptions, toggleDrawer} = useNavigation();
-    React.useEffect(() => {
+    
+    useEffect(() => {
+      if (coordsData) {
+        console.log(coordsData)
+      }
+    }, [coordsData])
+    
+    useEffect(() => {
         setOptions({
           headerLeft: () => (
             <TouchableOpacity
@@ -43,38 +50,12 @@ const MapComponent = () => {
           minZoomLevel={16}
           rotateEnabled={false} >
           
-          
-          <Polyline
-            coordinates={[
-              { latitude: 14.6357955 , longitude: 121.094495},
-              { latitude: 14.6357691 , longitude: 121.0948951},
-              { latitude: 14.6352725 , longitude: 121.0949322},
-              { latitude: 14.6348729 , longitude: 121.0949858},
-              { latitude: 14.6341595 , longitude: 121.0951718},
-              { latitude: 14.634204 , longitude: 121.095911},
-              { latitude: 14.6342782 , longitude: 121.0964006},
-              { latitude: 14.6334174 , longitude: 121.0965168},
-              { latitude: 14.6335145 , longitude: 121.0971436},
-              { latitude: 14.6328436 , longitude: 121.097243},
-              { latitude: 14.6328875 , longitude: 121.0975863},
-              { latitude: 14.6328966 , longitude: 121.0975956},
-              { latitude: 14.6327617 , longitude: 121.097605},
-              { latitude: 14.6327617 , longitude: 121.0976225},
-              { latitude: 14.632715 , longitude: 121.097652},
-              { latitude: 14.6326178 , longitude: 121.0976666},
-              { latitude: 14.6326391 , longitude: 121.0978627},
-              { latitude: 14.6324256 , longitude: 121.0978867},
-              { latitude: 14.6324299 , longitude: 121.097919},
-              { latitude: 14.6323211 , longitude: 121.0979298},
-              { latitude: 14.6323179 , longitude: 121.0979041},
-              { latitude: 14.631728 , longitude: 121.0979744},
-              { latitude: 14.6309363 , longitude: 121.0980687},
-              { latitude: 14.6305568 , longitude: 121.0981139}
-            ]}
-            strokeWidth={4}
-            strokeColor="#ff0000"
-            tappable
-            />
+          {coordsData && <Polyline
+                  coordinates={coordsData}
+                  strokeWidth={0.1}
+                  strokeColor="#ff0000"
+                  tappable
+                />}
         </MapView.Animated>
         </Container>
           

@@ -8,9 +8,14 @@ import { useAuthContext } from '../hooks/useAuthContext'
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
+  const [coords, setCoords] = useState(null)
 
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
+
+  const handleCoordsData = (data) => {
+    setCoords(data)
+  }
 
   useEffect(() => {
     const fetchPreference = async () => {
@@ -38,8 +43,8 @@ const MapScreen = () => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <View style={{ height: 700 }}>
-          <MapComponent />
-          <BottomNavComp preference={preferences} />
+          <MapComponent coordsData={coords} />
+          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} />
           
           
           

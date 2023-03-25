@@ -39,11 +39,6 @@ const PreferenceDetails = ({ preference }) => {
   };
 
   const handleSavePreferences = async () => {
-    
-    if(!user) {
-      return
-    }
-
     setLoading(true)
 
     const updatedPreferences = { preferences }
