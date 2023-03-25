@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { ScaledSheet } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+export default ScaledSheet.create({
     wrapper:{
-        height: '100%',
-        width: '100%',
+        height: '480@s',
+        
         
     },
 });
