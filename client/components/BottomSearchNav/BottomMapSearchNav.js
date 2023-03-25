@@ -16,7 +16,7 @@ import styles from "./styles";
 import Config from "react-native-config";
 import TestBlock from "./test/test";
 
-const BottomNavComp = ({ preference }) => {
+const BottomNavComp = ({ preference, handleCoordsData }) => {
   const [source, setSource] = useState('')
   const [destination, setDestination] = useState('')
   const [error, setError] = useState(null)
@@ -101,7 +101,7 @@ const BottomNavComp = ({ preference }) => {
       {/* Modal for the up and down bouncy animation */}
       <Modal
         propagateSwipe={true}
-        coverScreen={false}
+        // coverScreen={false}
         // hasBackdrop={false}
         backdropOpacity={0}
         transparent={true}
@@ -131,7 +131,7 @@ const BottomNavComp = ({ preference }) => {
           <ScrollView horizontal={true}
           pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
             <TouchableOpacity activeOpacity={1}>
-          <TestBlock preference={preference}></TestBlock >
+          <TestBlock preference={preference} handleCoordsData={handleCoordsData}></TestBlock >
           </TouchableOpacity>
           </ScrollView>
           
