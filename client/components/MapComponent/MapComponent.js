@@ -52,7 +52,7 @@ const MapComponent = ({ coordsData }) => {
           
           {coordsData && <Polyline
                   coordinates={coordsData}
-                  strokeWidth={0.1}
+                  strokeWidth={4}
                   strokeColor="#ff0000"
                   tappable
                 />}
