@@ -55,6 +55,7 @@ const TestBlock = ({ preference, handleCoordsData }) => {
           }
 
           if (response.ok) {
+            console.log(json)
             console.log("routeData OK")
             handleCoordsData(json["coordinates"])
             setLoading(false)
