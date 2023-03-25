@@ -44,13 +44,13 @@ const MapScreen = () => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         
-        <View style={styles.Box}>
+        
+          <View >
           <MapComponent coordsData={coords} />
           <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} />
           
-          
-          
-        </View>
+          </View>
+        
       )}
     </View>
   );
