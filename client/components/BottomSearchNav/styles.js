@@ -55,19 +55,21 @@ export default ScaledSheet.create ({
       btnContainer: {
         borderTopLeftRadius:'100@s',
         borderTopRightRadius:'100@s',
-        display: "flex",
+        //display: "flex",
         alignSelf: "center",
         justifyContent: "center",
-        height: '35@s',
+        height: '40@s',
         width:'360@s',
         backgroundColor:colors.primary,
+        marginTop:'-25@s',
         
       },
       navtext: {
         alignSelf:'center',
         color:colors.white,
         fontWeight:'bold',
-        fontSize:'20@s',
+        fontSize:'15@s',
+        marginTop:'-12@s'
       },
       logoImage:{
         height: '200@s',
@@ -104,8 +106,8 @@ export default ScaledSheet.create ({
         
       },
       boxloader:{
-        marginTop:25,
-        flex:1,
+        marginTop:'25@s',
+        flex:'1@s',
         
         
       }
