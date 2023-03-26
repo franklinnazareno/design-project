@@ -13,57 +13,70 @@ const TestBlock = ({ preference, handleCoordsData }) => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
 
-
-  const handleSubmit = async () => {
-      setLoading(true);
-      try {
-          const [sourceResponse, destinationResponse] = await Promise.all([
+  const handleSubmitWithRetry = async (retryCount) => {
+    if (retryCount === 0) {
+      setError('Maximum retries exceeded');
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const [sourceResponse, destinationResponse] = await Promise.all([
               fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
               fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
           ]);
 
-          const sourceData = await sourceResponse.json();
-          const destinationData = await destinationResponse.json();
+      const sourceData = await sourceResponse.json();
+      const destinationData = await destinationResponse.json();
 
-          if (!sourceResponse.ok || !destinationResponse.ok) {
-              throw new Error("Unable to connect to location services.");
-          }
-
-          if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-              throw new Error("Unable to find the current location. Try another search.");
-          }
-
-          const { center: sourceCoords } = sourceData.features[0];
-          const { center: destCoords } = destinationData.features[0];
-          const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-          const postData = { preferences, sourceCoords, destCoords };
-
-          const response = await fetch('http://10.0.2.2:8888/route/', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(postData)
-          });
-
-          const json = await response.json();
-
-          if (!response.ok) {
-              setLoading(false);
-              setError(json.error);
-          }
-
-          if (response.ok) {
-              setResults(json);
-              handleCoordsData(json["coordinates"]);
-              console.log(json["coordinates"])
-              setLoading(false);
-              setError(null);
-          }
-      } catch (error) {
-          setError("Error fetching data", error);
-          setLoading(false);
+      if (!sourceResponse.ok || !destinationResponse.ok) {
+          throw new Error("Unable to connect to location services.");
       }
+
+      if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+          throw new Error("Unable to find the current location. Try another search.");
+      }
+
+      const { center: sourceCoords } = sourceData.features[0];
+      const { center: destCoords } = destinationData.features[0];
+      const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
+      const postData = { preferences, sourceCoords, destCoords };
+
+      const response = await fetch('http://10.0.2.2:8888/route/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+          setLoading(false);
+          setError(json.error);
+      }
+      if (response.ok) {
+        setResults(json);
+        handleCoordsData(json['coordinates']);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+    } catch (error) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await handleSubmitWithRetry(retryCount - 1);
+    }
+  }
+
+
+  const handleSubmit = async () => {
+    try {
+      handleSubmitWithRetry(25);
+    } catch (error) {
+      setError("An error has occurred. Please Try again.")
+      setLoading(false)
+    }
   };
 
   
@@ -100,13 +113,18 @@ const TestBlock = ({ preference, handleCoordsData }) => {
 
           {/* Safest Path Instruction */}
           <View style={styles.secondView}>
-            {results && results.steps && results.steps.map((step, index) => (
-              <View key={index}>
-                <Text>Distance: {step.distance}</Text>
-                <Text>{index + 1}. {step.instruction}</Text>
+            {results && results.steps && (
+              <View>
+                <Text>Distance: {results.length / 1000} km</Text>
+                {results.steps.map((step, index) => (
+                  <View key={index}>
+                    <Text>{index + 1}. {step.instruction}</Text>
+                  </View>
+                ))}
               </View>
-            ))}
+            )}
           </View>
+
 
           {/* Optimal Path Instruction */}
           <View style={styles.thirdView}>

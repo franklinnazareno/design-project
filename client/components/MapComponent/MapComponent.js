@@ -23,7 +23,7 @@ const MapComponent = ({ coordsData }) => {
         const firstCoords = coordsData[0]
         const lastCoords = coordsData[coordsData.length - 1]
         const latitudeDelta = lastCoords.latitude - firstCoords.latitude 
-        const longitudeDelta = latitudeDelta * ASPECT_RATIO
+        const longitudeDelta = lastCoords.longitude - firstCoords.longitude
         console.log(firstCoords, lastCoords, latitudeDelta, longitudeDelta)
 
         setRegion({
@@ -32,6 +32,8 @@ const MapComponent = ({ coordsData }) => {
           latitudeDelta,
           longitudeDelta
         })
+
+        this.map.animateToRegion(region, 1000)
       }
     }, [coordsData])
 
@@ -54,10 +56,11 @@ const MapComponent = ({ coordsData }) => {
       
       <Container>
         <MapView.Animated
+          ref={(map) => { this.map = map }}
           initialRegion={region}
           style={[{height: height, width: width}, {flex: 1}]}
-          zoomEnabled
-          minZoomLevel={16}
+          // zoomEnabled
+          // minZoomLevel={16}
           rotateEnabled={false} >
           
           {coordsData && <Polyline
