@@ -13,22 +13,22 @@ export default ScaledSheet.create ({
     preferenceDetails: {
         backgroundColor: colors.white,
         padding: '5@s',
-        marginTop:'-60@s',
+        marginTop:'5@s',
         marginBottom: '1@s',
         borderRadius: '10@s',
-        height:'450@s',
-        width:'300@s',
+        height:'500@s',
+        width:'320@s',
         alignSelf:'center'
   },
     subPreferenceDetails: {
         marginLeft: '15@s',
   },
     preferenceRow: {
-        marginTop:'5@s',
+        marginTop:'10@s',
         marginBottom:'10@s',
         alignItems:'stretch',
         paddingHorizontal:'10@s',
-        flexDirection:'row',
+        flexDirection:'row-reverse',
         justifyContent:'space-between'
   },
     preferenceName: {
