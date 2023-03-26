@@ -6,10 +6,7 @@ import Input from '../../inputs';
 
 var deviceWidth = Dimensions.get('window').width;
 
-const TestBlock = ({ preference, handleCoordsData }) => {
-  const [source, setSource] = useState('')
-  const [destination, setDestination] = useState('')
-  const [results, setResults] = useState(null)
+const TestBlock = ({ preference, handleCoordsData, source, destination, results, setSource, setDestination, setResults }) => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
 
