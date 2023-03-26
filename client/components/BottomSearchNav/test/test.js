@@ -9,68 +9,63 @@ var deviceWidth = Dimensions.get('window').width;
 const TestBlock = ({ preference, handleCoordsData }) => {
   const [source, setSource] = useState('')
   const [destination, setDestination] = useState('')
+  const [results, setResults] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
 
+
   const handleSubmit = async () => {
-    setLoading(true)
-    try {
-      const encodedSource = encodeURIComponent(source);
-      const sourceResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedSource}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-      const sourceData = await sourceResponse.json()
-      console.log("sourceData OK")
+      setLoading(true);
+      try {
+          const [sourceResponse, destinationResponse] = await Promise.all([
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+          ]);
 
-      const encodedDestination = encodeURIComponent(destination);
-      const destinationResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedDestination}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-      const destinationData = await destinationResponse.json()
-      console.log("destinationeData OK")
+          const sourceData = await sourceResponse.json();
+          const destinationData = await destinationResponse.json();
 
-      if (sourceResponse.ok && destinationResponse.ok) {
-        if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-          setError("Unable to find the current location. Try another search.")
-          setLoading(false)
-        } else {
-          const { center: sourceCoords } = sourceData.features[0]
-          const { center: destCoords } = destinationData.features[0]
-          const data = preference.preferences
-          const preferences = data.map(item => ({
-            name: item.name,
-            value: item.value
-          }))
-          const postData = { preferences, sourceCoords, destCoords }
-          console.log(postData)
+          if (!sourceResponse.ok || !destinationResponse.ok) {
+              throw new Error("Unable to connect to location services.");
+          }
+
+          if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+              throw new Error("Unable to find the current location. Try another search.");
+          }
+
+          const { center: sourceCoords } = sourceData.features[0];
+          const { center: destCoords } = destinationData.features[0];
+          const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
+          const postData = { preferences, sourceCoords, destCoords };
+
           const response = await fetch('http://10.0.2.2:8888/route/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postData)
-          })
-          const json = await response.json()
-          
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+          });
+
+          const json = await response.json();
 
           if (!response.ok) {
-            setLoading(false)
-            setError(json.error)
+              setLoading(false);
+              setError(json.error);
           }
 
           if (response.ok) {
-            console.log(json)
-            console.log("routeData OK")
-            handleCoordsData(json["coordinates"])
-            setLoading(false)
-            setError(null)
+              setResults(json);
+              handleCoordsData(json["coordinates"]);
+              console.log(json["coordinates"])
+              setLoading(false);
+              setError(null);
           }
-        }
-      } else {
-        setError("Unable to connect to location services.")
-        setLoading(false)
+      } catch (error) {
+          setError("Error fetching data", error);
+          setLoading(false);
       }
-    } catch (error) {
-      setError("Error fetching data", error)
-      setLoading(false)
-    }
-  }
+  };
+
   
     return (
       <View style={styles.container}>
@@ -105,7 +100,12 @@ const TestBlock = ({ preference, handleCoordsData }) => {
 
           {/* Safest Path Instruction */}
           <View style={styles.secondView}>
-            <Text style={styles.headerText}>Second View</Text>
+            {results && results.steps && results.steps.map((step, index) => (
+              <View key={index}>
+                <Text>Distance: {step.distance}</Text>
+                <Text>{index + 1}. {step.instruction}</Text>
+              </View>
+            ))}
           </View>
 
           {/* Optimal Path Instruction */}

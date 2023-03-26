@@ -6,21 +6,36 @@ import MapView, {Polyline, ProviderPropType} from '@splicer97/react-native-osmdr
 import Container from '../commons/Contain';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
-const { width, height } = Dimensions.get('window')
-const ASPECT_RATIO = width / height;
-const LATITUDE = 14.6373;
-const LONGITUDE = 121.0917;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MapComponent = ({ coordsData }) => {
-    const {setOptions, toggleDrawer} = useNavigation();
+    const { width, height } = Dimensions.get('window')
+    const ASPECT_RATIO = width / height;
     
+    const [region, setRegion] = useState({
+      latitude: 14.6373,
+      longitude: 121.0917,
+      latitudeDelta: 0.0922, 
+      longitudeDelta: 0.0922 * ASPECT_RATIO
+    })
+
     useEffect(() => {
       if (coordsData) {
-        console.log(coordsData)
+        const firstCoords = coordsData[0]
+        const lastCoords = coordsData[coordsData.length - 1]
+        const latitudeDelta = lastCoords.latitude - firstCoords.latitude 
+        const longitudeDelta = latitudeDelta * ASPECT_RATIO
+        console.log(firstCoords, lastCoords, latitudeDelta, longitudeDelta)
+
+        setRegion({
+          latitude: firstCoords.latitude,
+          longitude: firstCoords.longitude,
+          latitudeDelta,
+          longitudeDelta
+        })
       }
     }, [coordsData])
+
+    const {setOptions, toggleDrawer} = useNavigation();
     
     useEffect(() => {
         setOptions({
@@ -39,12 +54,7 @@ const MapComponent = ({ coordsData }) => {
       
       <Container>
         <MapView.Animated
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          }}
+          initialRegion={region}
           style={[{height: height, width: width}, {flex: 1}]}
           zoomEnabled
           minZoomLevel={16}
