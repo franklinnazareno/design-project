@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Login from './Login';
 
 // components
 import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
+import Container from '../components/commons/Contain';
 
 const PrefDetail = () => {
     const [loading, setLoading] = useState(true)
@@ -34,7 +35,7 @@ const PrefDetail = () => {
     }
 
   return (
-    <View style={styles.home}>
+    <SafeAreaView>
         <View>
             {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
@@ -43,7 +44,7 @@ const PrefDetail = () => {
                 
             )}
         </View>
-    </View>
+        </SafeAreaView>
   );
 }
 

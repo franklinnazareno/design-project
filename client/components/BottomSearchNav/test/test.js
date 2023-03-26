@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
+import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
+import styles from './styles';
+
+
 
 var deviceWidth = Dimensions.get('window').width;
 
@@ -77,7 +81,10 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
   
     return (
       <View style={styles.container}>
-        <ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView 
+        horizontal={true} 
+        pagingEnabled={true} 
+        showsHorizontalScrollIndicator={false}>
           
           {/* Find Path Screen */}
           <View style={styles.firstView}>
@@ -107,21 +114,33 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
           </View>
 
           {/* Safest Path Instruction */}
+          <ScrollView>
+            <TouchableOpacity 
+            activeOpacity={1}
+            >
           <View style={styles.secondView}>
             {results && results.steps && (
               <View>
-                <Text>Distance: {results.length / 1000} km</Text>
+                
+                <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
                 {results.steps.map((step, index) => (
                   <View key={index}>
-                    <Text>{index + 1}. {step.instruction}</Text>
+                    <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>
                   </View>
+                  
                 ))}
               </View>
             )}
           </View>
+          </TouchableOpacity>
+          </ScrollView>
 
 
           {/* Optimal Path Instruction */}
+          <ScrollView>
+            <TouchableOpacity
+            activeOpacity={1}
+            >
           <View style={styles.thirdView}>
             {results2 && results2.steps && (
               <View>
@@ -134,10 +153,12 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
               </View>
             )}
           </View>
-
+          </TouchableOpacity>
+          </ScrollView>       
           <View style={styles.forthView}>
             <Text style={styles.headerText}>Forth View</Text>
           </View>
+          
         </ScrollView>
       </View>
     );
@@ -146,51 +167,57 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
 
 export default TestBlock;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#e5e5e5",
-  },
-  headerText: {
-    fontSize: 30,
-    textAlign: "center",
-    margin: 10,
-    color: 'white',
-    fontWeight: "bold"
-  },
-  firstView: {
-    width: deviceWidth,
-    alignSelf:'flex-start'
-  },
-  secondView: {
-    width: deviceWidth,
-  },
-  thirdView: {
-    width: deviceWidth,
-  },
-  forthView: {
-    width: deviceWidth,
-  },
-  Current: {
-    marginTop: -10,
-    width:300,
-    alignSelf:'center'
-},
-    Destination: {
-    marginTop: -25,
-    width:300,
-    alignSelf:'center',
-},
-boxloader:{
-  marginTop:-10,
-  flex:1,
-},
-error: {
-  color: 'red',
-  fontSize: 16,
-  alignSelf:'center'
-},
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     backgroundColor: "#e5e5e5",
+//   },
+//   headerText: {
+//     fontSize: 30,
+//     textAlign: "center",
+//     margin: 10,
+//     color: 'white',
+//     fontWeight: "bold"
+//   },
+//   firstView: {
+//     width: deviceWidth,
+//     alignSelf:'flex-start'
+//   },
+//   secondView: {
+    
+//     height:400,
+//     width:385,
+//     backgroundColor: colors.grey,
+//     borderRadius: 10,
+//     alignSelf:'center',
+//     marginTop: 1
+//   },
+//   thirdView: {
+//     width: deviceWidth,
+//   },
+//   forthView: {
+//     width: deviceWidth,
+//   },
+//   Current: {
+//     marginTop: -10,
+//     width:300,
+//     alignSelf:'center'
+// },
+//     Destination: {
+//     marginTop: -25,
+//     width:300,
+//     alignSelf:'center',
+// },
+// boxloader:{
+//   marginTop:-10,
+//   flex:1,
+// },
+// error: {
+//   color: 'red',
+//   fontSize: 16,
+//   alignSelf:'center'
+// },
 
-});
+// });
