@@ -6,13 +6,13 @@ import Input from '../../inputs';
 
 var deviceWidth = Dimensions.get('window').width;
 
-const TestBlock = ({ preference, handleCoordsData, source, destination, results, setSource, setDestination, setResults }) => {
+const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, destination, results, results2, setSource, setDestination, setResults, setResults2 }) => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
-      setError('Maximum retries exceeded');
+      setError('An error has occured. Please try again.');
       setLoading(false);
       return;
     }
@@ -52,10 +52,13 @@ const TestBlock = ({ preference, handleCoordsData, source, destination, results,
       if (!response.ok) {
           setLoading(false);
           setError(json.error);
+          return;
       }
       if (response.ok) {
-        setResults(json);
-        handleCoordsData(json['coordinates']);
+        setResults(json['optimized_route']);
+        setResults2(json['shortest_route'])
+        handleCoordsData(json['optimized_route']['coordinates']);
+        handleCoordsData2(json['shortest_route']['coordinates'])
         setLoading(false);
         setError(null);
         return;
@@ -68,12 +71,7 @@ const TestBlock = ({ preference, handleCoordsData, source, destination, results,
 
 
   const handleSubmit = async () => {
-    try {
       handleSubmitWithRetry(25);
-    } catch (error) {
-      setError("An error has occurred. Please Try again.")
-      setLoading(false)
-    }
   };
 
   
@@ -125,7 +123,16 @@ const TestBlock = ({ preference, handleCoordsData, source, destination, results,
 
           {/* Optimal Path Instruction */}
           <View style={styles.thirdView}>
-            <Text style={styles.headerText}>Third View</Text>
+            {results2 && results2.steps && (
+              <View>
+                <Text>Distance: {results2.length / 1000} km</Text>
+                {results.steps.map((step, index) => (
+                  <View key={index}>
+                    <Text>{index + 1}. {step.instruction}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
 
           <View style={styles.forthView}>

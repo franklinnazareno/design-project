@@ -7,7 +7,7 @@ import Container from '../commons/Contain';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
-const MapComponent = ({ coordsData }) => {
+const MapComponent = ({ coordsData, coordsData2 }) => {
     const { width, height } = Dimensions.get('window')
     const ASPECT_RATIO = width / height;
     
@@ -67,6 +67,13 @@ const MapComponent = ({ coordsData }) => {
                   coordinates={coordsData}
                   strokeWidth={4}
                   strokeColor="#ff0000"
+                  tappable
+                />}
+
+                {coordsData2 && <Polyline
+                  coordinates={coordsData2}
+                  strokeWidth={4}
+                  strokeColor="#0000ff"
                   tappable
                 />}
         </MapView.Animated>

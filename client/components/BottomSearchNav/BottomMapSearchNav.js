@@ -16,10 +16,11 @@ import styles from "./styles";
 import Config from "react-native-config";
 import TestBlock from "./test/test";
 
-const BottomNavComp = ({ preference, handleCoordsData }) => {
+const BottomNavComp = ({ preference, handleCoordsData, handleCoordsData2 }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
+  const [results2, setResults2] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisible2, setModalVisible2] = useState(false);
 
@@ -75,7 +76,7 @@ const BottomNavComp = ({ preference, handleCoordsData }) => {
           <ScrollView horizontal={true}
           pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
             <TouchableOpacity activeOpacity={1}>
-          <TestBlock preference={preference} handleCoordsData={handleCoordsData} source={source} destination={destination} results={results} setSource={setSource} setDestination={setDestination} setResults={setResults}></TestBlock >
+          <TestBlock preference={preference} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} source={source} destination={destination} results={results} results2={results2} setSource={setSource} setDestination={setDestination} setResults={setResults} setResults2={setResults2}></TestBlock >
           </TouchableOpacity>
           </ScrollView>
           
