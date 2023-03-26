@@ -10,12 +10,17 @@ import styles from './styles'
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
   const [coords, setCoords] = useState(null)
+  const [coords2, setCoords2] = useState(null)
 
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
 
   const handleCoordsData = (data) => {
     setCoords(data)
+  }
+
+  const handleCoordsData2 = (data) => {
+    setCoords2(data)
   }
 
   useEffect(() => {
@@ -46,8 +51,8 @@ const MapScreen = () => {
         
         
           <View >
-          <MapComponent coordsData={coords} />
-          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} />
+          <MapComponent coordsData={coords} coordsData2={coords2} />
+          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} />
           
           </View>
         
