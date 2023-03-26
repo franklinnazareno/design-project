@@ -114,50 +114,50 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
           </View>
 
           {/* Safest Path Instruction */}
-          <ScrollView>
-            <TouchableOpacity 
-            activeOpacity={1}
-            >
-          <View style={styles.secondView}>
-            {results && results.steps && (
-              <View>
-                
-                <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
-                {results.steps.map((step, index) => (
-                  <View key={index}>
-                    <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>
-                  </View>
-                  
-                ))}
-              </View>
-            )}
-          </View>
-          </TouchableOpacity>
-          </ScrollView>
+          {results && (
+            <ScrollView>
+              <TouchableOpacity activeOpacity={1}>
+                <View style={styles.secondView}>
+                  {results.steps && (
+                    <View>
+                      <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
+                      {results.steps.map((step, index) => (
+                        <View key={index}>
+                          <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+
 
 
           {/* Optimal Path Instruction */}
-          <ScrollView>
-            <TouchableOpacity
-            activeOpacity={1}
-            >
-          <View style={styles.thirdView}>
-            {results2 && results2.steps && (
-              <View>
-                <Text>Distance: {results2.length / 1000} km</Text>
-                {results.steps.map((step, index) => (
-                  <View key={index}>
-                    <Text>{index + 1}. {step.instruction}</Text>
-                  </View>
-                ))}
-              </View>
-            )}
-          </View>
-          </TouchableOpacity>
-          </ScrollView>       
-          <View style={styles.forthView}>
+          {results2 && (
+            <ScrollView>
+              <TouchableOpacity activeOpacity={1}>
+                <View style={styles.thirdView}>
+                  {results2.steps && (
+                    <View>
+                      <Text>Distance: {results2.length / 1000} km</Text>
+                      {results2.steps.map((step, index) => (
+                        <View key={index}>
+                          <Text>{index + 1}. {step.instruction}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+    
+          {/* <View style={styles.forthView}>
             <Text style={styles.headerText}>Forth View</Text>
-          </View>
+          </View> */}
           
         </ScrollView>
       </View>
