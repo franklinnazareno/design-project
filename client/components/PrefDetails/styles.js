@@ -41,22 +41,22 @@ export default ScaledSheet.create ({
         fontWeight: 'bold',
         marginBottom: '10@s',
   },
-  saveButton: {
-    backgroundColor: colors.primary,
-    borderRadius: '5@s',
-    width:'90@s',
-    padding: '10@s',
-    marginTop: '20@s',
-    alignSelf: 'center',
+    saveButton: {
+      backgroundColor: colors.primary,
+      borderRadius: '5@s',
+      width:'90@s',
+      padding: '10@s',
+      marginTop: '20@s',
+      alignSelf: 'center',
   },
-  saveButtonText: {
-    color: colors.white,
-    fontSize: '16@s',
-    fontWeight: 'bold',
-    alignSelf:'center'
+    saveButtonText: {
+      color: colors.white,
+      fontSize: '16@s',
+      fontWeight: 'bold',
+      alignSelf:'center'
   },
-  success: {
-    marginTop:'5@s',
-    alignSelf:'center',
+    success: {
+      marginTop:'5@s',
+      alignSelf:'center',
   }
 });

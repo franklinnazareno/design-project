@@ -55,6 +55,7 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
     return (
       
       <Container>
+        <TouchableOpacity>
         <MapView.Animated
           ref={(map) => { this.map = map }}
           initialRegion={region}
@@ -77,6 +78,7 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
                   tappable
                 />}
         </MapView.Animated>
+        </TouchableOpacity>
         </Container>
           
         
