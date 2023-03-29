@@ -4,6 +4,7 @@ import MapComponent from '../components/MapComponent/MapComponent'
 import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from '../hooks/useLogout'
 import styles from './styles'
 
 
@@ -14,6 +15,8 @@ const MapScreen = () => {
 
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
+
+  const { logout } = useLogout()
 
   const handleCoordsData = (data) => {
     setCoords(data)
@@ -32,6 +35,10 @@ const MapScreen = () => {
 
       if (response.ok) {
         dispatch({type: 'SET_PREFERENCES', payload: json})
+      }
+
+      if (!response.ok) {
+        logout()
       }
       setLoading(false)
     }
