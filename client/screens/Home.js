@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 import Login from './Login';
 
 // components
@@ -14,6 +15,8 @@ const PrefDetail = () => {
     const { preferences, dispatch } = usePreferencesContext()
     const { user } = useAuthContext()
 
+    const { logout } = useLogout()
+
     useEffect(() => {
         const fetchPreference = async () => {
             const response = await fetch ('http://10.0.2.2:4000/api/preferences', {
@@ -24,6 +27,11 @@ const PrefDetail = () => {
             if (response.ok) {
                 dispatch({type: 'SET_PREFERENCES', payload: json})
             }
+            if (!response.ok) {
+                console.log("test")
+                logout()
+                return <Login />
+            }
             setLoading(false)
         }
 
@@ -31,7 +39,7 @@ const PrefDetail = () => {
     }, [dispatch, user])
 
     if (!user) {
-        return <Login />
+        <Login />
     }
 
   return (
