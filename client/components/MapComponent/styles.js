@@ -5,7 +5,7 @@ import colors from '../../assets/themes/colors';
 
 export default ScaledSheet.create ({
     Mapsize:{
-        height:'600@s',
+        height:'800@s',
         flex:'1@s'
     }
 })
