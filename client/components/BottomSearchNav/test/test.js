@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
 import Entypo from 'react-native-vector-icons/Entypo'
+import CircularProgress from 'react-native-circular-progress-indicator';
+
+
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
@@ -90,6 +93,7 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
           
           {/* Find Path Screen */}
           <View style={styles.firstView}>
+            
           <View style={styles.Current}>
               <Input
               label="Source"
@@ -125,7 +129,112 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
           {results && (
             <ScrollView>
               <TouchableOpacity activeOpacity={1}>
+
+              <View style={styles.progressBox}>
+              {/* SAFETY PERCENTAGE */}
+              <View style={styles.progresspaddingMAIN}>
+              <CircularProgress 
+              title='Safest'
+              titleStyle={{fontWeight: 'bold'}}
+              valueSuffix='%'
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              value={69} 
+              radius={60}
+              />
+              </View>
+
+              <View style={styles.Mainprogress}>
+
+              {/* MAJOR ROAD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress 
+              title='Major Road'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'
+              value={70} 
+              radius={35}
+              />
+              </View>
+
+              {/* FLOOD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Flood'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* FLOOD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='PWD'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* CCTV PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='CCTV'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'  
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* LANDMARK PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Landmark'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* LIGHTING PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Lighting'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'  
+              value={80} 
+              radius={35}
+              />
+              </View>
+              </View>
+
+            </View>
                 <View style={styles.secondView}>
+                  
                   {results.steps && (
                     <View>
                       <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
@@ -145,22 +254,130 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
 
           {/* Optimal Path Instruction */}
           {results2 && (
-            <ScrollView>
-              <TouchableOpacity activeOpacity={1}>
+            
+            <ScrollView >
+
+              <View style={styles.progressBoxFast}>
+              {/* OPTIMAL PERCENTAGE */}
+              <View style={styles.progresspaddingMAIN}>
+              <CircularProgress 
+              title='Fastest'
+              titleStyle={{fontWeight: 'bold'}}
+              valueSuffix='%'
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              value={69} 
+              radius={60}
+              />
+              </View>
+
+              <View style={styles.Mainprogress}>
+
+              {/* MAJOR ROAD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress 
+              title='Major Road'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'
+              value={70} 
+              radius={35}
+              />
+              </View>
+
+              {/* FLOOD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Flood'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* FLOOD PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='PWD'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* CCTV PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='CCTV'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'  
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* LANDMARK PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Landmark'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%' 
+              value={80} 
+              radius={35}
+              />
+              </View>
+
+              {/* LIGHTING PERCENTAGE */}
+              <View style={styles.progresspadding}>
+              <CircularProgress
+              title='Lighting'
+              titleStyle={{fontWeight: 'bold'}}
+              inActiveStrokeOpacity={0.5}
+              inActiveStrokeWidth={5}
+              activeStrokeWidth={5}
+              valueSuffix='%'  
+              value={80} 
+              radius={35}
+              />
+              </View>
+              </View>
+
+            </View>
+            
+              <TouchableOpacity activeOpacity={1} >
                 <View style={styles.thirdView}>
                   {results2.steps && (
-                    <View>
-                      <Text>Distance: {results2.length / 1000} km</Text>
+                    <View >
+                      <Text style={styles.intruction}>Distance: {results2.length / 1000} km</Text>
                       {results2.steps.map((step, index) => (
-                        <View key={index}>
-                          <Text>{index + 1}. {step.instruction}</Text>
+                        <View key={index} >
+                          <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>   
                         </View>
+                        
                       ))}
                     </View>
                   )}
                 </View>
               </TouchableOpacity>
             </ScrollView>
+            
           )}
     
           {/* <View style={styles.forthView}>
