@@ -10,9 +10,7 @@ import styles from './styles';
 
 var deviceWidth = Dimensions.get('window').width;
 
-const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, destination, results, results2, setSource, setDestination, setResults, setResults2 }) => {
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(null)
+const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, source, destination, results, results2, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -20,6 +18,7 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
       setLoading(false);
       return;
     }
+    handleLoadingData(true)
     setLoading(true);
     try {
       const [sourceResponse, destinationResponse] = await Promise.all([
@@ -54,6 +53,7 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
       const json = await response.json();
 
       if (!response.ok) {
+          handleLoadingData(false)
           setLoading(false);
           setError(json.error);
           return;
@@ -63,6 +63,7 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, source, de
         setResults2(json['shortest_route'])
         handleCoordsData(json['optimized_route']['coordinates']);
         handleCoordsData2(json['shortest_route']['coordinates'])
+        handleLoadingData(false)
         setLoading(false);
         setError(null);
         return;

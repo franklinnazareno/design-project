@@ -10,6 +10,7 @@ import styles from './styles'
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
+  const [loadingData, setDataLoading] = useState(false)
   const [coords, setCoords] = useState(null)
   const [coords2, setCoords2] = useState(null)
 
@@ -24,6 +25,10 @@ const MapScreen = () => {
 
   const handleCoordsData2 = (data) => {
     setCoords2(data)
+  }
+
+  const handleLoadingData = (data) => {
+    setDataLoading(data)
   }
 
   useEffect(() => {
@@ -57,9 +62,23 @@ const MapScreen = () => {
       ) : (
         
         
-          <View >
-          <MapComponent coordsData={coords} coordsData2={coords2} />
-          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} />
+          <View style={{ position: 'relative', height: '100%' }}>
+            <MapComponent coordsData={coords} coordsData2={coords2} />
+              {loadingData && (
+                <View style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                }}>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+              )}
+          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} />
           
           </View>
         
