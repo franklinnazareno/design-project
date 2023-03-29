@@ -5,7 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import PrefDetail from '../screens/Home';
 import MapScreen from '../screens/MapScreen';
 import colors from '../assets/themes/colors';
-import { MAP_LIST, USER_DETAIL } from '../context/initialRoutenNames';
+import { MAP_LIST, REPORT_DETAIL, USER_DETAIL } from '../context/initialRoutenNames';
+import ReportScreen from '../screens/ReportScreen';
+import ReportComponent from '../components/reportComp/reportComponent';
+
 
 
 
@@ -36,7 +39,7 @@ const MenuNav =() => {
                 },
                 }}>
             </HomeStack.Screen>
-            {/* <HomeStack.Screen name={SETTINGS} component={Setting}
+            <HomeStack.Screen name={REPORT_DETAIL} component={ReportScreen}
             options={{
                 headerStyle: {
                 backgroundColor: colors.primary,
@@ -46,7 +49,7 @@ const MenuNav =() => {
                 fontWeight: 'bold',
                 },
                 }}>
-                </HomeStack.Screen> */}
+                </HomeStack.Screen>
         </HomeStack.Navigator>
     );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
+import Entypo from 'react-native-vector-icons/Entypo'
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
@@ -91,8 +92,14 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
           <View style={styles.firstView}>
           <View style={styles.Current}>
               <Input
-              label="Current Location"
+              label="Source"
               placeholder='Location'
+
+              icon={<TouchableOpacity >
+                <Entypo name = 'location' size={25}></Entypo>
+                </TouchableOpacity>}
+                iconPosition='right'
+
               onChangeText={(text) => setSource(text)}
               value={source} />
               </View>
