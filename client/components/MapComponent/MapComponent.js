@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import {Text, View, TouchableOpacity, Dimensions} from 'react-native';
+import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, ProviderPropType} from '@splicer97/react-native-osmdroid';
 import Container from '../commons/Contain';
+import styles from './styles';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
@@ -55,14 +56,16 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
     return (
       
       <Container>
-        <TouchableOpacity>
+        
+        
         <MapView.Animated
           ref={(map) => { this.map = map }}
           initialRegion={region}
-          style={[{height: height, width: width}, {flex: 1}]}
-          // zoomEnabled
+          style={styles.Mapsize}
+          zoomEnabled
           // minZoomLevel={16}
-          rotateEnabled={false} >
+          rotateEnabled={false}
+           >
           
           {coordsData && <Polyline
                   coordinates={coordsData}
@@ -78,7 +81,8 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
                   tappable
                 />}
         </MapView.Animated>
-        </TouchableOpacity>
+        
+        
         </Container>
           
         
