@@ -25,6 +25,7 @@ export default ScaledSheet.create ({
         justifyContent: "flex-end",
         margin: 0,
         
+        
        
       },
       modalContent: {
@@ -33,14 +34,16 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '250@s',
+        minHeight: '280@s',
         paddingBottom: '1@s',
+        
         
       },
       center: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        
         
       },
       barIcon: {
