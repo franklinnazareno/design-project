@@ -2,24 +2,37 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MapView, {Polyline, ProviderPropType} from '@splicer97/react-native-osmdroid';
+import MapView, {Polyline, Marker, ProviderPropType} from '@splicer97/react-native-osmdroid';
 import Container from '../commons/Contain';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
-const MapComponent = ({ coordsData, coordsData2 }) => {
+const MapComponent = ({ coordsData, coordsData2, location }) => {
     const { width, height } = Dimensions.get('window')
     const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
-      latitude: 14.6373,
-      longitude: 121.0917,
-      latitudeDelta: 0.0922, 
-      longitudeDelta: 0.0922 * aspectRatio
+      latitude: 14.6507,
+      longitude: 121.1029,
+      latitudeDelta: 0.01, 
+      longitudeDelta: 0.01
     })
 
     useEffect(() => {
+      if (location) {
+        const latitude = location.latitude
+        const longitude = location.longitude 
+
+        setRegion({
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        })
+      }
+
       if (coordsData && coordsData.length > 1) {
         const firstCoords = coordsData[0]
         const lastCoords = coordsData[coordsData.length - 1]
@@ -51,7 +64,7 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
         })
       }
 
-    }, [coordsData])
+    }, [location, coordsData])
 
     const {setOptions, toggleDrawer} = useNavigation();
     
@@ -79,6 +92,27 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
           // minZoomLevel={16}
           rotateEnabled={false}
            >
+
+          {location && <Marker 
+            title={"Current Location"}
+            coordinate={{latitude: location.latitude, longitude: location.longitude}}
+            tracksViewChanges={true}>
+              <Icon name="my-location" size={30} color="green" />
+            </Marker>}
+
+          {coordsData && <Marker 
+            title={"Source"}
+            coordinate={{latitude: coordsData[0].latitude, longitude: coordsData[0].longitude}}
+            tracksViewChanges={true}>
+              <Icon name="location-pin" size={30} color="blue" />
+            </Marker>}
+
+          {coordsData && <Marker 
+            title={"Destination"}
+            coordinate={{latitude: coordsData[coordsData.length - 1].latitude, longitude: coordsData[coordsData.length - 1].longitude}}
+            tracksViewChanges={true}>
+              <Icon name="location-pin" size={30} color="red" />
+            </Marker>}
           
           {coordsData && <Polyline
                   coordinates={coordsData}
