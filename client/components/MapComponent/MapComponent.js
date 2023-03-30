@@ -10,32 +10,47 @@ import styles from './styles';
 
 const MapComponent = ({ coordsData, coordsData2 }) => {
     const { width, height } = Dimensions.get('window')
-    const ASPECT_RATIO = width / height;
+    const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
       latitude: 14.6373,
       longitude: 121.0917,
       latitudeDelta: 0.0922, 
-      longitudeDelta: 0.0922 * ASPECT_RATIO
+      longitudeDelta: 0.0922 * aspectRatio
     })
 
     useEffect(() => {
-      if (coordsData) {
+      if (coordsData && coordsData.length > 1) {
         const firstCoords = coordsData[0]
         const lastCoords = coordsData[coordsData.length - 1]
-        const latitudeDelta = lastCoords.latitude - firstCoords.latitude 
-        const longitudeDelta = lastCoords.longitude - firstCoords.longitude
-        console.log(firstCoords, lastCoords, latitudeDelta, longitudeDelta)
+        const R = 6371
+        const dLat = ((lastCoords.latitude - firstCoords.latitude) * Math.PI) / 180
+        const dLon = ((lastCoords.longitude - firstCoords.longitude) * Math.PI) / 180
+
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos((firstCoords.latitude * Math.PI) / 180) *
+            Math.cos((lastCoords.latitude * Math.PI) / 180) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2)
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        const distance = R * c
+
+        const latDelta = distance / (111.32 * aspectRatio)
+        const lonDelta = distance / (111.32 * Math.cos(firstCoords.latitude * Math.PI / 180) * aspectRatio)
+
+        const centerLat = (firstCoords.latitude + lastCoords.latitude) / 2
+        const centerLon = (firstCoords.longitude + lastCoords.longitude) / 2
 
         setRegion({
-          latitude: firstCoords.latitude,
-          longitude: firstCoords.longitude,
-          latitudeDelta,
-          longitudeDelta
+          latitude: centerLat,
+          longitude: centerLon,
+          latitudeDelta: latDelta,
+          longitudeDelta: lonDelta
         })
-
-        this.map.animateToRegion(region, 1000)
       }
+
     }, [coordsData])
 
     const {setOptions, toggleDrawer} = useNavigation();
@@ -56,11 +71,9 @@ const MapComponent = ({ coordsData, coordsData2 }) => {
     return (
       
       <Container>
-        
-        
         <MapView.Animated
-          ref={(map) => { this.map = map }}
           initialRegion={region}
+          region={region}
           style={styles.Mapsize}
           zoomEnabled
           // minZoomLevel={16}

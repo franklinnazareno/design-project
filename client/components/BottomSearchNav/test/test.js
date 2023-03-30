@@ -19,6 +19,7 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
       setError('An error has occured. Please try again.');
+      handleLoadingData(false)
       setLoading(false);
       return;
     }
@@ -34,11 +35,15 @@ const TestBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoad
       const destinationData = await destinationResponse.json();
 
       if (!sourceResponse.ok || !destinationResponse.ok) {
-          throw new Error("Unable to connect to location services.");
+          setError("Unable to connect to location services.");
+          setLoading(false)
+          handleLoadingData(false)
       }
 
       if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-          throw new Error("Unable to find the current location. Try another search.");
+          setError("Unable to find the current location. Try another search.");
+          setLoading(false)
+          handleLoadingData(false)
       }
 
       const { center: sourceCoords } = sourceData.features[0];
