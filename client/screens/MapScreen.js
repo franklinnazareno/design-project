@@ -5,6 +5,7 @@ import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
+import GetLocation from 'react-native-get-location'
 import styles from './styles'
 
 
@@ -13,6 +14,7 @@ const MapScreen = () => {
   const [loadingData, setDataLoading] = useState(false)
   const [coords, setCoords] = useState(null)
   const [coords2, setCoords2] = useState(null)
+  const [location, setLocation] = useState(null)
 
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
@@ -32,7 +34,17 @@ const MapScreen = () => {
   }
 
   useEffect(() => {
-    const fetchPreference = async () => {
+    const fetchData = async () => {
+      const location = await GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 60000,
+      }).catch(error => {
+        const { code, message } = error 
+        console.warn(code, message)
+      })
+
+      setLocation(location)
+
       const response = await fetch('http://10.0.2.2:4000/api/preferences', {
         headers: {'Authorization': `Bearer ${user.token}`}
       })
@@ -48,7 +60,7 @@ const MapScreen = () => {
       setLoading(false)
     }
 
-    fetchPreference()
+    fetchData()
   }, [dispatch, user])
 
   if (!user) {
@@ -63,7 +75,7 @@ const MapScreen = () => {
         
         
           <View style={{ position: 'relative', height: '100%' }}>
-            <MapComponent coordsData={coords} coordsData2={coords2} />
+            <MapComponent coordsData={coords} coordsData2={coords2} location={location} />
               {loadingData && (
                 <View style={{
                   position: 'absolute',
@@ -78,7 +90,7 @@ const MapScreen = () => {
                   <ActivityIndicator size="large" color="#0000ff" />
                 </View>
               )}
-          <BottomNavComp preference={preferences} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} />
+          <BottomNavComp preference={preferences} location={location} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} />
           
           </View>
         
