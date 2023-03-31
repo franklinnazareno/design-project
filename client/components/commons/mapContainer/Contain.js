@@ -4,12 +4,12 @@ import { View, Text } from "react-native";
 import styles from "./styles";
 
 
-const Container = ({style, children}) => {
+const MapContainer = ({style, children}) => {
     return (
-        <ScrollView>
+        <View>
             <View style={[styles.wrapper, style]}>{children}</View>
-        </ScrollView>
+        </View>
     );
 };
  
-export default Container;
+export default MapContainer;

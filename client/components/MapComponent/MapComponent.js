@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType} from '@splicer97/react-native-osmdroid';
-import Container from '../commons/Contain';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
+import MapContainer from '../commons/mapContainer/Contain';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
@@ -83,7 +83,7 @@ const MapComponent = ({ coordsData, coordsData2, location }) => {
     
     return (
       
-      <Container>
+      <MapContainer>
         <MapView.Animated
           initialRegion={region}
           region={region}
@@ -130,7 +130,7 @@ const MapComponent = ({ coordsData, coordsData2, location }) => {
         </MapView.Animated>
         
         
-        </Container>
+        </MapContainer>
           
         
     );
