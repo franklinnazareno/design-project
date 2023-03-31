@@ -52,7 +52,8 @@ const SideMenu = ({navigation}) => {
             style={[styles.regImage]}
             > 
             
-            <Image  
+            <Image
+            //resizeMode='contain'  
             height={20} 
             width={20} 
             source={require('../../assets/images/pd-logo2.png')}

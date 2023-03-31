@@ -9,6 +9,7 @@ logoImage:{
     width: '500@s',
     marginTop:'5@s',
     alignSelf:'center',
+    
 },
 items: {
     flexDirection:'row',
@@ -27,7 +28,7 @@ itemsText: {
 },
 regImage:{
     height:'720@s',
-    width:'250@s',
+    width:'290@s',
     alignSelf:'center',
     
 },

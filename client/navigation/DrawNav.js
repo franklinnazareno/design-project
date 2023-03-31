@@ -19,6 +19,7 @@ const getDrawerContent = (navigation)=>{
 const DrawNav =() => {
     const Drawer = createDrawerNavigator();
     return ( 
+        
         <Drawer.Navigator 
         screenOptions={{ headerShown: false }}
         drawerType='Slide'
@@ -26,6 +27,7 @@ const DrawNav =() => {
         >
             <Drawer.Screen name='Menu' component={MenuNav}></Drawer.Screen>
         </Drawer.Navigator> 
+        
     );
 };
 
