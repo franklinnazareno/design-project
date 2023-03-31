@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
 Button,
 StatusBar,
@@ -8,7 +8,8 @@ View,
 TouchableOpacity,
 ScrollView,
 Image,
-TouchableWithoutFeedback } from "react-native";
+TouchableWithoutFeedback, 
+Dimensions} from "react-native";
 import Modal from "react-native-modal";
 import CustomButton from "../CustomButton";
 import Input from "../inputs";
@@ -16,6 +17,7 @@ import styles from "./styles";
 import Config from "react-native-config";
 import DetailBlock from "./BottomSearchDetail/bottomdetail";
 
+var deviceWidth = Dimensions.get('window').width;
 
 const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData }) => {
   const [source, setSource] = useState("");
@@ -26,6 +28,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [loading, setLoading] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisible2, setModalVisible2] = useState(false);
+  const scrollview = useRef();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -96,8 +99,12 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           
           </View>
              
-          <ScrollView horizontal={true}
-          pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
+          <ScrollView 
+          horizontal={true}
+          pagingEnabled={true} 
+          showsHorizontalScrollIndicator={false}
+          ref={scrollview}
+          > 
             <TouchableOpacity activeOpacity={1}>
               
           <DetailBlock 
@@ -122,8 +129,60 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           </TouchableOpacity>
           </ScrollView>
           
+          {/* <View style={styles.safest}>
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: 0})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Search</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Safest</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Fastest</Text>
+          </TouchableOpacity>
+          </View> */}
+
+          
+          {/* <Button title="yes" 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}></Button> */}
+
+          {/* <Button title="yes" 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}></Button> */}
         </View>
+        <View style={styles.safest}>
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: 0})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Search</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Safest</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}
+          style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Fastest</Text>
+          </TouchableOpacity>
+          </View>
       </Modal> 
+      
     </View>
     
     

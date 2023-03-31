@@ -7,5 +7,8 @@ export default ScaledSheet.create ({
     Mapsize:{
         height:'800@s',
         flex:'1@s'
+    },
+    map:{
+        height: '100%'
     }
 })

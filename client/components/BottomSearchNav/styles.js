@@ -25,8 +25,6 @@ export default ScaledSheet.create ({
         justifyContent: "flex-end",
         margin: 0,
         
-        
-       
       },
       modalContent: {
         backgroundColor: colors.white,
@@ -34,8 +32,9 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '280@s',
+        minHeight: '320@s',
         paddingBottom: '1@s',
+        
         
         
       },
@@ -43,6 +42,7 @@ export default ScaledSheet.create ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        
         
         
       },
@@ -113,5 +113,37 @@ export default ScaledSheet.create ({
         flex:'1@s',
         
         
+      },
+      safeBox: {
+        backgroundColor: colors.primary,
+        borderRadius: '20@s',
+        width:'90@s',
+        padding: '10@s',
+        marginTop: '20@s',
+        alignSelf: 'center',
+        marginTop:'1@s',
+        marginHorizontal: '2@s',
+        
+        
+      },
+      safetextBox:{
+        color: colors.white,
+        fontSize: '16@s',
+        fontWeight: 'bold',
+        alignSelf:'center'
+
+      },
+      safest:{
+        borderRadius:20 ,
+        height:'60@s',
+        padding:5 ,
+        flexDirection:'row',
+        backgroundColor: colors.grey,
+        alignSelf:'center',
+        marginTop:'-100@s',
+        paddingHorizontal: '5@s',
+        opacity: 0.8,
+        elevation: 10
+
       }
 })

@@ -117,5 +117,8 @@ export default ScaledSheet.create ({
   progresspaddingMAIN:{
     paddingLeft:'5@s',
     
+  },
+  marginbox: {
+    height:'100@s'
   }
 });

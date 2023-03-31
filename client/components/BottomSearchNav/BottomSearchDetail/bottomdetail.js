@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
 import Config from 'react-native-config';
 import Entypo from 'react-native-vector-icons/Entypo'
-import CircularProgress from 'react-native-circular-progress-indicator';
+import Swiper from 'react-native-swiper'
 
 
 import colors from '../../../assets/themes/colors';
@@ -17,7 +17,9 @@ import SafeProgressComp from './SafeProgress/safeProgressComp';
 
 var deviceWidth = Dimensions.get('window').width;
 
+
 const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, source, destination, results, results2, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
+
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -93,15 +95,19 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
 
   
     return (
+      
       <View style={styles.container}>
+        
         <ScrollView 
         horizontal={true} 
         pagingEnabled={true} 
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        
+        >
           
           {/* Find Path Screen */}
           <View style={styles.firstView}>
-            
+          
           <View style={styles.Current}>
               <Input
               label="Source"
@@ -125,17 +131,22 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
               </View>
 
               {/* Custom Button OnPress does not work use touchableopacity */}
+              
               <View style={styles.boxloader}>
 
               <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
-
-              {error && <Text style={styles.error}>{error}</Text>}  
+              
+      
+              {error && <Text style={styles.error}>{error}</Text>} 
+              
+              
               </View>
+              
           </View>
 
           {/* Safest Path Instruction */}
           {results && (
-            <ScrollView>
+            <ScrollView >
               <TouchableOpacity activeOpacity={1}>
 
               {/* Safest Progress Detail */}
@@ -154,6 +165,7 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
                     </View>
                   )}
                 </View>
+                <View style={styles.marginbox}></View>
               </TouchableOpacity>
             </ScrollView>
           )}
@@ -182,6 +194,7 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
                     </View>
                   )}
                 </View>
+                <View style={styles.marginbox}></View>
               </TouchableOpacity>
             </ScrollView>
             
@@ -190,9 +203,12 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
           {/* <View style={styles.forthView}>
             <Text style={styles.headerText}>Forth View</Text>
           </View> */}
-          
+         
         </ScrollView>
+       
+        
       </View>
+      
     );
   }
 
