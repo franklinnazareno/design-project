@@ -14,7 +14,8 @@ import CustomButton from "../CustomButton";
 import Input from "../inputs";
 import styles from "./styles";
 import Config from "react-native-config";
-import TestBlock from "./test/test";
+import DetailBlock from "./BottomSearchDetail/bottomdetail";
+
 
 const BottomNavComp = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData }) => {
   const [source, setSource] = useState("");
@@ -78,7 +79,26 @@ const BottomNavComp = ({ preference, handleCoordsData, handleCoordsData2, handle
           <ScrollView horizontal={true}
           pagingEnabled={true} showsHorizontalScrollIndicator={false}> 
             <TouchableOpacity activeOpacity={1}>
-          <TestBlock preference={preference} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} source={source} destination={destination} results={results} results2={results2} error={error} setError={setError} loading={loading} setLoading={setLoading} setSource={setSource} setDestination={setDestination} setResults={setResults} setResults2={setResults2}></TestBlock >
+              
+          <DetailBlock 
+          preference={preference} 
+          handleCoordsData={handleCoordsData} 
+          handleCoordsData2={handleCoordsData2} 
+          handleLoadingData={handleLoadingData} 
+          source={source} 
+          destination={destination} 
+          results={results} 
+          results2={results2} 
+          error={error} 
+          setError={setError} 
+          loading={loading} 
+          setLoading={setLoading} 
+          setSource={setSource} 
+          setDestination={setDestination} 
+          setResults={setResults} 
+          setResults2={setResults2}>
+          </DetailBlock >
+
           </TouchableOpacity>
           </ScrollView>
           
