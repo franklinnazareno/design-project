@@ -17,7 +17,7 @@ import Config from "react-native-config";
 import DetailBlock from "./BottomSearchDetail/bottomdetail";
 
 
-const BottomNavComp = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData }) => {
+const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
@@ -34,6 +34,26 @@ const BottomNavComp = ({ preference, handleCoordsData, handleCoordsData2, handle
   const slideModal = () => {
     setModalVisible2(!isModalVisible2);
   };
+
+  useEffect(() => {
+    async function getLocation() {
+      if (location) {
+        const longitude = location.longitude
+        const latitude = location.latitude 
+
+        try {
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+          const currentLocation = await response.json();
+          setSource(currentLocation.features[0].place_name);
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
+
+    getLocation();
+  }, [location]);
+
 
   return (
     <View style={styles.flexView}>
