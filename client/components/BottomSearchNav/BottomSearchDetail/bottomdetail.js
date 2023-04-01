@@ -18,9 +18,7 @@ import SafeProgressComp from './SafeProgress/safeProgressComp';
 var deviceWidth = Dimensions.get('window').width;
 
 
-const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, source, destination, results, results2, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
-  const [safestCoverage, setSafestCoverage] = useState(null)
-  const [fastestCoverage, setFastestCoverage] = useState(null)
+const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -78,8 +76,8 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
         setResults2(json['shortest_route'])
         handleCoordsData(json['optimized_route']['coordinates']);
         handleCoordsData2(json['shortest_route']['coordinates'])
-        setSafestCoverage(json['optimized_route']['coverage'])
-        setFastestCoverage(json['shortest_route']['coverage'])
+        handleSafestCoverage(json['optimized_route']['coverage'])
+        handleFastestCoverage(json['shortest_route']['coverage'])
         handleLoadingData(false)
         setLoading(false);
         setError(null);

@@ -24,6 +24,8 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
   const [results2, setResults2] = useState(null);
+  const [safestCoverage, setSafestCoverage] = useState(null)
+  const [fastestCoverage, setFastestCoverage] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -37,6 +39,14 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const slideModal = () => {
     setModalVisible2(!isModalVisible2);
   };
+
+  const handleSafestCoverage = (data) => {
+    setSafestCoverage(data)
+  }
+
+  const handleFastestCoverage = (data) => {
+    setFastestCoverage(data)
+  }
 
   const handlePress =(viewIndex) => {
     handleUserView(viewIndex)
@@ -118,6 +128,10 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           handleCoordsData={handleCoordsData} 
           handleCoordsData2={handleCoordsData2} 
           handleLoadingData={handleLoadingData} 
+          handleSafestCoverage={handleSafestCoverage}
+          handleFastestCoverage={handleFastestCoverage}
+          safestCoverage={safestCoverage}
+          fastestCoverage={fastestCoverage}
           source={source} 
           destination={destination} 
           results={results} 
