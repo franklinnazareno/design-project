@@ -1,113 +1,122 @@
 import { View, Text } from 'react-native'
 import CircularProgress from 'react-native-circular-progress-indicator';
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles';
 
-const OptimalProgressComp = () => {
+const OptimalProgressComp = ({ fastestCoverage }) => {
+  const [mean, setMean] = useState(null)
+  useEffect(() => {
+    if (fastestCoverage) {
+      const values = Object.values(fastestCoverage);
+      const sum = values.reduce((acc, curr) => acc + curr, 0);
+      const mean = sum / values.length;
+      setMean(mean)
+    }
+  }, [fastestCoverage])
   return (
-    <View style={styles.progressBoxFast}>
-              {/* OPTIMAL PERCENTAGE */}
-              <View style={styles.progresspaddingMAIN}>
-              <CircularProgress 
-              title='Fastest'
-              titleStyle={{fontWeight: 'bold'}}
-              valueSuffix='%'
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              value={69} 
-              radius={60}
-              />
-              </View>
+    fastestCoverage && (
+      <View style={styles.progressBox}>
+        {/* SAFETY PERCENTAGE */}
+        <View style={styles.progresspaddingMAIN}>
+          <CircularProgress 
+            title='Safest'
+            titleStyle={{fontWeight: 'bold'}}
+            valueSuffix='%'
+            inActiveStrokeOpacity={0.5}
+            inActiveStrokeWidth={5}
+            activeStrokeWidth={5}
+            value={mean} 
+            radius={60}
+          />
+        </View>
 
-              <View style={styles.Mainprogress}>
-
-              {/* MAJOR ROAD PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress 
+        <View style={styles.Mainprogress}>
+          {/* MAJOR ROAD PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress 
               title='Major Road'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%'
-              value={69} 
+              value={fastestCoverage.not_major_road} 
               radius={35}
-              />
-              </View>
+            />
+          </View>
 
-              {/* FLOOD PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress
+          {/* FLOOD PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress
               title='Flood'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%' 
-              value={69} 
+              value={fastestCoverage.not_flood_hazard} 
               radius={35}
-              />
-              </View>
+            />
+          </View>
 
-              {/* FLOOD PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress
+          {/* PWD PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress
               title='PWD'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%' 
-              value={69} 
+              value={fastestCoverage.pwd_friendly} 
               radius={35}
-              />
-              </View>
+            />
+          </View>
 
-              {/* CCTV PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress
+          {/* CCTV PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress
               title='CCTV'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%'  
-              value={69} 
+              value={fastestCoverage.cctv} 
               radius={35}
-              />
-              </View>
+            />
+          </View>
 
-              {/* LANDMARK PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress
+          {/* LANDMARK PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress
               title='Landmark'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%' 
-              value={69} 
+              value={fastestCoverage.landmark} 
               radius={35}
-              />
-              </View>
+            />
+          </View>
 
-              {/* LIGHTING PERCENTAGE */}
-              <View style={styles.progresspadding}>
-              <CircularProgress
+          {/* LIGHTING PERCENTAGE */}
+          <View style={styles.progresspadding}>
+            <CircularProgress
               title='Lighting'
               titleStyle={{fontWeight: 'bold'}}
               inActiveStrokeOpacity={0.5}
               inActiveStrokeWidth={5}
               activeStrokeWidth={5}
               valueSuffix='%'  
-              value={69} 
+              value={fastestCoverage.lighting} 
               radius={35}
-              />
-              </View>
-              </View>
-
-            </View>
+            />
+          </View>
+        </View>
+      </View>
+    )
   )
 }
 
