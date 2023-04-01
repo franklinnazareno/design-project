@@ -5,7 +5,7 @@ import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
-import GetLocation from 'react-native-get-location'
+import Geolocation from '@react-native-community/geolocation';
 import styles from './styles'
 
 
@@ -39,17 +39,7 @@ const MapScreen = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const location = await GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 60000,
-      }).catch(error => {
-        const { code, message } = error 
-        console.warn(code, message)
-      })
-
-      setLocation(location)
-
+    const fetchUserPreferences = async () => {
       const response = await fetch('http://10.0.2.2:4000/api/preferences', {
         headers: {'Authorization': `Bearer ${user.token}`}
       })
@@ -65,8 +55,28 @@ const MapScreen = () => {
       setLoading(false)
     }
 
-    fetchData()
+    fetchUserPreferences()
   }, [dispatch, user])
+
+  useEffect(() => {
+    const watchId = Geolocation.watchPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+      },
+      error => {
+        console.warn(error.code, error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 5, // update location every meter inputted
+      }
+    );
+
+    return () => {
+      Geolocation.clearWatch(watchId);
+    };
+  }, []);
 
   if (!user) {
     return <Login />
