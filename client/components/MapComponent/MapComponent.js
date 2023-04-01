@@ -9,7 +9,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
-const MapComponent = ({ coordsData, coordsData2, location }) => {
+const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
     const aspectRatio = width / height;
     
@@ -114,19 +114,39 @@ const MapComponent = ({ coordsData, coordsData2, location }) => {
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
           
-          {coordsData && <Polyline
-                  coordinates={coordsData}
-                  strokeWidth={4}
-                  strokeColor="#ff0000"
-                  tappable
-                />}
+          {userView === 0 && coordsData && coordsData2 && (
+            <>
+              <Polyline
+                coordinates={coordsData}
+                strokeWidth={4}
+                strokeColor="#ff0000"
+                tappable
+              />
+              <Polyline
+                coordinates={coordsData2}
+                strokeWidth={4}
+                strokeColor="#0000ff"
+                tappable
+              />
+            </>
+          )}
+          {userView === 1 && coordsData && (
+            <Polyline
+              coordinates={coordsData}
+              strokeWidth={4}
+              strokeColor="#ff0000"
+              tappable
+            />
+          )}
+          {userView === 2 && coordsData2 && (
+            <Polyline
+              coordinates={coordsData2}
+              strokeWidth={4}
+              strokeColor="#0000ff"
+              tappable
+            />
+          )}
 
-                {coordsData2 && <Polyline
-                  coordinates={coordsData2}
-                  strokeWidth={4}
-                  strokeColor="#0000ff"
-                  tappable
-                />}
         </MapView.Animated>
         
         

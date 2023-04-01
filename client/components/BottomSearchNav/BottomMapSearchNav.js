@@ -19,7 +19,7 @@ import DetailBlock from "./BottomSearchDetail/bottomdetail";
 
 var deviceWidth = Dimensions.get('window').width;
 
-const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData }) => {
+const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
@@ -37,6 +37,11 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const slideModal = () => {
     setModalVisible2(!isModalVisible2);
   };
+
+  const handlePress =(viewIndex) => {
+    handleUserView(viewIndex)
+    scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
+  }
 
   useEffect(() => {
     async function getLocation() {
@@ -102,6 +107,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           <ScrollView 
           horizontal={true}
           pagingEnabled={true} 
+          scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           ref={scrollview}
           > 
@@ -159,28 +165,30 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           {/* <Button title="yes" 
           onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}></Button> */}
         </View>
-        <View style={styles.safest}>
+        {results && (
+          <View style={styles.safest}>
           <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: 0})}
+          onPress={() => handlePress(0)}
           style={styles.safeBox}
           >
             <Text style={styles.safetextBox}>Search</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}
+          onPress={() => handlePress(1)}
           style={styles.safeBox}
           >
             <Text style={styles.safetextBox}>Safest</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}
+          onPress={() => handlePress(2)}
           style={styles.safeBox}
           >
             <Text style={styles.safetextBox}>Fastest</Text>
           </TouchableOpacity>
           </View>
+        )}
       </Modal> 
       
     </View>

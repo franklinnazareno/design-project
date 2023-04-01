@@ -15,6 +15,7 @@ const MapScreen = () => {
   const [coords, setCoords] = useState(null)
   const [coords2, setCoords2] = useState(null)
   const [location, setLocation] = useState(null)
+  const [userView, setUserView] = useState(0)
 
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
@@ -31,6 +32,10 @@ const MapScreen = () => {
 
   const handleLoadingData = (data) => {
     setDataLoading(data)
+  }
+
+  const handleUserView = (data) => {
+    setUserView(data)
   }
 
   useEffect(() => {
@@ -75,7 +80,7 @@ const MapScreen = () => {
         
         
           <View style={{ position: 'relative', height: '100%' }}>
-            <MapComponent coordsData={coords} coordsData2={coords2} location={location} />
+            <MapComponent coordsData={coords} coordsData2={coords2} location={location} userView={userView} />
               {loadingData && (
                 <View style={{
                   position: 'absolute',
@@ -90,7 +95,7 @@ const MapScreen = () => {
                   <ActivityIndicator size="large" color="#0000ff" />
                 </View>
               )}
-          <BottomNavComp preference={preferences} location={location} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} />
+          <BottomNavComp preference={preferences} location={location} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} handleUserView={handleUserView} />
           
           </View>
         
