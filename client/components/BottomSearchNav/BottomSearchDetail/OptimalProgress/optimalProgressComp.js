@@ -2,6 +2,9 @@ import { View, Text } from 'react-native'
 import CircularProgress from 'react-native-circular-progress-indicator';
 import React, { useState, useEffect } from 'react'
 import styles from './styles';
+import CustomCircularProgress from '../../../commons/CustomCircle/CustomCircleProgress';
+import colors from '../../../../assets/themes/colors';
+import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
 const OptimalProgressComp = ({ fastestCoverage }) => {
   const [mean, setMean] = useState(null)
@@ -16,104 +19,78 @@ const OptimalProgressComp = ({ fastestCoverage }) => {
   return (
     fastestCoverage && (
       <View style={styles.progressBox}>
-        {/* SAFETY PERCENTAGE */}
+        {/* FASTEST PERCENTAGE */}
+        <View style={styles.progressContent}>
         <View style={styles.progresspaddingMAIN}>
-          <CircularProgress 
-            title='Safest'
-            titleStyle={{fontWeight: 'bold'}}
-            valueSuffix='%'
-            inActiveStrokeOpacity={0.5}
-            inActiveStrokeWidth={5}
-            activeStrokeWidth={5}
+          <CustomCircularProgress
+            title='Fastest'
             value={mean} 
             radius={60}
+            progressValueColor={colors.primary}
           />
         </View>
 
         <View style={styles.Mainprogress}>
           {/* MAJOR ROAD PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress 
+            <SmallCustomCircularProgress 
               title='Major Road'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%'
-              value={fastestCoverage.not_major_road} 
+              value={fastestCoverage.not_major_road}
+              progressValueColor={colors.primary} 
               radius={35}
             />
           </View>
 
           {/* FLOOD PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress
+            <SmallCustomCircularProgress
               title='Flood'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%' 
-              value={fastestCoverage.not_flood_hazard} 
+              value={fastestCoverage.not_flood_hazard}
+              progressValueColor={colors.primary} 
               radius={35}
             />
           </View>
 
           {/* PWD PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress
+            <SmallCustomCircularProgress
               title='PWD'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%' 
               value={fastestCoverage.pwd_friendly} 
+              progressValueColor={colors.primary}
               radius={35}
             />
           </View>
 
           {/* CCTV PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress
-              title='CCTV'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%'  
-              value={fastestCoverage.cctv} 
+            <SmallCustomCircularProgress
+              title='CCTV'  
+              value={fastestCoverage.cctv}
+              progressValueColor={colors.primary} 
               radius={35}
             />
           </View>
 
           {/* LANDMARK PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress
+            <SmallCustomCircularProgress
               title='Landmark'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%' 
-              value={fastestCoverage.landmark} 
+              value={fastestCoverage.landmark}
+              progressValueColor={colors.primary} 
               radius={35}
             />
           </View>
 
           {/* LIGHTING PERCENTAGE */}
           <View style={styles.progresspadding}>
-            <CircularProgress
+            <SmallCustomCircularProgress
               title='Lighting'
-              titleStyle={{fontWeight: 'bold'}}
-              inActiveStrokeOpacity={0.5}
-              inActiveStrokeWidth={5}
-              activeStrokeWidth={5}
-              valueSuffix='%'  
-              value={fastestCoverage.lighting} 
+              value={fastestCoverage.lighting}
+              progressValueColor={colors.primary} 
               radius={35}
             />
           </View>
+        </View>
         </View>
       </View>
     )
