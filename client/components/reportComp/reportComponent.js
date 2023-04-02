@@ -30,9 +30,18 @@ const ReportComponent = () => {
         <View>
         <SecondaryInput
         label='Report Problem'
+        icon={<TouchableOpacity >
+          <Entypo name = 'location' size={25}></Entypo>
+          </TouchableOpacity>}
+          iconPosition='right'
         />
         </View>
-        
+
+        <View style={styles.ImageUpload}>
+        <TouchableOpacity style={styles.saveButton}>
+        <Text style={styles.saveButtonText}>Upload Image</Text>
+        </TouchableOpacity>
+        </View>
         <CustomButton primary title='Report'></CustomButton>
         </View>
         

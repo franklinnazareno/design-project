@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, Toucha
 import Config from 'react-native-config';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Swiper from 'react-native-swiper'
-
+import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
@@ -11,6 +11,8 @@ import Input from '../../inputs';
 import styles from './styles';
 import OptimalProgressComp from './OptimalProgress/optimalProgressComp';
 import SafeProgressComp from './SafeProgress/safeProgressComp';
+import { STARTNAV } from '../../../context/initialRoutenNames';
+
 
 
 
@@ -19,7 +21,7 @@ var deviceWidth = Dimensions.get('window').width;
 
 
 const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
-
+  const navigation = useNavigation();
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
       setError('An error has occured. Please try again.');
@@ -152,7 +154,11 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
 
               {/* Safest Progress Detail */}
               <SafeProgressComp safestCoverage={safestCoverage} />
-
+                {/* Start your safe nav here */}
+                <View style={styles.beginNav}>
+                <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
+                </View>
+                
                 <View style={styles.secondView}>
                   
                   {results.steps && (
@@ -181,6 +187,11 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
 
                 {/* Fastest Progress Detail */}
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
+
+                {/* Start your FAST nav here */}
+                <View style={styles.beginNav}>
+                <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
+                </View>
 
                 <View style={styles.thirdView}>
                   {results2.steps && (
