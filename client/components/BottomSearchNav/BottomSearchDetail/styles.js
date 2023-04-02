@@ -120,5 +120,8 @@ export default ScaledSheet.create ({
   },
   marginbox: {
     height:'100@s'
+  },
+  beginNav:{
+    paddingTop: '10@s'
   }
 });

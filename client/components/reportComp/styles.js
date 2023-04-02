@@ -1,4 +1,5 @@
 import { ScaledSheet } from 'react-native-size-matters';
+import colors from '../../assets/themes/colors';
 
 export default ScaledSheet.create({
    
@@ -20,5 +21,20 @@ export default ScaledSheet.create({
         textAlign:'center',
         paddingVertical: '1@s',
         fontWeight: 500    
-    }
+    },
+    saveButtonText: {
+        color: colors.white,
+        fontSize: '10@s',
+        fontWeight: 'bold',
+        alignSelf:'center',
+    },
+    saveButton: {
+        backgroundColor: colors.primary,
+        borderRadius: '5@s',
+        width:'80@s',
+        padding: '5@s',
+        margin: '5@s',
+        alignSelf: 'center',
+    },
+
 });
