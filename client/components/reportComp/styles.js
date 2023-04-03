@@ -36,5 +36,9 @@ export default ScaledSheet.create({
         margin: '5@s',
         alignSelf: 'center',
     },
-
+    error: {
+    color: 'red',
+    fontSize: '16@s',
+    alignSelf:'center'
+    }
 });

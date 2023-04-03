@@ -28,7 +28,6 @@ const PrefDetail = () => {
                 dispatch({type: 'SET_PREFERENCES', payload: json})
             }
             if (!response.ok) {
-                console.log("test")
                 logout()
                 return <Login />
             }

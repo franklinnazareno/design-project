@@ -124,7 +124,8 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
             <TouchableOpacity activeOpacity={1}>
               
           <DetailBlock 
-          preference={preference} 
+          preference={preference}
+          location={location} 
           handleCoordsData={handleCoordsData} 
           handleCoordsData2={handleCoordsData2} 
           handleLoadingData={handleLoadingData} 

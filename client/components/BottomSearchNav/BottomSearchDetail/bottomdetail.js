@@ -20,8 +20,24 @@ import { STARTNAV } from '../../../context/initialRoutenNames';
 var deviceWidth = Dimensions.get('window').width;
 
 
-const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
   const navigation = useNavigation();
+
+  const handleLocation = async () => {
+    if (location) {
+        const longitude = location.longitude
+        const latitude = location.latitude 
+
+        try {
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+          const currentLocation = await response.json();
+          setSource(currentLocation.features[0].place_name);
+        } catch (error) {
+          setError(error);
+        }
+      }
+  }
+
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
       setError('An error has occured. Please try again.');
@@ -116,7 +132,7 @@ const DetailBlock = ({ preference, handleCoordsData, handleCoordsData2, handleLo
               label="Source"
               placeholder='Location'
 
-              icon={<TouchableOpacity >
+              icon={<TouchableOpacity onPress={handleLocation} >
                 <Entypo name = 'location' size={25}></Entypo>
                 </TouchableOpacity>}
                 iconPosition='right'
