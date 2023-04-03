@@ -24,7 +24,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
         <View style={styles.progresspaddingMAIN}>
           <CustomCircularProgress
             title='Safest'
-            value={mean} 
+            value={safestCoverage.average} 
             radius={60}
             progressValueColor={colors.primary}
           />
