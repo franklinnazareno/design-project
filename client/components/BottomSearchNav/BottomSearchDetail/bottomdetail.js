@@ -273,15 +273,16 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               <SafeProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 <View style={styles.beginNav}>
-                <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV, { location: location, results: results })}
                 
-                />
+                {/* <CustomButton primary title='Begin Journey' 
+                onPress={() => navigation.navigate(STARTNAV, { location: location, results: results })}
+                /> */}
+
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
                 <Button title='Start' onPress={() => handleSpeak()}/> */}
 
                   {/* TTS START AND STOP */}
-                  {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  <View style={{flexDirection: 'row', alignSelf:'center', paddingBottom: 10}}>
                   <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
@@ -289,7 +290,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
-                  </View> */}
+                  </View>
                 </View>
                 
                 <View style={styles.secondView}>
@@ -322,12 +323,12 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
-                <View style={styles.beginNav}>
+                {/* <View style={styles.beginNav}>
                 <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
-                </View>
+                </View> */}
 
                 {/* TTS START AND STOP */}
-                {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                <View style={{flexDirection: 'row', alignSelf:'center', paddingVertical: 10}}>
                   <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
@@ -335,7 +336,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
-                  </View> */}
+                  </View>
 
                 <View style={styles.thirdView}>
                   {results2.steps && (
