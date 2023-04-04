@@ -56,15 +56,16 @@ export default ScaledSheet.create ({
       },
       
       btnContainer: {
-        borderTopLeftRadius:'100@s',
-        borderTopRightRadius:'100@s',
+        // borderTopLeftRadius:'100@s',
+        // borderTopRightRadius:'100@s',
         //display: "flex",
+        borderRadius:'20@s',
         alignSelf: "center",
         justifyContent: "center",
-        height: '40@s',
-        width:'360@s',
+        height: '30@s',
+        width:'300@s',
         backgroundColor:colors.primary,
-        marginTop:'-25@s',
+        marginTop:'-590@s',
         
       },
       navtext: {
@@ -72,7 +73,7 @@ export default ScaledSheet.create ({
         color:colors.white,
         fontWeight:'bold',
         fontSize:'15@s',
-        marginTop:'-12@s'
+        marginTop:'-2@s'
       },
       logoImage:{
         height: '200@s',
