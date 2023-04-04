@@ -43,7 +43,7 @@ const PreferenceDetails = ({ preference }) => {
 
     const updatedPreferences = { preferences }
 
-    const response = await fetch('http://10.0.2.2:4000/api/preferences/' + preference._id, {
+    const response = await fetch('https://design-project-production.up.railway.app/api/preferences/' + preference._id, {
       method: 'PATCH',
       body: JSON.stringify(updatedPreferences),
       headers: {
