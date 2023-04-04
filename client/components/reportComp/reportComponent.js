@@ -10,6 +10,7 @@ import Input from '../inputs'
 import SecondaryInput from '../commons/secondaryInput'
 import styles from './styles'
 import CustomButton from '../CustomButton'
+import Container from '../commons/Contain';
 
 
 const ReportComponent = ({ location }) => {
@@ -121,13 +122,13 @@ const ReportComponent = ({ location }) => {
   }
 
   return (
-    <SafeAreaView>
+    <Container>
         <Text style={styles.subText}> Got a Problem? Report Now</Text>
         <ImageBackground 
             height={70} 
             width={70} 
             source={require('../../assets/images/Reg4.png')}
-            style={[styles.loginImage]}/> 
+            style={[styles.loginImage]}> 
         <View style={styles.Text}>
             
         <Input
@@ -170,8 +171,8 @@ const ReportComponent = ({ location }) => {
         {success && <Text style={styles.success}>Report sent successfully!</Text>}
         </View>
         
-    
-    </SafeAreaView>
+    </ImageBackground>
+    </Container>
   )
 }
 

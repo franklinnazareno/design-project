@@ -53,24 +53,24 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
   }
 
-  useEffect(() => {
-    async function getLocation() {
-      if (location) {
-        const longitude = location.longitude
-        const latitude = location.latitude 
+  // useEffect(() => {
+  //   async function getLocation() {
+  //     if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
 
-        try {
-          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
-          const currentLocation = await response.json();
-          setSource(currentLocation.features[0].place_name);
-        } catch (error) {
-          setError(error);
-        }
-      }
-    }
+  //       try {
+  //         const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.features[0].place_name);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  //   }
 
-    getLocation();
-  }, [location]);
+  //   getLocation();
+  // }, [location]);
 
 
   return (
