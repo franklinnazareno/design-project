@@ -14,7 +14,7 @@ const OptimalProgressComp = ({ fastestCoverage }) => {
         <View style={styles.progressContent}>
         <View style={styles.progresspaddingMAIN}>
           <CustomCircularProgress
-            title='Fastest'
+            title='Safe'
             value={fastestCoverage.average} 
             radius={60}
             progressValueColor={colors.primary}
