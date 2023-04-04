@@ -2,7 +2,7 @@ import { View, Text, Image, ImageBackground, TouchableOpacity } from 'react-nati
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { MAP_LIST, REPORT_DETAIL, USER_DETAIL } from '../../context/initialRoutenNames';
+import { FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, USER_DETAIL } from '../../context/initialRoutenNames';
 import styles from './styles';
 import Container from '../../components/commons/Contain';
 import { useLogout } from '../../hooks/useLogout';
@@ -27,11 +27,18 @@ const SideMenu = ({navigation}) => {
             },
             },
             {
-            icons:<MaterialCommunityIcons padding={10} size={25} name="alert-box"/>,
+            icons:<MaterialCommunityIcons padding={10} size={25} name="alert"/>,
             name: 'Report',
             onPress: () => {
                 navigation.navigate(REPORT_DETAIL);
             },
+            },
+            {
+                icons:<MaterialCommunityIcons padding={10} size={25} name="information"/>,
+                name: 'FAQ',
+                onPress: () => {
+                    navigation.navigate(FAQ_DETAIL);
+                },
             },
             {
             icons:<MaterialCommunityIcons padding={10} size={25} name="logout"/>,

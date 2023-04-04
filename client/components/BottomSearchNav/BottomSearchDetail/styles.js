@@ -60,7 +60,7 @@ export default ScaledSheet.create ({
       alignSelf:'center',
   },
   boxloader:{
-    marginTop:'15@s',
+    marginTop:'-5@s',
     flex:1,
   },
   error: {
