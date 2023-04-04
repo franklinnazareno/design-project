@@ -5,10 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import PrefDetail from '../screens/Home';
 import MapScreen from '../screens/MapScreen';
 import colors from '../assets/themes/colors';
-import { MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';
+import { FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';
 import ReportScreen from '../screens/ReportScreen';
 import ReportComponent from '../components/reportComp/reportComponent';
 import StartNavScreen from '../screens/StartNavScreen';
+import NewFaqScreen from '../screens/NewFaqScreen';
 
 
 
@@ -53,6 +54,17 @@ const MenuNav =() => {
                 }}>
                 </HomeStack.Screen>
                 <HomeStack.Screen name={STARTNAV} component={StartNavScreen}
+            options={{
+                headerStyle: {
+                backgroundColor: colors.primary,
+                },
+                headerTintColor: colors.white,
+                headerTitleStyle: {
+                fontWeight: 'bold',
+                },
+                }}>
+                </HomeStack.Screen>
+                <HomeStack.Screen name={FAQ_DETAIL} component={NewFaqScreen}
             options={{
                 headerStyle: {
                 backgroundColor: colors.primary,
