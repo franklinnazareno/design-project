@@ -73,7 +73,7 @@ export default ScaledSheet.create ({
         //marginTop:'-400@s',
         position: 'absolute',
                   top: '-790@s',
-                  left: '30@s',
+                  left: '27@s',
                   right: 0,
                   bottom: 0,
         
