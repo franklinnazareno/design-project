@@ -21,72 +21,93 @@ import Tts from 'react-native-tts';
 const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
   const navigation = useNavigation();
 
-  // const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // const handleSpeak = () => {
-  //   let instructions = '';
-  //   for (let i = 0; i < results.steps.length; i++) {
-  //     const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
-  //     instructions += instructionText;
-  //   }
-  //   Tts.speak(instructions);
-  //   setIsSpeaking(true);
-  // };
+  const handleSpeak = () => {
+    let instructions = '';
+    for (let i = 0; i < results.steps.length; i++) {
+      const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
+      instructions += instructionText;
+    }
+    Tts.speak(instructions);
+    setIsSpeaking(true);
+  };
 
-  // const handlePause = () => {
-  //   Tts.stop();
-  //   setIsSpeaking(false);
-  // };
+  const handlePause = () => {
+    Tts.stop();
+    setIsSpeaking(false);
+  };
 
-const MapboxPlacesInput = ({id,placeholder}) => {
-  return (
-    <MapBoxPlacesAutocomplete
-      id={id}
-      placeholder={placeholder}
-      accessToken={Config.MAPBOX_PUBLIC_TOKEN} // MAPBOX_PUBLIC_TOKEN is stored in .env root project folder
-      onPlaceSelect={(data) => {
-        if (id == "source"){
-          setSource(data.place_name)
-          console.log(data.place_name)
-          console.log("Source set")
-          value={source}
-        } else {
-          setDestination(data.place_name)
-          console.log(data.place_name)
-          console.log("Dest set")
-          value={destination}
-        }
-      }}
-      onClearInput={({ id }) => {
-        console.log("cleared")
-        if (id == "source"){
-          if (id == "source"){
-            setSource("")
-          } else {
-            setDestination("")
-          }
-        }
-      }}
-      countryId="ph"
-      containerStyle={{
-        top: 40,
-        width: '100%',
-        backgroundColor: '#ffffff',
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: '#cccccc',
-        shadowColor: '#000000',
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-        shadowOffset: {
-          height: 1,
-          width: 0,
-        },
-        elevation: 3,
-      }}
-    />
-  );
-}; 
+  const handleSpeak2 = () => {
+    let instructions = '';
+    for (let i = 0; i < results2.steps.length; i++) {
+      const instructionText = `${i + 1}. ${results2.steps[i].instruction}. `;
+      instructions += instructionText;
+    }
+    Tts.speak(instructions);
+    setIsSpeaking(true);
+  };
+
+  const handlePause2 = () => {
+    Tts.stop();
+    setIsSpeaking(false);
+  };
+
+// const MapboxPlacesInput = ({id,placeholder}) => {
+//   return (
+//     <MapBoxPlacesAutocomplete
+//       id={id}
+//       placeholder={placeholder}
+//       accessToken={Config.MAPBOX_PUBLIC_TOKEN} // MAPBOX_PUBLIC_TOKEN is stored in .env root project folder
+//       onPlaceSelect={(data) => {
+//         if (id == "source"){
+//           setSource(data.place_name)
+//           console.log(data.place_name)
+//           console.log("Source set")
+//           value={source}
+//         } else {
+//           setDestination(data.place_name)
+//           console.log(data.place_name)
+//           console.log("Dest set")
+//           value={destination}
+//         }
+//       }}
+//       onClearInput={({ id }) => {
+//         console.log("cleared")
+//         if (id == "source"){
+//           if (id == "source"){
+//             setSource("")
+//           } else {
+//             setDestination("")
+//           }
+//         }
+//       }}
+//       countryId="ph"
+//       //style={{ backgroundColor: 'red', borderRadius: 8, borderWidth: 1, borderColor: '#ccc', padding: 10 }}
+//       containerStyle={{
+//         width: '100%',
+//         margin: 30,
+//         alignSelf: 'center',
+//         backgroundColor: 'red',
+//       }}
+//       inputStyle={{ 
+//       zIndex:9999,
+//       height: 50, // adjust the height value as needed
+//       backgroundColor: 'white',
+//       borderRadius: 8,
+//       borderWidth: 1,
+//       borderColor: '#ccc',
+//       paddingLeft: 10,
+//       paddingRight: 10,
+//       fontSize: 16,
+//       color: '#333',
+//       marginTop: 20,
+//       }}
+
+    
+//     />
+//   );
+// }; 
 
   const handleLocation = async () => {
     if (location) {
@@ -115,30 +136,30 @@ const MapboxPlacesInput = ({id,placeholder}) => {
 
 
     try {
-      // const [sourceResponse, destinationResponse] = await Promise.all([
-      //         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
-      //         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-      //     ]);
+      const [sourceResponse, destinationResponse] = await Promise.all([
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+          ]);
 
-      // const sourceData = await sourceResponse.json();
-      // const destinationData = await destinationResponse.json();
+      const sourceData = await sourceResponse.json();
+      const destinationData = await destinationResponse.json();
 
-      // if (!sourceResponse.ok || !destinationResponse.ok) {
-      //     setError("Unable to connect to location services.");
-      //     setLoading(false)
-      //     handleLoadingData(false)
-      // }
+      if (!sourceResponse.ok || !destinationResponse.ok) {
+          setError("Unable to connect to location services.");
+          setLoading(false)
+          handleLoadingData(false)
+      }
 
-      // if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-      //     setError("Unable to find the current location. Try another search.");
-      //     setLoading(false)
-      //     handleLoadingData(false)
-      // }
+      if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+          setError("Unable to find the current location. Try another search.");
+          setLoading(false)
+          handleLoadingData(false)
+      }
 
-      // const { center: sourceCoords } = sourceData.features[0];
-      // const { center: destCoords } = destinationData.features[0];
+      const { center: sourceCoords } = sourceData.features[0];
+      const { center: destCoords } = destinationData.features[0];
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-      const postData = { preferences, source, destination };
+      const postData = { preferences, sourceCoords, destCoords };
 
       const response = await fetch('http://10.0.2.2:8888/route/', {
           method: 'POST',
@@ -195,7 +216,7 @@ const MapboxPlacesInput = ({id,placeholder}) => {
           <View style={styles.firstView}>
           
           <View style={styles.Current}>
-              {/* <Input
+              <Input
               label="Source"
               placeholder='Location'
 
@@ -205,26 +226,28 @@ const MapboxPlacesInput = ({id,placeholder}) => {
                 iconPosition='right'
 
               onChangeText={(text) => setSource(text)}
-              value={source} /> */}
-              <MapboxPlacesInput
+              value={source} />
+              {/* <MapboxPlacesInput
                 id="source"
                 placeholder="Source"
-                />
-              <TouchableOpacity onPress={handleLocation} >
-                <Entypo name = 'location' size={25}></Entypo>
-              </TouchableOpacity>
+                
+                /> */}
+              {/* <TouchableOpacity onPress={handleLocation} >
+                <MaterialCommunityIcons name = 'location' size={25}></MaterialCommunityIcons>
+              </TouchableOpacity> */}
               </View>
 
               <View style={styles.Destination}>
-              {/* <Input
+              <Input
               label="Destination"
               placeholder='Destination'
               onChangeText={(text) => setDestination(text)}
-              value={destination} /> */}
-              <MapboxPlacesInput
+              value={destination} />
+              {/* <MapboxPlacesInput
                 id="destination"
                 placeholder="Destination"
-                />
+                
+                /> */}
               </View>
 
               {/* Custom Button OnPress does not work use touchableopacity */}
@@ -256,6 +279,17 @@ const MapboxPlacesInput = ({id,placeholder}) => {
                 />
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
                 <Button title='Start' onPress={() => handleSpeak()}/> */}
+
+                  {/* TTS START AND STOP */}
+                  <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
+                    <Text style={styles.safetextBox}>Start</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
+                    <Text style={styles.safetextBox}>Stop</Text>
+                  </TouchableOpacity>
+                  </View>
                 </View>
                 
                 <View style={styles.secondView}>
@@ -291,6 +325,17 @@ const MapboxPlacesInput = ({id,placeholder}) => {
                 <View style={styles.beginNav}>
                 <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
                 </View>
+
+                {/* TTS START AND STOP */}
+                <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
+                    <Text style={styles.safetextBox}>Start</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
+                    <Text style={styles.safetextBox}>Stop</Text>
+                  </TouchableOpacity>
+                  </View>
 
                 <View style={styles.thirdView}>
                   {results2.steps && (
