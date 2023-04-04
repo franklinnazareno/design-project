@@ -131,13 +131,13 @@ const ReportComponent = ({ location }) => {
         <View style={styles.Text}>
             
         <Input
-            label='Source'
+            label='Location'
             value={source}
             onChangeText={setSource}
-            icon={<TouchableOpacity >
-            <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
-            </TouchableOpacity>}
-            iconPosition='right'
+            // icon={<TouchableOpacity >
+            // <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
+            // </TouchableOpacity>}
+            // iconPosition='right'
             />
 
         <View>
