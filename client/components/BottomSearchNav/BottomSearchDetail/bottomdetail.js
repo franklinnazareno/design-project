@@ -210,9 +210,9 @@ const MapboxPlacesInput = ({id,placeholder}) => {
                 id="source"
                 placeholder="Source"
                 />
-              <TouchableOpacity onPress={handleLocation} >
+              {/* <TouchableOpacity onPress={handleLocation} >
                 <Entypo name = 'location' size={25}></Entypo>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               </View>
 
               <View style={styles.Destination}>
