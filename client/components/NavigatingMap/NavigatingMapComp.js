@@ -9,9 +9,10 @@ import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ coordsData, coordsData2, location, userView }) => {
+const NavigatingMapComp = ({ location, results }) => {
     const { width, height } = Dimensions.get('window')
-    const aspectRatio = width / height;
+
+    console.log(results)
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -33,38 +34,7 @@ const NavigatingMapComp = ({ coordsData, coordsData2, location, userView }) => {
         })
       }
 
-      if (coordsData && coordsData.length > 1) {
-        const firstCoords = coordsData[0]
-        const lastCoords = coordsData[coordsData.length - 1]
-        const R = 6371
-        const dLat = ((lastCoords.latitude - firstCoords.latitude) * Math.PI) / 180
-        const dLon = ((lastCoords.longitude - firstCoords.longitude) * Math.PI) / 180
-
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos((firstCoords.latitude * Math.PI) / 180) *
-            Math.cos((lastCoords.latitude * Math.PI) / 180) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2)
-
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-        const distance = R * c
-
-        const latDelta = distance / (111.32 * aspectRatio)
-        const lonDelta = distance / (111.32 * Math.cos(firstCoords.latitude * Math.PI / 180) * aspectRatio)
-
-        const centerLat = (firstCoords.latitude + lastCoords.latitude) / 2
-        const centerLon = (firstCoords.longitude + lastCoords.longitude) / 2
-
-        setRegion({
-          latitude: centerLat,
-          longitude: centerLon,
-          latitudeDelta: latDelta,
-          longitudeDelta: lonDelta
-        })
-      }
-
-    }, [location, coordsData])
+    }, [location])
 
     // const {setOptions, toggleDrawer} = useNavigation();
     
@@ -99,53 +69,6 @@ const NavigatingMapComp = ({ coordsData, coordsData2, location, userView }) => {
             tracksViewChanges={true}>
               <Icon name="my-location" size={30} color="green" />
             </Marker>}
-
-          {coordsData && <Marker 
-            title={"Source"}
-            coordinate={{latitude: coordsData[0].latitude, longitude: coordsData[0].longitude}}
-            tracksViewChanges={true}>
-              <Icon name="location-pin" size={30} color="blue" />
-            </Marker>}
-
-          {coordsData && <Marker 
-            title={"Destination"}
-            coordinate={{latitude: coordsData[coordsData.length - 1].latitude, longitude: coordsData[coordsData.length - 1].longitude}}
-            tracksViewChanges={true}>
-              <Icon name="location-pin" size={30} color="red" />
-            </Marker>}
-          
-          {userView === 0 && coordsData && coordsData2 && (
-            <>
-              <Polyline
-                coordinates={coordsData}
-                strokeWidth={4}
-                strokeColor="#ff0000"
-                tappable
-              />
-              <Polyline
-                coordinates={coordsData2}
-                strokeWidth={4}
-                strokeColor="#0000ff"
-                tappable
-              />
-            </>
-          )}
-          {userView === 1 && coordsData && (
-            <Polyline
-              coordinates={coordsData}
-              strokeWidth={4}
-              strokeColor="#ff0000"
-              tappable
-            />
-          )}
-          {userView === 2 && coordsData2 && (
-            <Polyline
-              coordinates={coordsData2}
-              strokeWidth={4}
-              strokeColor="#0000ff"
-              tappable
-            />
-          )}
 
         </MapView.Animated>
         

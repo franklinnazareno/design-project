@@ -7,15 +7,6 @@ import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
 const OptimalProgressComp = ({ fastestCoverage }) => {
-  const [mean, setMean] = useState(null)
-  useEffect(() => {
-    if (fastestCoverage) {
-      const values = Object.values(fastestCoverage);
-      const sum = values.reduce((acc, curr) => acc + curr, 0);
-      const mean = sum / values.length;
-      setMean(mean)
-    }
-  }, [fastestCoverage])
   return (
     fastestCoverage && (
       <View style={styles.progressBox}>

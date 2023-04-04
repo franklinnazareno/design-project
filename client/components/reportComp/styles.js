@@ -40,5 +40,10 @@ export default ScaledSheet.create({
     color: 'red',
     fontSize: '16@s',
     alignSelf:'center'
+    },
+    success: {
+    color: 'green',
+    fontSize: '16@s',
+    alignSelf:'center'
     }
 });

@@ -125,7 +125,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
               
           <DetailBlock 
           preference={preference}
-          location={location} 
+          location={location}
           handleCoordsData={handleCoordsData} 
           handleCoordsData2={handleCoordsData2} 
           handleLoadingData={handleLoadingData} 
