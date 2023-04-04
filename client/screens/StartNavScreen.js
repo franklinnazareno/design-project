@@ -3,9 +3,10 @@ import React from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
 
-const StartNavScreen = () => {
+const StartNavScreen = ({ route }) => {
+  const { location, results } = route.params
   return (
-    <NavigatingMapComp>
+    <NavigatingMapComp location={location} results={results} >
       
     </NavigatingMapComp>
   )

@@ -7,15 +7,6 @@ import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
 const SafeProgressComp = ({ safestCoverage }) => {
-  const [mean, setMean] = useState(null)
-  useEffect(() => {
-    if (safestCoverage) {
-      const values = Object.values(safestCoverage);
-      const sum = values.reduce((acc, curr) => acc + curr, 0);
-      const mean = sum / values.length;
-      setMean(mean)
-    }
-  }, [safestCoverage])
   return (
     safestCoverage && (
       <View style={styles.progressBox}>

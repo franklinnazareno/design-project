@@ -190,7 +190,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {/* Start your safe nav here */}
                 <View style={styles.beginNav}>
                 <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV)}
+                onPress={() => navigation.navigate(STARTNAV, { location: location, results: results })}
                 
                 />
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
