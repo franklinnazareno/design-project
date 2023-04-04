@@ -281,7 +281,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <Button title='Start' onPress={() => handleSpeak()}/> */}
 
                   {/* TTS START AND STOP */}
-                  <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
                   <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
@@ -289,7 +289,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
-                  </View>
+                  </View> */}
                 </View>
                 
                 <View style={styles.secondView}>
@@ -327,7 +327,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 </View>
 
                 {/* TTS START AND STOP */}
-                <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
                   <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
@@ -335,7 +335,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
-                  </View>
+                  </View> */}
 
                 <View style={styles.thirdView}>
                   {results2.steps && (
