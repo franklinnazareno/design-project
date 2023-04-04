@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
 import Config from 'react-native-config';
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -13,15 +13,30 @@ import OptimalProgressComp from './OptimalProgress/optimalProgressComp';
 import SafeProgressComp from './SafeProgress/safeProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 
-
-
-
-
 var deviceWidth = Dimensions.get('window').width;
 
+import Tts from 'react-native-tts';
 
 const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
   const navigation = useNavigation();
+
+  // const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // const handleSpeak = () => {
+  //   let instructions = '';
+  //   for (let i = 0; i < results.steps.length; i++) {
+  //     const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
+  //     instructions += instructionText;
+  //   }
+  //   Tts.speak(instructions);
+  //   setIsSpeaking(true);
+  // };
+
+  // const handlePause = () => {
+  //   Tts.stop();
+  //   setIsSpeaking(false);
+  // };
+
 
   const handleLocation = async () => {
     if (location) {
@@ -47,6 +62,8 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
     }
     handleLoadingData(true)
     setLoading(true);
+
+
     try {
       const [sourceResponse, destinationResponse] = await Promise.all([
               fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
@@ -172,7 +189,12 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               <SafeProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 <View style={styles.beginNav}>
-                <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
+                <CustomButton primary title='Begin Journey' 
+                onPress={() => navigation.navigate(STARTNAV)}
+                
+                />
+                {/* <Button title='STOP' onPress={() => handlePause()}/>
+                <Button title='Start' onPress={() => handleSpeak()}/> */}
                 </View>
                 
                 <View style={styles.secondView}>
@@ -181,7 +203,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                     <View>
                       <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
                       {results.steps.map((step, index) => (
-                        <View key={index}>
+                        <View key={index} >
                           <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>
                         </View>
                       ))}
