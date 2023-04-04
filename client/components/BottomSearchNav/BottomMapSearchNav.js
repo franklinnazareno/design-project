@@ -77,7 +77,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     <View style={styles.flexView}>
       
       <StatusBar />
-      <View >
+      <View styles={styles.ButtonView}>
         {/* Ignore this it is for modal */}
         <TouchableOpacity onPress={toggleModal} style={styles.btnContainer}>
           <Text style={styles.navtext}>Search</Text>
