@@ -329,11 +329,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
                 {/* TTS START AND STOP */}
                 <View style={{flexDirection: 'row', alignSelf:'center', paddingVertical: 10}}>
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak2()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause2()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
                   </View>

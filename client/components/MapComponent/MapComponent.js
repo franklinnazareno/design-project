@@ -95,27 +95,6 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           // minZoomLevel={16}
           rotateEnabled={false}
            >
-             
-          {location && <Marker 
-            title={"Current Location"}
-            coordinate={{latitude: location.latitude, longitude: location.longitude}}
-            tracksViewChanges={true}>
-              <Icon name="my-location" size={30} color="green" />
-            </Marker>}
-
-          {coordsData && <Marker 
-            title={"Source"}
-            coordinate={{latitude: coordsData[0].latitude, longitude: coordsData[0].longitude}}
-            tracksViewChanges={true}>
-              <Icon name="location-pin" size={30} color="blue" />
-            </Marker>}
-
-          {coordsData && <Marker 
-            title={"Destination"}
-            coordinate={{latitude: coordsData[coordsData.length - 1].latitude, longitude: coordsData[coordsData.length - 1].longitude}}
-            tracksViewChanges={true}>
-              <Icon name="location-pin" size={30} color="red" />
-            </Marker>}
           
           {userView === 0 && coordsData && coordsData2 && (
             <>
@@ -149,6 +128,62 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               tappable
             />
           )}
+          
+          {location && <Marker 
+            title={"Current Location"}
+            coordinate={{latitude: location.latitude, longitude: location.longitude}}
+            tracksViewChanges={true}>
+              <Icon name="my-location" size={30} color="green" />
+            </Marker>}
+
+          {coordsData && <Marker 
+            title={"Source"}
+            coordinate={{latitude: coordsData[0].latitude, longitude: coordsData[0].longitude}}
+            tracksViewChanges={true}
+            >
+              <Icon name="location-pin" size={30} color="blue" />
+            </Marker>}
+            
+          {coordsData && <Marker 
+            title={"Destination"}
+            coordinate={{latitude: coordsData[coordsData.length - 1].latitude, longitude: coordsData[coordsData.length - 1].longitude}}
+            tracksViewChanges={true}
+            >
+              <Icon name="location-pin" size={30} color="red" />
+            </Marker>}
+          
+          {/* {userView === 0 && coordsData && coordsData2 && (
+            <>
+              <Polyline
+                coordinates={coordsData}
+                strokeWidth={4}
+                strokeColor="#ff0000"
+                tappable
+              />
+              <Polyline
+                coordinates={coordsData2}
+                strokeWidth={4}
+                strokeColor="#0000ff"
+                tappable
+              />
+            </>
+          )}
+          {userView === 1 && coordsData && (
+            <Polyline
+              coordinates={coordsData}
+              strokeWidth={4}
+              strokeColor="#ff0000"
+              tappable
+            />
+          )}
+          {userView === 2 && coordsData2 && (
+            <Polyline
+              coordinates={coordsData2}
+              strokeWidth={4}
+              strokeColor="#0000ff"
+              tappable
+            />
+          )} */}
 
         </MapView.Animated>
         
