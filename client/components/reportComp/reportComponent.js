@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image } from 'react-native'
 import React, { useState } from 'react'
-import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -100,7 +100,7 @@ const ReportComponent = () => {
             value={source}
             onChangeText={setSource}
             icon={<TouchableOpacity >
-            <Entypo name = 'location' size={25}></Entypo>
+            <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
             </TouchableOpacity>}
             iconPosition='right'
             />
@@ -110,10 +110,10 @@ const ReportComponent = () => {
         label='Description'
         value={description}
         onChangeText={setDescription}
-        icon={<TouchableOpacity >
-          <Entypo name = 'location' size={25}></Entypo>
-          </TouchableOpacity>}
-          iconPosition='right'
+        // icon={<TouchableOpacity >
+        //   <Entypo name = 'location' size={25}></Entypo>
+        //   </TouchableOpacity>}
+        //   iconPosition='right'
         />
         </View>
 

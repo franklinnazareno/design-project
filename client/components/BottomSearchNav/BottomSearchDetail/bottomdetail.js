@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
 import Config from 'react-native-config';
-import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
 
@@ -150,7 +150,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               placeholder='Location'
 
               icon={<TouchableOpacity onPress={handleLocation} >
-                <Entypo name = 'location' size={25}></Entypo>
+                <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
                 </TouchableOpacity>}
                 iconPosition='right'
 
