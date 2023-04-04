@@ -94,7 +94,7 @@ const ReportComponent = ({ location }) => {
         })
       }
 
-      const response = await fetch('http://10.0.2.2:4000/api/report', {
+      const response = await fetch('https://design-project-production.up.railway.app/api/report', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.token}`,
