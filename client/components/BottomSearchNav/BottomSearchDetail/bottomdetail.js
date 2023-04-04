@@ -5,6 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
 
+import MapBoxPlacesAutocomplete from "react-native-mapbox-places-autocomplete";
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
@@ -37,6 +38,55 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
   //   setIsSpeaking(false);
   // };
 
+const MapboxPlacesInput = ({id,placeholder}) => {
+  return (
+    <MapBoxPlacesAutocomplete
+      id={id}
+      placeholder={placeholder}
+      accessToken={Config.MAPBOX_PUBLIC_TOKEN} // MAPBOX_PUBLIC_TOKEN is stored in .env root project folder
+      onPlaceSelect={(data) => {
+        if (id == "source"){
+          setSource(data.place_name)
+          console.log(data.place_name)
+          console.log("Source set")
+          value={source}
+        } else {
+          setDestination(data.place_name)
+          console.log(data.place_name)
+          console.log("Dest set")
+          value={destination}
+        }
+      }}
+      onClearInput={({ id }) => {
+        console.log("cleared")
+        if (id == "source"){
+          if (id == "source"){
+            setSource("")
+          } else {
+            setDestination("")
+          }
+        }
+      }}
+      countryId="ph"
+      containerStyle={{
+        top: 40,
+        width: '100%',
+        backgroundColor: '#ffffff',
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#cccccc',
+        shadowColor: '#000000',
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+        shadowOffset: {
+          height: 1,
+          width: 0,
+        },
+        elevation: 3,
+      }}
+    />
+  );
+}; 
 
   const handleLocation = async () => {
     if (location) {
@@ -65,30 +115,30 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
     try {
-      const [sourceResponse, destinationResponse] = await Promise.all([
-              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
-              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
-          ]);
+      // const [sourceResponse, destinationResponse] = await Promise.all([
+      //         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
+      //         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+      //     ]);
 
-      const sourceData = await sourceResponse.json();
-      const destinationData = await destinationResponse.json();
+      // const sourceData = await sourceResponse.json();
+      // const destinationData = await destinationResponse.json();
 
-      if (!sourceResponse.ok || !destinationResponse.ok) {
-          setError("Unable to connect to location services.");
-          setLoading(false)
-          handleLoadingData(false)
-      }
+      // if (!sourceResponse.ok || !destinationResponse.ok) {
+      //     setError("Unable to connect to location services.");
+      //     setLoading(false)
+      //     handleLoadingData(false)
+      // }
 
-      if (sourceData.features.length === 0 || destinationData.features.length === 0) {
-          setError("Unable to find the current location. Try another search.");
-          setLoading(false)
-          handleLoadingData(false)
-      }
+      // if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+      //     setError("Unable to find the current location. Try another search.");
+      //     setLoading(false)
+      //     handleLoadingData(false)
+      // }
 
-      const { center: sourceCoords } = sourceData.features[0];
-      const { center: destCoords } = destinationData.features[0];
+      // const { center: sourceCoords } = sourceData.features[0];
+      // const { center: destCoords } = destinationData.features[0];
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-      const postData = { preferences, sourceCoords, destCoords };
+      const postData = { preferences, source, destination };
 
       const response = await fetch('http://10.0.2.2:8888/route/', {
           method: 'POST',
@@ -145,7 +195,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           <View style={styles.firstView}>
           
           <View style={styles.Current}>
-              <Input
+              {/* <Input
               label="Source"
               placeholder='Location'
 
@@ -155,15 +205,26 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 iconPosition='right'
 
               onChangeText={(text) => setSource(text)}
-              value={source} />
+              value={source} /> */}
+              <MapboxPlacesInput
+                id="source"
+                placeholder="Source"
+                />
+              <TouchableOpacity onPress={handleLocation} >
+                <Entypo name = 'location' size={25}></Entypo>
+              </TouchableOpacity>
               </View>
 
               <View style={styles.Destination}>
-              <Input
+              {/* <Input
               label="Destination"
               placeholder='Destination'
               onChangeText={(text) => setDestination(text)}
-              value={destination} />
+              value={destination} /> */}
+              <MapboxPlacesInput
+                id="destination"
+                placeholder="Destination"
+                />
               </View>
 
               {/* Custom Button OnPress does not work use touchableopacity */}
