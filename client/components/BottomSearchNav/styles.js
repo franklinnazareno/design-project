@@ -1,6 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
-
+import {Dimensions} from 'react-native';
+var deviceHeight = Dimensions.get('window').width;
 
 
 export default ScaledSheet.create ({
@@ -32,7 +33,7 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '320@s',
+        minHeight: '310@s',
         paddingBottom: '1@s',
         
         
@@ -54,6 +55,10 @@ export default ScaledSheet.create ({
         marginTop:'10@s',
         marginBottom:'10@s', 
       },
+      ButtonView: {
+        height:deviceHeight,
+        backgroundColor: 'red',
+      },
       
       btnContainer: {
         // borderTopLeftRadius:'100@s',
@@ -65,7 +70,13 @@ export default ScaledSheet.create ({
         height: '30@s',
         width:'300@s',
         backgroundColor:colors.primary,
-        marginTop:'-500@s',
+        //marginTop:'-400@s',
+        position: 'absolute',
+                  top: '-790@s',
+                  left: '30@s',
+                  right: 0,
+                  bottom: 0,
+        
         
       },
       navtext: {
@@ -118,7 +129,7 @@ export default ScaledSheet.create ({
       safeBox: {
         backgroundColor: colors.primary,
         borderRadius: '20@s',
-        width:'90@s',
+        width:'80@s',
         padding: '10@s',
         marginTop: '20@s',
         alignSelf: 'center',
@@ -136,8 +147,8 @@ export default ScaledSheet.create ({
       },
       safest:{
         borderRadius:20 ,
-        height:'60@s',
-        padding:5 ,
+        height:'50@s',
+        padding:2 ,
         flexDirection:'row',
         backgroundColor: colors.grey,
         alignSelf:'center',
