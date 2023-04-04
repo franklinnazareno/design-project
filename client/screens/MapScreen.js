@@ -83,14 +83,19 @@ const MapScreen = () => {
   }
 
   return (
+    
     <View>
+      
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         
-        
+          
           <View style={{ position: 'relative', height: '100%' }}>
-            <MapComponent coordsData={coords} coordsData2={coords2} location={location} userView={userView} />
+            <MapComponent coordsData={coords} coordsData2={coords2} location={location} userView={userView}>
+              
+            </MapComponent>
+            
               {loadingData && (
                 <View style={{
                   position: 'absolute',
@@ -103,9 +108,16 @@ const MapScreen = () => {
                   backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 }}>
                   <ActivityIndicator size="large" color="#0000ff" />
+                  
                 </View>
               )}
-          <BottomNavComp preference={preferences} location={location} handleCoordsData={handleCoordsData} handleCoordsData2={handleCoordsData2} handleLoadingData={handleLoadingData} handleUserView={handleUserView} />
+                <BottomNavComp 
+                preference={preferences} 
+                location={location} 
+                handleCoordsData={handleCoordsData} 
+                handleCoordsData2={handleCoordsData2}
+                handleLoadingData={handleLoadingData} 
+                handleUserView={handleUserView}/>
           
           </View>
         
