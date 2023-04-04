@@ -34,12 +34,19 @@ const ReportComponent = () => {
       console.log('Image selection error:', response.error)
       setError(response.error)
     } else {
-      setImage(response)
+      console.log('uri -> ', response.assets[0].uri);
+      console.log('width -> ', response.assets[0].width);
+      console.log('height -> ', response.assets[0].height);
+      console.log('fileSize -> ', response.assets[0].fileSize);
+      console.log('type -> ', response.assets[0].type);
+      console.log('fileName -> ', response.assets[0].fileName);
+      setImage(response.assets[0])
     }
   })
 }
 
   const handleSubmit = async () => {
+    console.log(user.token)
     setLoading(true)
     try {
       const formData = new FormData()
@@ -56,9 +63,9 @@ const ReportComponent = () => {
       const response = await fetch('http://10.0.2.2:4000/api/report', {
         method: 'POST',
         headers: {
-          'Accept': '*/*',
-          'Content-Type': 'multipart/form-data',
           'Authorizaton': `Bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data',
+          'Accept': '*/*'
         },
         body: formData
       })
@@ -69,8 +76,7 @@ const ReportComponent = () => {
         console.log(responseData)
       }
       if (!response.ok) {
-        logout()
-        return <Login />
+        console.log(responseData)
       }
       setLoading(false)
     } catch (error) {
