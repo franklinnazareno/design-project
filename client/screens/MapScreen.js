@@ -39,6 +39,8 @@ const MapScreen = () => {
   }
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchUserPreferences = async () => {
       const response = await fetch('http://10.0.2.2:4000/api/preferences', {
         headers: {'Authorization': `Bearer ${user.token}`}
@@ -52,13 +54,8 @@ const MapScreen = () => {
       if (!response.ok) {
         logout()
       }
-      setLoading(false)
     }
 
-    fetchUserPreferences()
-  }, [dispatch, user])
-
-  useEffect(() => {
     const watchId = Geolocation.watchPosition(
       position => {
         const { latitude, longitude } = position.coords;
@@ -73,10 +70,22 @@ const MapScreen = () => {
       }
     );
 
+    Promise.all([fetchUserPreferences(), watchId])
+      .then(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     return () => {
+      isMounted = false;
       Geolocation.clearWatch(watchId);
     };
-  }, []);
+  }, [dispatch, user]);
+
 
   if (!user) {
     return <Login />

@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBac
 import React, { useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {launchImageLibrary} from 'react-native-image-picker';
+import Config from 'react-native-config';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLogout } from '../../hooks/useLogout';
@@ -11,15 +12,48 @@ import styles from './styles'
 import CustomButton from '../CustomButton'
 
 
-const ReportComponent = () => {
+const ReportComponent = ({ location }) => {
   const [source, setSource] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState(null)
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const { user } = useAuthContext()
   const { logout } = useLogout()
+
+  // const handleLocation = async () => {
+  //   if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
+
+  //       try {
+  //         const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.features[0].place_name);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  // }
+
+  // useEffect(() => {
+  //   async function getLocation() {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
+
+  //       try {
+  //         const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.features[0].place_name);
+  //       } catch (error) {
+  //         setError(error);
+  //     }
+  //   }
+
+  //   getLocation();
+  // }, [location]);
 
   const handleImageUpload = () => {
   const options = {
@@ -63,7 +97,7 @@ const ReportComponent = () => {
       const response = await fetch('http://10.0.2.2:4000/api/report', {
         method: 'POST',
         headers: {
-          'Authorizaton': `Bearer ${user.token}`,
+          'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'multipart/form-data',
           'Accept': '*/*'
         },
@@ -74,6 +108,7 @@ const ReportComponent = () => {
 
       if (response.ok) {
         console.log(responseData)
+        setSuccess(true)
       }
       if (!response.ok) {
         console.log(responseData)
@@ -131,7 +166,8 @@ const ReportComponent = () => {
           </View>
         )}
         <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/>
-        {/* {error && <Text style={styles.error}>{error}</Text>} */}
+        {error && <Text style={styles.error}>{error}</Text>}
+        {success && <Text style={styles.success}>Report sent successfully!</Text>}
         </View>
         
     
