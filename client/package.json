@@ -28,6 +28,7 @@
     "react-native-get-location": "^3.0.1",
     "react-native-image-crop-picker": "^0.39.0",
     "react-native-image-picker": "^5.3.1",
+    "react-native-mapbox-places-autocomplete": "^0.0.3",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.5.0",
     "react-native-raw-bottom-sheet": "^2.2.0",

@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
 import Config from 'react-native-config';
-import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
 
+import MapBoxPlacesAutocomplete from "react-native-mapbox-places-autocomplete";
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
@@ -20,23 +21,93 @@ import Tts from 'react-native-tts';
 const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
   const navigation = useNavigation();
 
-  // const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // const handleSpeak = () => {
-  //   let instructions = '';
-  //   for (let i = 0; i < results.steps.length; i++) {
-  //     const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
-  //     instructions += instructionText;
-  //   }
-  //   Tts.speak(instructions);
-  //   setIsSpeaking(true);
-  // };
+  const handleSpeak = () => {
+    let instructions = '';
+    for (let i = 0; i < results.steps.length; i++) {
+      const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
+      instructions += instructionText;
+    }
+    Tts.speak(instructions);
+    setIsSpeaking(true);
+  };
 
-  // const handlePause = () => {
-  //   Tts.stop();
-  //   setIsSpeaking(false);
-  // };
+  const handlePause = () => {
+    Tts.stop();
+    setIsSpeaking(false);
+  };
 
+  const handleSpeak2 = () => {
+    let instructions = '';
+    for (let i = 0; i < results2.steps.length; i++) {
+      const instructionText = `${i + 1}. ${results2.steps[i].instruction}. `;
+      instructions += instructionText;
+    }
+    Tts.speak(instructions);
+    setIsSpeaking(true);
+  };
+
+  const handlePause2 = () => {
+    Tts.stop();
+    setIsSpeaking(false);
+  };
+
+// const MapboxPlacesInput = ({id,placeholder}) => {
+//   return (
+//     <MapBoxPlacesAutocomplete
+//       id={id}
+//       placeholder={placeholder}
+//       accessToken={Config.MAPBOX_PUBLIC_TOKEN} // MAPBOX_PUBLIC_TOKEN is stored in .env root project folder
+//       onPlaceSelect={(data) => {
+//         if (id == "source"){
+//           setSource(data.place_name)
+//           console.log(data.place_name)
+//           console.log("Source set")
+//           value={source}
+//         } else {
+//           setDestination(data.place_name)
+//           console.log(data.place_name)
+//           console.log("Dest set")
+//           value={destination}
+//         }
+//       }}
+//       onClearInput={({ id }) => {
+//         console.log("cleared")
+//         if (id == "source"){
+//           if (id == "source"){
+//             setSource("")
+//           } else {
+//             setDestination("")
+//           }
+//         }
+//       }}
+//       countryId="ph"
+//       //style={{ backgroundColor: 'red', borderRadius: 8, borderWidth: 1, borderColor: '#ccc', padding: 10 }}
+//       containerStyle={{
+//         width: '100%',
+//         margin: 30,
+//         alignSelf: 'center',
+//         backgroundColor: 'red',
+//       }}
+//       inputStyle={{ 
+//       zIndex:9999,
+//       height: 50, // adjust the height value as needed
+//       backgroundColor: 'white',
+//       borderRadius: 8,
+//       borderWidth: 1,
+//       borderColor: '#ccc',
+//       paddingLeft: 10,
+//       paddingRight: 10,
+//       fontSize: 16,
+//       color: '#333',
+//       marginTop: 20,
+//       }}
+
+    
+//     />
+//   );
+// }; 
 
   const handleLocation = async () => {
     if (location) {
@@ -150,12 +221,20 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               placeholder='Location'
 
               icon={<TouchableOpacity onPress={handleLocation} >
-                <Entypo name = 'location' size={25}></Entypo>
+                <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
                 </TouchableOpacity>}
                 iconPosition='right'
 
               onChangeText={(text) => setSource(text)}
               value={source} />
+              {/* <MapboxPlacesInput
+                id="source"
+                placeholder="Source"
+                
+                /> */}
+              {/* <TouchableOpacity onPress={handleLocation} >
+                <MaterialCommunityIcons name = 'location' size={25}></MaterialCommunityIcons>
+              </TouchableOpacity> */}
               </View>
 
               <View style={styles.Destination}>
@@ -164,6 +243,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               placeholder='Destination'
               onChangeText={(text) => setDestination(text)}
               value={destination} />
+              {/* <MapboxPlacesInput
+                id="destination"
+                placeholder="Destination"
+                
+                /> */}
               </View>
 
               {/* Custom Button OnPress does not work use touchableopacity */}
@@ -195,6 +279,17 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 />
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
                 <Button title='Start' onPress={() => handleSpeak()}/> */}
+
+                  {/* TTS START AND STOP */}
+                  {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
+                    <Text style={styles.safetextBox}>Start</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
+                    <Text style={styles.safetextBox}>Stop</Text>
+                  </TouchableOpacity>
+                  </View> */}
                 </View>
                 
                 <View style={styles.secondView}>
@@ -230,6 +325,17 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View style={styles.beginNav}>
                 <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
                 </View>
+
+                {/* TTS START AND STOP */}
+                {/* <View style={{flexDirection: 'row', alignSelf:'center'}}>
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
+                    <Text style={styles.safetextBox}>Start</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
+                    <Text style={styles.safetextBox}>Stop</Text>
+                  </TouchableOpacity>
+                  </View> */}
 
                 <View style={styles.thirdView}>
                   {results2.steps && (

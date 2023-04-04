@@ -60,7 +60,7 @@ export default ScaledSheet.create ({
       alignSelf:'center',
   },
   boxloader:{
-    marginTop:'-10@s',
+    marginTop:'-5@s',
     flex:1,
   },
   error: {
@@ -123,5 +123,25 @@ export default ScaledSheet.create ({
   },
   beginNav:{
     paddingTop: '10@s'
-  }
+  },
+  safeBox: {
+    backgroundColor: colors.primary,
+    borderRadius: '20@s',
+    width:'90@s',
+    padding: '10@s',
+    marginTop: '20@s',
+    alignSelf: 'center',
+    marginTop:'1@s',
+    marginHorizontal: '2@s',
+    
+    
+  },
+  safetextBox:{
+    color: colors.white,
+    fontSize: '16@s',
+    fontWeight: 'bold',
+    alignSelf:'center'
+
+  },
+
 });
