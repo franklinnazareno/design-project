@@ -161,7 +161,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const postData = { preferences, sourceCoords, destCoords };
 
-      const response = await fetch('http://10.0.2.2:8888/route/', {
+      const response = await fetch('https://flask-production-2a70.up.railway.app/route/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
