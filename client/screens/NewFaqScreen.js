@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native'
 import React from 'react'
+import colors from '../assets/themes/colors'
 
 const NewFaqScreen = () => {
   const faqs = [
@@ -82,13 +83,13 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   backButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     borderRadius: 5,
     padding: 10,
     alignSelf: 'flex-start',
   },
   backButtonText: {
-    color: '#FFFFFF',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
