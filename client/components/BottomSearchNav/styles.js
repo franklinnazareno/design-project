@@ -65,7 +65,7 @@ export default ScaledSheet.create ({
         height: '30@s',
         width:'300@s',
         backgroundColor:colors.primary,
-        marginTop:'-590@s',
+        marginTop:'-500@s',
         
       },
       navtext: {
