@@ -7,6 +7,7 @@ import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
 import Geolocation from '@react-native-community/geolocation';
+import Config from 'react-native-config'
 import styles from './styles'
 
 
@@ -43,7 +44,7 @@ const MapScreen = () => {
     let isMounted = true;
 
     const fetchUserPreferences = async () => {
-      const response = await fetch('http://10.0.2.2:4000/api/preferences', {
+      const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
         headers: {'Authorization': `Bearer ${user.token}`}
       })
       const json = await response.json()

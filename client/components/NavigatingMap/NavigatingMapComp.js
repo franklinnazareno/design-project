@@ -5,6 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType} from '@splicer97/react-native-osmdroid';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tts from 'react-native-tts';
+import Config from 'react-native-config';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 
@@ -53,7 +54,7 @@ const NavigatingMapComp = ({ preference, source, destination, location }) => {
         const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
         console.log(postData)
 
-        const response = await fetch('http://10.0.2.2:8888/steps_with_coords_safest/', {
+        const response = await fetch(`${Config.FLASK}/steps_with_coords_safest/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
