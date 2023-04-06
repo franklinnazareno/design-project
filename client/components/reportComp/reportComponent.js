@@ -24,6 +24,25 @@ const ReportComponent = ({ location }) => {
   const { user } = useAuthContext()
   const { logout } = useLogout()
 
+  useEffect(() => {
+    async function getLocation() {
+      if (location) {
+        const longitude = location.longitude
+        const latitude = location.latitude 
+
+        try {
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+          const currentLocation = await response.json();
+          setSource(currentLocation.features[0].place_name);
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
+
+    getLocation();
+  }, []);
+
   const handleLocation = async () => {
     if (location) {
         const longitude = location.longitude
@@ -78,7 +97,7 @@ const ReportComponent = ({ location }) => {
         })
       }
 
-      const response = await fetch('http://10.0.2.2:4000/api/report', {
+      const response = await fetch(`${Config.EXPRESS}/api/report`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.token}`,
