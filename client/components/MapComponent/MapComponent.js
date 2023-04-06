@@ -18,8 +18,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const [region, setRegion] = useState({
       latitude: 14.6507,
       longitude: 121.1029,
-      latitudeDelta: 0.01, 
-      longitudeDelta: 0.01
+      latitudeDelta: 0.005, 
+      longitudeDelta: 0.005
     })
 
     useEffect(() => {
@@ -30,8 +30,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         setRegion({
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005
         })
       }
 

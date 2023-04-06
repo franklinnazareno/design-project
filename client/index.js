@@ -7,13 +7,16 @@ import {AppRegistry} from 'react-native';
 import App from './App';
 import { PreferencesContextProvider } from './context/PreferencesContext';
 import { AuthContextProvider } from './context/AuthContext';
+import { LocationProvider } from './context/LocationContext';
 import {name as appName} from './app.json';
 
 const MyApp = () => {
     return (
         <AuthContextProvider>
             <PreferencesContextProvider>
-                <App />
+                <LocationProvider>
+                    <App />
+                </LocationProvider>
             </PreferencesContextProvider>
         </AuthContextProvider>
     )
