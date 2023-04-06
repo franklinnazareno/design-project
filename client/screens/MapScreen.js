@@ -1,7 +1,8 @@
 import { View, Text, ActivityIndicator } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
 import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
+import { LocationContext } from '../context/LocationContext'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
@@ -14,7 +15,7 @@ const MapScreen = () => {
   const [loadingData, setDataLoading] = useState(false)
   const [coords, setCoords] = useState(null)
   const [coords2, setCoords2] = useState(null)
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useContext(LocationContext)
   const [userView, setUserView] = useState(0)
 
   const { preferences, dispatch } = usePreferencesContext()
@@ -42,7 +43,7 @@ const MapScreen = () => {
     let isMounted = true;
 
     const fetchUserPreferences = async () => {
-      const response = await fetch('https://design-project-production.up.railway.app/api/preferences', {
+      const response = await fetch('http://10.0.2.2:4000/api/preferences', {
         headers: {'Authorization': `Bearer ${user.token}`}
       })
       const json = await response.json()

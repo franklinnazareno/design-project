@@ -1,12 +1,16 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useContext} from 'react'
+import { LocationContext } from '../context/LocationContext'
 import MapComponent from '../components/MapComponent/MapComponent'
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
 
 const StartNavScreen = ({ route }) => {
-  const { location, results } = route.params
+  const { preference, source, destination } = route.params
+  const [location] = useContext(LocationContext)
+
+
   return (
-    <NavigatingMapComp location={location} results={results} >
+    <NavigatingMapComp preference={preference} source={source} destination={destination} location={location} >
       
     </NavigatingMapComp>
   )

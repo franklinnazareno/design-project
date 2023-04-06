@@ -18,7 +18,7 @@ var deviceWidth = Dimensions.get('window').width;
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2 }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords }) => {
   const navigation = useNavigation();
 
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -157,11 +157,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       }
 
       const { center: sourceCoords } = sourceData.features[0];
+      setSourceCoords(sourceCoords)
       const { center: destCoords } = destinationData.features[0];
+      setDestinationCoords(destCoords)
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const postData = { preferences, sourceCoords, destCoords };
 
-      const response = await fetch('https://flask-production-2a70.up.railway.app/route/', {
+      const response = await fetch('http://10.0.2.2:8888/route/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -274,15 +276,15 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {/* Start your safe nav here */}
                 <View style={styles.beginNav}>
                 
-                {/* <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV, { location: location, results: results })}
-                /> */}
+                <CustomButton primary title='Begin Journey' 
+                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords })}
+                />
 
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
                 <Button title='Start' onPress={() => handleSpeak()}/> */}
 
                   {/* TTS START AND STOP */}
-                  <View style={{flexDirection: 'row', alignSelf:'center', paddingBottom: 10}}>
+                  {/* <View style={{flexDirection: 'row', alignSelf:'center', paddingBottom: 10}}>
                   <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
                     <Text style={styles.safetextBox}>Start</Text>
                   </TouchableOpacity>
@@ -290,7 +292,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
                     <Text style={styles.safetextBox}>Stop</Text>
                   </TouchableOpacity>
-                  </View>
+                  </View> */}
                 </View>
                 
                 <View style={styles.secondView}>
