@@ -18,40 +18,56 @@ var deviceWidth = Dimensions.get('window').width;
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin }) => {
   const navigation = useNavigation();
 
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const toRadians = (degrees) => {
+    return degrees * Math.PI / 180
+  }
 
-  const handleSpeak = () => {
-    let instructions = '';
-    for (let i = 0; i < results.steps.length; i++) {
-      const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
-      instructions += instructionText;
-    }
-    Tts.speak(instructions);
-    setIsSpeaking(true);
-  };
+  const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3
+    const phi1 = toRadians(lat1)
+    const phi2 = toRadians(lat2)
+    const deltaPhi = toRadians(lat2 - lat1)
+    const deltaLambda = toRadians(lon2 - lon1)
 
-  const handlePause = () => {
-    Tts.stop();
-    setIsSpeaking(false);
-  };
+    const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return R * c
+  }
 
-  const handleSpeak2 = () => {
-    let instructions = '';
-    for (let i = 0; i < results2.steps.length; i++) {
-      const instructionText = `${i + 1}. ${results2.steps[i].instruction}. `;
-      instructions += instructionText;
-    }
-    Tts.speak(instructions);
-    setIsSpeaking(true);
-  };
+  // const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const handlePause2 = () => {
-    Tts.stop();
-    setIsSpeaking(false);
-  };
+  // const handleSpeak = () => {
+  //   let instructions = '';
+  //   for (let i = 0; i < results.steps.length; i++) {
+  //     const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
+  //     instructions += instructionText;
+  //   }
+  //   Tts.speak(instructions);
+  //   setIsSpeaking(true);
+  // };
+
+  // const handlePause = () => {
+  //   Tts.stop();
+  //   setIsSpeaking(false);
+  // };
+
+  // const handleSpeak2 = () => {
+  //   let instructions = '';
+  //   for (let i = 0; i < results2.steps.length; i++) {
+  //     const instructionText = `${i + 1}. ${results2.steps[i].instruction}. `;
+  //     instructions += instructionText;
+  //   }
+  //   Tts.speak(instructions);
+  //   setIsSpeaking(true);
+  // };
+
+  // const handlePause2 = () => {
+  //   Tts.stop();
+  //   setIsSpeaking(false);
+  // };
 
 // const MapboxPlacesInput = ({id,placeholder}) => {
 //   return (
@@ -189,6 +205,14 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         handleLoadingData(false)
         setLoading(false);
         setError(null);
+
+        const thresholdDistance = 25
+        const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
+        if (distance <= thresholdDistance) {
+          setBegin(true)
+        } else {
+          setBegin(false)
+        }
         return;
       }
     } catch (error) {
@@ -280,26 +304,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               {/* Safest Progress Detail */}
               <SafeProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
-                <View style={styles.beginNav}>
+                {begin && <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Begin Journey' 
                 onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_safest' })}
-                />
+                /> 
 
-                {/* <Button title='STOP' onPress={() => handlePause()}/>
-                <Button title='Start' onPress={() => handleSpeak()}/> */}
-
-                  {/* TTS START AND STOP */}
-                  {/* <View style={{flexDirection: 'row', alignSelf:'center', paddingBottom: 10}}>
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak()}>
-                    <Text style={styles.safetextBox}>Start</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause()}>
-                    <Text style={styles.safetextBox}>Stop</Text>
-                  </TouchableOpacity>
-                  </View> */}
-                </View>
+                </View>}
                 
                 <View style={styles.secondView}>
                   
@@ -331,20 +342,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
+                {begin && <View style={styles.beginNav}>
+                
                 <CustomButton primary title='Begin Journey' 
                 onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_fastest' })}
-                />
+                /> 
 
-                {/* TTS START AND STOP */}
-                <View style={{flexDirection: 'row', alignSelf:'center', paddingVertical: 10}}>
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handleSpeak2()}>
-                    <Text style={styles.safetextBox}>Start</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.safeBox} onPress={() => handlePause2()}>
-                    <Text style={styles.safetextBox}>Stop</Text>
-                  </TouchableOpacity>
-                  </View>
+                </View>}
 
                 <View style={styles.thirdView}>
                   {results2.steps && (

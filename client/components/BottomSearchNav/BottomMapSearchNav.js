@@ -32,6 +32,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [sourceCoords, setSourceCoords] = useState(null)
   const [destinationCoords, setDestinationCoords] = useState(null)
+  const [begin, setBegin] = useState(false)
   const scrollview = useRef();
 
   const toggleModal = () => {
@@ -55,24 +56,24 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
   }
 
-  // useEffect(() => {
-  //   async function getLocation() {
-  //     if (location) {
-  //       const longitude = location.longitude
-  //       const latitude = location.latitude 
+  useEffect(() => {
+    async function getLocation() {
+      if (location) {
+        const longitude = location.longitude
+        const latitude = location.latitude 
 
-  //       try {
-  //         const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
-  //         const currentLocation = await response.json();
-  //         setSource(currentLocation.features[0].place_name);
-  //       } catch (error) {
-  //         setError(error);
-  //       }
-  //     }
-  //   }
+        try {
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+          const currentLocation = await response.json();
+          setSource(currentLocation.features[0].place_name);
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
 
-  //   getLocation();
-  // }, [location]);
+    getLocation();
+  }, []);
 
 
   return (
@@ -150,7 +151,9 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           destinationCoords={destinationCoords}
           setDestinationCoords={setDestinationCoords}
           sourceCoords={sourceCoords}
-          setSourceCoords={setSourceCoords}>
+          setSourceCoords={setSourceCoords}
+          begin={begin}
+          setBegin={setBegin}>
           </DetailBlock >
 
           </TouchableOpacity>
