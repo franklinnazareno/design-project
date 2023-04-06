@@ -126,7 +126,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
-      setError('An error has occured. Please try again.');
+      setError('An error has occured. Please check your network connection and try again.');
       handleLoadingData(false)
       setLoading(false);
       return;
@@ -283,7 +283,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords })}
+                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_safest' })}
                 />
 
                 {/* <Button title='STOP' onPress={() => handlePause()}/>
@@ -331,9 +331,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
-                {/* <View style={styles.beginNav}>
-                <CustomButton primary title='Begin Journey' onPress={() => navigation.navigate(STARTNAV)}/>
-                </View> */}
+                <CustomButton primary title='Begin Journey' 
+                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_fastest' })}
+                />
 
                 {/* TTS START AND STOP */}
                 <View style={{flexDirection: 'row', alignSelf:'center', paddingVertical: 10}}>

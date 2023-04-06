@@ -11,7 +11,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ preference, source, destination, location }) => {
+const NavigatingMapComp = ({ preference, source, destination, location, option, setLoading }) => {
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -21,6 +21,7 @@ const NavigatingMapComp = ({ preference, source, destination, location }) => {
     })
     const [coords, setCoords] = useState(null)
     const [steps, setSteps] = useState(null)
+    const [error, setError] = useState(null)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -52,47 +53,70 @@ const NavigatingMapComp = ({ preference, source, destination, location }) => {
       const drawCoords = async () => {
         const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
         const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
-        console.log(postData)
 
-        const response = await fetch(`${Config.FLASK}/steps_with_coords_safest/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postData)
-        })
+        let counter = 0;
+        const maxRetries = 25;
 
-        const json = await response.json()
+        while (counter < maxRetries) {
+          try {
+            const response = await fetch(`${Config.FLASK}/${option}/`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+            });
 
-        if (response.ok) {
-          setCoords(json['coordinates'])
-          const stepsJson = json['steps']
-          const stepsTemp = stepsJson.map(step => {
-            return {
-              coordinates: step.coordinates,
-              instruction: step.instruction
+            const json = await response.json();
+
+            if (response.ok) {
+              setCoords(json['coordinates'])
+              const stepsJson = json['steps']
+              const stepsTemp = stepsJson.map(step => {
+                return {
+                  coordinates: step.coordinates,
+                  instruction: step.instruction
+                }
+              })
+              setSteps(stepsTemp)
+              break; // break the while loop if response is okay
             }
-          })
-          setSteps(stepsTemp)
+          } catch (error) {
+            console.log(error)
+            if (counter >= maxRetries) {
+              setError("An error has occurred. Please check your network connection and try again.")
+            } else if (error instanceof TypeError && error.message === 'Network request failed') {
+              await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
+              counter++;
+            } else {
+              setError("An error has occured. Please ensure that you are within Marikina City")
+            }
+          }
         }
-    }
-    drawCoords()
+      };
 
-  }, [location])
+      drawCoords();
+    }, [location]);
 
-  useEffect(() => {
-    if (steps) {
-      const thresholdDistance = 5
+    useEffect(() => {
+      if (steps) {
+        const thresholdDistance = 5
 
-      for (const step of steps) {
-        const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
+        for (const step of steps) {
+          const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
 
-        if (distance <= thresholdDistance) {
-          Tts.speak(step.instruction)
+          if (distance <= thresholdDistance) {
+            Tts.speak(step.instruction)
+          }
         }
       }
-    }
-  })
+    }, [location])
+
+    useEffect(() => {
+      if (coords) {
+        setLoading(false)
+      }
+    }, [coords])
   
     
     return (
@@ -117,7 +141,7 @@ const NavigatingMapComp = ({ preference, source, destination, location }) => {
           {coords && <Polyline
               coordinates={coords}
               strokeWidth={4}
-              strokeColor="#ff0000"
+              strokeColor={option === 'steps_with_coords_safest' ? "#ff0000" : "#0000ff"}
               tappable
             />}
 
