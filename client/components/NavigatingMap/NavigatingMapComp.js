@@ -100,7 +100,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
 
     useEffect(() => {
       if (steps) {
-        const thresholdDistance = 5
+        const thresholdDistance = 12.5
 
         for (const step of steps) {
           const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
@@ -136,6 +136,14 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
             tracksViewChanges={true}>
               <Icon name="my-location" size={30} color="green" />
+            </Marker>}
+          
+          {coords && <Marker 
+            title={"Destination"}
+            coordinate={{latitude: coords[coords.length - 1].latitude, longitude: coords[coords.length - 1].longitude}}
+            tracksViewChanges={true}
+            >
+              <Icon name="location-pin" size={30} color="red" />
             </Marker>}
 
           {coords && <Polyline
