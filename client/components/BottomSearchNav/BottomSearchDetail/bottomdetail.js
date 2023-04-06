@@ -163,7 +163,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const postData = { preferences, sourceCoords, destCoords };
 
-      const response = await fetch('http://10.0.2.2:8888/route/', {
+      const response = await fetch(`${Config.FLASK}/route/`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -192,8 +192,14 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         return;
       }
     } catch (error) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await handleSubmitWithRetry(retryCount - 1);
+      if (error instanceof TypeError && error.message === 'Network request failed') {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await handleSubmitWithRetry(retryCount - 1);
+      } else {
+        handleLoadingData(false)
+        setLoading(false)
+        setError("An error has occurred. Please ensure that the set locations are within Marikina City")
+      }
     }
   }
 
