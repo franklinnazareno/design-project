@@ -20,8 +20,9 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
       longitudeDelta: 0.001
     })
     const [coords, setCoords] = useState(null)
+    const [closestCoord, setClosestCoord] = useState()
     const [steps, setSteps] = useState(null)
-    const [completedSteps, setCompletedSteps] = useState([])
+    const [completedSteps, setCompletedSteps] = useState([coords[0]])
     const [error, setError] = useState(null)
 
     const toRadians = (degrees) => {
@@ -101,6 +102,21 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     }, [location]);
 
     useEffect(() => {
+      let closestCoord = coords[0]
+      let closestDiastance = haversineDistance(location, coords[0])
+
+      for (let i = 1; i < coords.length; i++) {
+        const distance = haversineDistance(location, coords[1])
+        if (distance < closestDiastance) {
+          closestDiastance = distance 
+          closestCoord = coords[i]
+        }
+      }
+
+      setClosestCoord(closestCoord)
+    }, [location])
+
+    useEffect(() => {
       if (steps) {
         const thresholdDistance = 5
 
@@ -152,7 +168,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             </Marker>}
 
           {coords && <Polyline
-              coordinates={coords}
+              coordinates={[location, closestCoord]}
               strokeWidth={4}
               strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}
               tappable
