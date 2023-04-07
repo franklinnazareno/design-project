@@ -19,6 +19,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
       latitudeDelta: 0.001, 
       longitudeDelta: 0.001
     })
+    const [lastLocation, setLastLocation] = useState(null)
     const [coords, setCoords] = useState(null)
     const [steps, setSteps] = useState(null)
     const [completedSteps, setCompletedSteps] = useState([])
@@ -51,54 +52,66 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
         longitudeDelta: 0.001
       })
 
-      const drawCoords = async () => {
-        const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-        const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
+      setLastLocation({ latitude, longitude })
+    }, [location]);
 
-        let counter = 0;
-        const maxRetries = 25;
 
-        while (counter < maxRetries) {
-          try {
-            const response = await fetch(`${Config.FLASK}/${option}/`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(postData)
-            });
+    useEffect(() => {
+      console.log(lastLocation && haversineDistance(location.latitude, location.longitude, lastLocation.latitude, lastLocation.longitude)
+      if (lastLocation && haversineDistance(location.latitude, location.longitude, lastLocation.latitude, lastLocation.longitude) >= 10) {
+        const latitude = location.latitude
+        const longitude = location.longitude
 
-            const json = await response.json();
+        const drawCoords = async () => {
+          const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
+          const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
 
-            if (response.ok) {
-              setCoords(json['coordinates'])
-              const stepsJson = json['steps']
-              const stepsTemp = stepsJson.map(step => {
-                return {
-                  coordinates: step.coordinates,
-                  instruction: step.instruction
-                }
-              })
-              setSteps(stepsTemp)
-              break; // break the while loop if response is okay
-            }
-          } catch (error) {
-            console.log(error)
-            if (counter >= maxRetries) {
-              setError("An error has occurred. Please check your network connection and try again.")
-            } else if (error instanceof TypeError && error.message === 'Network request failed') {
-              await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
-              counter++;
-            } else {
-              setError("An error has occured. Please ensure that you are within Marikina City")
-              break
+          let counter = 0;
+          const maxRetries = 25;
+
+          while (counter < maxRetries) {
+            try {
+              const response = await fetch(`${Config.FLASK}/${option}/`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
+              });
+
+              const json = await response.json();
+
+              if (response.ok) {
+                setCoords(json['coordinates'])
+                const stepsJson = json['steps']
+                const stepsTemp = stepsJson.map(step => {
+                  return {
+                    coordinates: step.coordinates,
+                    instruction: step.instruction
+                  }
+                })
+                setSteps(stepsTemp)
+                break; // break the while loop if response is okay
+              }
+            } catch (error) {
+              console.log(error)
+              if (counter >= maxRetries) {
+                setError("An error has occurred. Please check your network connection and try again.")
+              } else if (error instanceof TypeError && error.message === 'Network request failed') {
+                await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
+                counter++;
+              } else {
+                setError("An error has occured. Please ensure that you are within Marikina City")
+                break
+              }
             }
           }
-        }
-      };
+        };
 
-      drawCoords();
-    }, [location]);
+        drawCoords();
+        setLastLocation({ latitude, longitude })
+      }
+    }, [location, lastLocation]);
 
     useEffect(() => {
       if (steps) {
@@ -123,16 +136,14 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
   
     
     return (
-      
       <MapContainer>
         <MapView.Animated
           initialRegion={region}
           region={region}
           style={styles.Mapsize}
           zoomEnabled
-          // minZoomLevel={16}
           rotateEnabled={false}
-           >
+        >
 
           {location && <Marker 
             title={"Current Location"}
@@ -141,28 +152,32 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
               <Icon name="my-location" size={30} color="green" />
             </Marker>}
           
+          {coords && <Polyline
+            coordinates={coords}
+            strokeWidth={4}
+            strokeColor={option === 'steps_with_coords_safest' ? "#ff0000" : "#0000ff"}
+            tappable
+          />}
+
           {coords && <Marker 
             title={"Destination"}
             coordinate={{latitude: coords[coords.length - 1].latitude, longitude: coords[coords.length - 1].longitude}}
-            tracksViewChanges={true}
-            >
+            tracksViewChanges={true}>
               <Icon name="location-pin" size={30} color="red" />
-            </Marker>}
+          </Marker>}
 
-          {coords && <Polyline
-              coordinates={coords}
-              strokeWidth={4}
-              strokeColor={option === 'steps_with_coords_safest' ? "#ff0000" : "#0000ff"}
-              tappable
-            />}
+          {coords && coords.length > 0 && <Marker
+            title={"Current Position"}
+            coordinate={{latitude: coords[0].latitude, longitude: coords[0].longitude}}
+            anchor={{x: 0.5, y: 0.5}}
+            tracksViewChanges={true}>
+              <Icon name="my-location" size={30} color="green" />
+          </Marker>}
 
         </MapView.Animated>
-        
-        
-        </MapContainer>
-          
-        
+      </MapContainer>
     );
+
 };
 
 export default NavigatingMapComp;
