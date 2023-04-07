@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MapView, {Polyline, Marker, ProviderPropType} from '@splicer97/react-native-osmdroid';
+import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tts from 'react-native-tts';
 import Config from 'react-native-config';
