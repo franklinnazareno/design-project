@@ -100,7 +100,9 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
             tracksViewChanges={true}>
-              <Icon name="my-location" size={30} color="green" />
+                <View style={{ borderRadius: 40, backgroundColor: 'white' }}>
+                    <Icon name="circle" size={20} color="#1E75E8" />
+                </View>
             </Marker>}
 
           {coordsData && <Marker 
@@ -124,13 +126,13 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Polyline
                 coordinates={coordsData}
                 strokeWidth={4}
-                strokeColor="#ff0000"
+                strokeColor="#D93029"
                 tappable
               />
               <Polyline
                 coordinates={coordsData2}
                 strokeWidth={4}
-                strokeColor="#0000ff"
+                strokeColor="#1E75E8"
                 tappable
               />
             </>
@@ -139,7 +141,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             <Polyline
               coordinates={coordsData}
               strokeWidth={4}
-              strokeColor="#ff0000"
+              strokeColor="#D93029"
               tappable
             />
           )}
@@ -147,7 +149,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             <Polyline
               coordinates={coordsData2}
               strokeWidth={4}
-              strokeColor="#0000ff"
+              strokeColor="#1E75E8"
               tappable
             />
           )}
