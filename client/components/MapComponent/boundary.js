@@ -2269,20 +2269,6 @@ const myBoundary =
                     ]
                 ]
             }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "@relations": "[{\"role\":\"label\",\"rel\":146949,\"reltags\":{\"admin_level\":\"6\",\"boundary\":\"administrative\",\"name\":\"Marikina\",\"population\":\"450741\",\"source:population\":\"Philippines 2015 Census\",\"type\":\"boundary\",\"wikidata\":\"Q17175\",\"wikipedia\":\"en:Marikina\"}}]",
-                "@id": "node/198518477"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    121.09935410000,
-                    14.63310840000
-                ]
-            }
         }
     ]
 }
