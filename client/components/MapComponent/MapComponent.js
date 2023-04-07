@@ -2,12 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
+import MapView, {Polyline, Marker, ProviderPropType, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import BottomNavComp from '../BottomSearchNav/BottomMapSearchNav';
 import { Button } from 'react-native-paper';
+import myBoundary from './boundary';
 
 // import MapSearchComp from '../MapSearch/MapSearchComp';
 
@@ -95,7 +96,11 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           // minZoomLevel={16}
           rotateEnabled={false}
            >
-
+          <Geojson
+            geojson={myBoundary}
+            strokeColor="red"
+            strokeWidth={2}/>
+            
             {location && <Marker 
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
