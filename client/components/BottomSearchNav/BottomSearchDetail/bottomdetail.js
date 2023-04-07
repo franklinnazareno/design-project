@@ -131,9 +131,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         const latitude = location.latitude 
 
         try {
-          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`);
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
           const currentLocation = await response.json();
-          setSource(currentLocation.features[0].place_name);
+          setSource(currentLocation.results[0].formatted_address);
         } catch (error) {
           setError(error);
         }
@@ -153,8 +153,8 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
     try {
       const [sourceResponse, destinationResponse] = await Promise.all([
-              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(source)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`),
-              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(destination)}.json?access_token=${Config.MAPBOX_PUBLIC_TOKEN}`)
+              fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(source)}&key=${Config.GOOGLE_MAPS_API_KEY}`),
+              fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destination)}&key=${Config.GOOGLE_MAPS_API_KEY}`)
           ]);
 
       const sourceData = await sourceResponse.json();
@@ -166,18 +166,19 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           handleLoadingData(false)
       }
 
-      if (sourceData.features.length === 0 || destinationData.features.length === 0) {
+      if (sourceData.results.length === 0 || destinationData.results.length === 0) {
           setError("Unable to find the current location. Try another search.");
           setLoading(false)
           handleLoadingData(false)
       }
 
-      const { center: sourceCoords } = sourceData.features[0];
+      const sourceCoords = [sourceData.results[0].geometry.location.lng, sourceData.results[0].geometry.location.lat]
       setSourceCoords(sourceCoords)
-      const { center: destCoords } = destinationData.features[0];
+      const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
       setDestinationCoords(destCoords)
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const postData = { preferences, sourceCoords, destCoords };
+      console.log(postData)
 
       const response = await fetch(`${Config.FLASK}/route/`, {
           method: 'POST',
