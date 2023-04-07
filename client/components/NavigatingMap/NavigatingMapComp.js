@@ -57,7 +57,6 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
 
 
     useEffect(() => {
-      console.log(lastLocation && haversineDistance(location.latitude, location.longitude, lastLocation.latitude, lastLocation.longitude)
       if (lastLocation && haversineDistance(location.latitude, location.longitude, lastLocation.latitude, lastLocation.longitude) >= 10) {
         const latitude = location.latitude
         const longitude = location.longitude
