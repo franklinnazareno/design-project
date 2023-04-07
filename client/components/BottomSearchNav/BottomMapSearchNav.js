@@ -33,6 +33,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [sourceCoords, setSourceCoords] = useState(null)
   const [destinationCoords, setDestinationCoords] = useState(null)
   const [begin, setBegin] = useState(false)
+  const [swapped, setSwapped] = useState(false)
   const scrollview = useRef();
 
   const toggleModal = () => {
@@ -153,7 +154,9 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           sourceCoords={sourceCoords}
           setSourceCoords={setSourceCoords}
           begin={begin}
-          setBegin={setBegin}>
+          setBegin={setBegin}
+          swapped={swapped}
+          setSwapped={setSwapped}>
           </DetailBlock >
 
           </TouchableOpacity>
