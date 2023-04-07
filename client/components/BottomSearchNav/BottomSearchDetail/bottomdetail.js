@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
-
+import Toast from 'react-native-toast-message';
 import MapBoxPlacesAutocomplete from "react-native-mapbox-places-autocomplete";
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
@@ -224,7 +224,18 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       } else {
         handleLoadingData(false)
         setLoading(false)
-        setError("An error has occurred. Please ensure that the set locations are within Marikina City")
+        setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
+        Toast.show({
+          type: 'error',
+          text1: 'An error has occurred',
+          text2:'Please ensure that the set locations are within Marikina City',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 90,
+          bottomOffset:300,
+          onHide: () => setError(''),
+          
+        });
       }
     }
   }
@@ -289,9 +300,10 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               <View style={styles.boxloader}>
 
               <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
-              
+              {/* {error && <Text style={styles.error}>{error}</Text>}  */}
+              <Toast ref={(ref) => Toast.setRef(ref)}  />
       
-              {error && <Text style={styles.error}>{error}</Text>} 
+              
               
               
               </View>
