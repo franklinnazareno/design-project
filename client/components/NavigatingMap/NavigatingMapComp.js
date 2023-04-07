@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
@@ -21,8 +21,10 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     })
     const [coords, setCoords] = useState(null)
     const [steps, setSteps] = useState(null)
-    const [completedSteps, setCompletedSteps] = useState([])
+    const [completedSteps, setCompletedSteps] = useState([coords[0]])
     const [error, setError] = useState(null)
+
+    const polylineRef = useRef(null)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -101,6 +103,14 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     }, [location]);
 
     useEffect(() => {
+      if (polylineRef.current) {
+        polylineRef.current.setNativeProps({
+          coordinates: [location, ...coords],
+        })
+      }
+    }, [location, coords])
+
+    useEffect(() => {
       if (steps) {
         const thresholdDistance = 5
 
@@ -138,7 +148,9 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
             tracksViewChanges={true}>
-              <Icon name="my-location" size={30} color="green" />
+              <View style={{ borderRadius: 40, backgroundColor: 'white' }}>
+                    <Icon name="circle" size={20} color="#1E75E8" />
+                </View>
             </Marker>}
           
           {coords && <Marker 
@@ -150,9 +162,10 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             </Marker>}
 
           {coords && <Polyline
+              ref={polylineRef}
               coordinates={coords}
               strokeWidth={4}
-              strokeColor={option === 'steps_with_coords_safest' ? "#ff0000" : "#0000ff"}
+              strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}
               tappable
             />}
 
