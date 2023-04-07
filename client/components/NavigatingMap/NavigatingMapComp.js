@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
@@ -20,10 +20,11 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
       longitudeDelta: 0.001
     })
     const [coords, setCoords] = useState(null)
-    const [closestCoord, setClosestCoord] = useState()
     const [steps, setSteps] = useState(null)
     const [completedSteps, setCompletedSteps] = useState([coords[0]])
     const [error, setError] = useState(null)
+
+    const polylineRef = useRef(null)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -102,19 +103,12 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     }, [location]);
 
     useEffect(() => {
-      let closestCoord = coords[0]
-      let closestDiastance = haversineDistance(location, coords[0])
-
-      for (let i = 1; i < coords.length; i++) {
-        const distance = haversineDistance(location, coords[1])
-        if (distance < closestDiastance) {
-          closestDiastance = distance 
-          closestCoord = coords[i]
-        }
+      if (polylineRef.current) {
+        polylineRef.current.setNativeProps({
+          coordinates: [location, ...coords],
+        })
       }
-
-      setClosestCoord(closestCoord)
-    }, [location])
+    }, [location, coords])
 
     useEffect(() => {
       if (steps) {
@@ -168,7 +162,8 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             </Marker>}
 
           {coords && <Polyline
-              coordinates={[location, closestCoord]}
+              ref={polylineRef}
+              coordinates={coords}
               strokeWidth={4}
               strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}
               tappable
