@@ -21,6 +21,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     })
     const [coords, setCoords] = useState(null)
     const [steps, setSteps] = useState(null)
+    const [completedSteps, setCompletedSteps] = useState([])
     const [error, setError] = useState(null)
 
     const toRadians = (degrees) => {
@@ -90,6 +91,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
               counter++;
             } else {
               setError("An error has occured. Please ensure that you are within Marikina City")
+              break
             }
           }
         }
@@ -100,13 +102,14 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
 
     useEffect(() => {
       if (steps) {
-        const thresholdDistance = 12.5
+        const thresholdDistance = 5
 
         for (const step of steps) {
           const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
 
-          if (distance <= thresholdDistance) {
+          if (distance <= thresholdDistance && !completedSteps.includes(step)) {
             Tts.speak(step.instruction)
+            setCompletedSteps(prev => [...prev, step]);
           }
         }
       }

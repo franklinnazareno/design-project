@@ -206,7 +206,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         setLoading(false);
         setError(null);
 
-        const thresholdDistance = 25
+        const thresholdDistance = 50
         const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
         if (distance <= thresholdDistance) {
           setBegin(true)
