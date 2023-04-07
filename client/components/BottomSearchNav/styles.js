@@ -70,12 +70,12 @@ export default ScaledSheet.create ({
         height: '30@s',
         width:'300@s',
         backgroundColor:colors.primary,
-        //marginTop:'-400@s',
-        position: 'absolute',
-                  top: '-790@s',
-                  left: '27@s',
-                  right: 0,
-                  bottom: 0,
+        marginTop:'-790@s',
+        // position: 'absolute',
+        //           top: '-790@s',
+        //           left: '27@s',
+        //           right: 0,
+        //           bottom: 0,
         
         
       },

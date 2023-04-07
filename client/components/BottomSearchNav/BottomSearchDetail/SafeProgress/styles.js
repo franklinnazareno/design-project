@@ -75,7 +75,7 @@ export default ScaledSheet.create ({
   
   progressBox:{
     height:'200@s',
-    width:deviceWidth,
+    width:'350@s',
     backgroundColor: colors.white,
     borderRadius: '10@s',
     alignSelf:'center',
@@ -128,5 +128,12 @@ export default ScaledSheet.create ({
     alignItems:'center',
     flexDirection:'row',
     marginLeft:'20@s',
+  },
+  modalContent:{
+    backgroundColor: '#fff', 
+    borderRadius: '10@s', 
+    padding: '20@s', 
+    height: '150@s', 
+    elevation:'10@s'
   }
 });
