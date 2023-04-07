@@ -12,7 +12,7 @@ const SideMenu = ({navigation}) => {
 
     const menuItems=[
 
-        {
+            {
             icons:<MaterialCommunityIcons  padding={10} size={25} name="map-search"/>,
             name: 'Map',
             onPress: () => {

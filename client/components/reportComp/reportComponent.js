@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {launchImageLibrary} from 'react-native-image-picker';
 import Config from 'react-native-config';
