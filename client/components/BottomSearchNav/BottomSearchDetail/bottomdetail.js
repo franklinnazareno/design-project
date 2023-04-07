@@ -18,7 +18,7 @@ var deviceWidth = Dimensions.get('window').width;
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -199,6 +199,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       if (response.ok) {
         setResults(json['optimized_route']);
         setResults2(json['shortest_route'])
+        setSwapped(json['swap'])
         handleCoordsData(json['optimized_route']['coordinates']);
         handleCoordsData2(json['shortest_route']['coordinates'])
         handleSafestCoverage(json['optimized_route']['coverage'])
@@ -308,7 +309,12 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {begin && <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_safest' })}
+                onPress={() => navigation.navigate(STARTNAV, {
+                  preference: preference,
+                  source: sourceCoords,
+                  destination: destinationCoords,
+                  option: swapped ? 'steps_with_coords_fastest' : 'steps_with_coords_safest'
+                })}
                 /> 
 
                 </View>}
@@ -346,7 +352,12 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {begin && <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Begin Journey' 
-                onPress={() => navigation.navigate(STARTNAV, { preference: preference, source: sourceCoords, destination: destinationCoords, option: 'steps_with_coords_fastest' })}
+                onPress={() => navigation.navigate(STARTNAV, {
+                  preference: preference,
+                  source: sourceCoords,
+                  destination: destinationCoords,
+                  option: swapped ? 'steps_with_coords_safest' : 'steps_with_coords_fastest'
+                })}
                 /> 
 
                 </View>}
