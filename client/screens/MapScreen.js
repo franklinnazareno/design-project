@@ -68,7 +68,7 @@ const MapScreen = () => {
       },
       {
         enableHighAccuracy: true,
-        distanceFilter: 10, // update location every meter inputted
+        distanceFilter: 5, // update location every meter inputted
       }
     );
 
