@@ -138,7 +138,9 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
             tracksViewChanges={true}>
-              <Icon name="my-location" size={30} color="green" />
+              <View style={{ borderRadius: 40, backgroundColor: 'white' }}>
+                    <Icon name="circle" size={20} color="#1E75E8" />
+                </View>
             </Marker>}
           
           {coords && <Marker 
@@ -152,7 +154,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
           {coords && <Polyline
               coordinates={coords}
               strokeWidth={4}
-              strokeColor={option === 'steps_with_coords_safest' ? "#ff0000" : "#0000ff"}
+              strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}
               tappable
             />}
 
