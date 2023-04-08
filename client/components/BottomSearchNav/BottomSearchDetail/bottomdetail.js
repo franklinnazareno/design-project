@@ -231,7 +231,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           text2:'Please ensure that the set locations are within Marikina City',
           visibilityTime: 3000,
           autoHide: true,
-          topOffset: 90,
+          topOffset: 250,
           bottomOffset:300,
           onHide: () => setError(''),
           
@@ -301,19 +301,24 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
               <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
               {/* {error && <Text style={styles.error}>{error}</Text>}  */}
-              <Toast ref={(ref) => Toast.setRef(ref)}  />
+              
       
               
               
               
               </View>
-              
+              <Toast ref={(ref) => Toast.setRef(ref)}  />
           </View>
 
           {/* Safest Path Instruction */}
           {results && (
             <ScrollView >
               <TouchableOpacity activeOpacity={1}>
+
+                {/* Label */}
+                <View style={styles.labelbox}>
+                <Text style={styles.labeltext}>Best Path</Text>
+                </View> 
 
               {/* Safest Progress Detail */}
               <SafeProgressComp safestCoverage={safestCoverage} />
@@ -356,6 +361,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             
             <ScrollView >
               <TouchableOpacity activeOpacity={1} >
+
+                {/* Label */}
+                <View style={styles.labelbox}>
+                <Text style={styles.labeltext}>Alternative Path</Text>
+                </View>
 
                 {/* Fastest Progress Detail */}
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
