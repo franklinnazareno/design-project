@@ -21,7 +21,8 @@ export default styles = ScaledSheet.create({
     },
 
     signupLink: {
-        paddingLeft:'5@s',
+        marginTop:'2@s',
+        paddingLeft:'6@s',
         color:colors.blue,
         width:'140@s',
         alignSelf:'auto',
