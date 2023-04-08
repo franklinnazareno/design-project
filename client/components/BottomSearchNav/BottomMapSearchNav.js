@@ -205,14 +205,14 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
               onPress={() => handlePress(1)}
               style={styles.safeBox}
             >
-              <Text style={styles.safetextBox}>Path 1</Text>
+              <Text style={styles.safetextBox}>Best</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={() => handlePress(2)}
               style={styles.safeBox}
             >
-              <Text style={styles.safetextBox}>Path 2</Text>
+              <Text style={styles.safetextBox}>Other</Text>
             </TouchableOpacity>
           </View>
         )}

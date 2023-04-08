@@ -227,7 +227,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
         Toast.show({
           type: 'error',
-          text1: 'An error has occurred',
+          text1: 'An error has occurred.',
           text2:'Please ensure that the set locations are within Marikina City',
           visibilityTime: 3000,
           autoHide: true,
@@ -320,7 +320,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
                 
-                <CustomButton primary title='Begin Journey' 
+                <CustomButton primary title='Start Navigation' 
                 onPress={() => navigation.navigate(STARTNAV, {
                   preference: preference,
                   source: sourceCoords,
@@ -363,7 +363,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 {/* Start your FAST nav here */}
                 {begin && <View style={styles.beginNav}>
                 
-                <CustomButton primary title='Begin Journey' 
+                <CustomButton primary title='Start Navigation' 
                 onPress={() => navigation.navigate(STARTNAV, {
                   preference: preference,
                   source: sourceCoords,

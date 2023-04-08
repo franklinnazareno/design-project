@@ -31,8 +31,8 @@ export default ScaledSheet.create({
     saveButton: {
         backgroundColor: colors.primary,
         borderRadius: '5@s',
-        width:'80@s',
-        padding: '5@s',
+        width:'90@s',
+        padding: '10@s',
         margin: '5@s',
         alignSelf: 'center',
     },
@@ -45,5 +45,8 @@ export default ScaledSheet.create({
     color: 'green',
     fontSize: '16@s',
     alignSelf:'center'
+    },
+    Imageupload: {
+        marginBottom: '8@s'
     }
 });
