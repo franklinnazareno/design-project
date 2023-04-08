@@ -150,7 +150,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               tappable
             />
           )}
-          {userView === 2 && coordsData2 && (
+          {userView === 2 && coordsData2  && (
             <Polyline
               coordinates={coordsData2}
               strokeWidth={4}

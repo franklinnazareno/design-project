@@ -192,30 +192,32 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           {/* <Button title="yes" 
           onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}></Button> */}
         </View>
-        {results !== null && error === null && (
-          <View style={styles.safest}>
-            <TouchableOpacity 
-              onPress={() => handlePress(0)}
-              style={styles.safeBox}
-            >
-              <Text style={styles.safetextBox}>Home</Text>
-            </TouchableOpacity>
+         {results !== null && error === null && (
+        <View style={styles.safest}>
+          <TouchableOpacity 
+            onPress={() => handlePress(0)}
+            style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Home</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity 
-              onPress={() => handlePress(1)}
-              style={styles.safeBox}
-            >
-              <Text style={styles.safetextBox}>Best</Text>
-            </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={() => handlePress(1)}
+            style={styles.safeBox}
+          >
+            <Text style={styles.safetextBox}>Best</Text>
+          </TouchableOpacity>
 
+          {Object.keys(results2).length !== 0 && (
             <TouchableOpacity 
               onPress={() => handlePress(2)}
               style={styles.safeBox}
             >
               <Text style={styles.safetextBox}>Other</Text>
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+        </View>
+      )}
 
       </Modal> 
       

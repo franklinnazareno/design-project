@@ -21,7 +21,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
     })
     const [coords, setCoords] = useState(null)
     const [steps, setSteps] = useState(null)
-    const [completedSteps, setCompletedSteps] = useState([coords[0]])
+    const [completedSteps, setCompletedSteps] = useState([])
     const [error, setError] = useState(null)
 
     const polylineRef = useRef(null)
