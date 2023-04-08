@@ -193,12 +193,23 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       if (!response.ok) {
           handleLoadingData(false)
           setLoading(false);
-          setError(json.error);
+          Toast.show({
+            type: 'error',
+            text1: 'An error has occured.',
+            text2: json[msg],
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 250,
+            bottomOffset:300,
+            onHide: () => setError(''),
+          });
           return;
       }
       if (response.ok) {
         setResults(json['optimized_route']);
+        console.log(results)
         setResults2(json['shortest_route'])
+        console.log(results2)
         setSwapped(json['swap'])
         handleCoordsData(json['optimized_route']['coordinates']);
         handleCoordsData2(json['shortest_route']['coordinates'])
@@ -224,11 +235,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       } else {
         handleLoadingData(false)
         setLoading(false)
-        setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
+        // setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
         Toast.show({
           type: 'error',
-          text1: 'An error has occurred.',
-          text2:'Please ensure that the set locations are within Marikina City',
+          text1: 'A server error has occurred.',
+          text2:'Please try again later.',
           visibilityTime: 3000,
           autoHide: true,
           topOffset: 250,
@@ -357,7 +368,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
           {/* Optimal Path Instruction */}
-          {results2 && Object.keys(results2).length !== 0 && (
+          {results2 && (
             
             <ScrollView >
               <TouchableOpacity activeOpacity={1} >

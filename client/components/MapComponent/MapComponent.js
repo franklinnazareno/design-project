@@ -126,7 +126,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
           
-          {userView === 0 && coordsData && coordsData2 && (
+          {userView === 0 && coordsData && (
             <>
               <Polyline
                 coordinates={coordsData}
@@ -134,12 +134,12 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
                 strokeColor="#D93029"
                 tappable
               />
-              <Polyline
+              {coordsData2 && <Polyline
                 coordinates={coordsData2}
                 strokeWidth={4}
                 strokeColor="#1E75E8"
                 tappable
-              />
+              />}
             </>
           )}
           {userView === 1 && coordsData && (
@@ -150,7 +150,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               tappable
             />
           )}
-          {userView === 2 && coordsData2  && (
+          {userView === 2 && coordsData2 && (
             <Polyline
               coordinates={coordsData2}
               strokeWidth={4}
