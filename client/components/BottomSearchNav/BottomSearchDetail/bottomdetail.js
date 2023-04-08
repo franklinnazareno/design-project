@@ -357,7 +357,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
           {/* Optimal Path Instruction */}
-          {results2 && (
+          {results2 && Object.keys(results2).length !== 0 && (
             
             <ScrollView >
               <TouchableOpacity activeOpacity={1} >
