@@ -207,9 +207,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       }
       if (response.ok) {
         setResults(json['optimized_route']);
-        console.log(results)
         setResults2(json['shortest_route'])
-        console.log(results2)
         setSwapped(json['swap'])
         handleCoordsData(json['optimized_route']['coordinates']);
         handleCoordsData2(json['shortest_route']['coordinates'])
