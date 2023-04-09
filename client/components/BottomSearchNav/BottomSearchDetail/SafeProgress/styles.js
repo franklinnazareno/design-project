@@ -107,6 +107,7 @@ export default ScaledSheet.create ({
     marginTop: '-15@s',
     flexDirection:'row', 
     alignItems:'center'
+    
   },
   progresspadding:{
     paddingVertical: '3@s',
@@ -127,7 +128,8 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    marginLeft:'20@s',
+    paddingHorizontal: '9@s'
+    
   },
   modalContent:{
     backgroundColor: '#fff', 

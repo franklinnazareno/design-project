@@ -33,7 +33,7 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '310@s',
+        minHeight: '375@s',
         paddingBottom: '1@s',
         
         

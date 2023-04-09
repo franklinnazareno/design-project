@@ -116,7 +116,7 @@ const OptimalProgressComp = ({ fastestCoverage }) => {
           <View style={styles.progresspadding}>
           <TouchableOpacity onPress={showModal3}>
             <SmallCustomCircularProgress
-              title='Lighting'
+              title='Well-lit Areas'
               value={fastestCoverage.lighting}
               progressValueColor={colors.primary}  
               radius={35}

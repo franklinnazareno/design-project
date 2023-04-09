@@ -117,7 +117,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
           <View style={styles.progresspadding}>
           <TouchableOpacity onPress={showModal3}>
             <SmallCustomCircularProgress
-              title='Lighting'
+              title='Well-lit Areas'
               value={safestCoverage.lighting}
               progressValueColor={colors.primary}  
               radius={35}
