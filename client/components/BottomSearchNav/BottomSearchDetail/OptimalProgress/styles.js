@@ -128,7 +128,7 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    marginLeft:'20@s',
+    paddingHorizontal: '9@s'
   },
   modalContent:{
     backgroundColor: '#fff', 
