@@ -208,7 +208,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
             <Text style={styles.safetextBox}>Best</Text>
           </TouchableOpacity>
 
-          {results2 && (
+          {results2 !== null && Object.keys(results2).length > 0 && (
             <TouchableOpacity 
               onPress={() => handlePress(2)}
               style={styles.safeBox}
