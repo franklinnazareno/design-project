@@ -155,7 +155,7 @@ const ReportComponent = ({ location }) => {
         />
         </View>
 
-        <View style={styles.ImageUpload}>
+        <View style={styles.Imageupload}>
         <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
         <Text style={styles.saveButtonText}>Upload Image</Text>
         </TouchableOpacity>

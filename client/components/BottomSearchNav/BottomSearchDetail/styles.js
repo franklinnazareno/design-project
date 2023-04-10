@@ -143,5 +143,18 @@ export default ScaledSheet.create ({
     alignSelf:'center'
 
   },
+  labelbox:{
+    height:'40@s',
+    borderRadius:'10@s', 
+    backgroundColor:colors.white, 
+    marginTop:'1@s', 
+    alignItems:'center'
+  },
+  labeltext: {
+    padding: '2@s', 
+    fontWeight:'bold', 
+    fontSize: '25@s',
+    color: colors.primary
+  }
 
 });

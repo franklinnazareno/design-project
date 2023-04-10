@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
-
+import Toast from 'react-native-toast-message';
 import MapBoxPlacesAutocomplete from "react-native-mapbox-places-autocomplete";
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
@@ -193,7 +193,16 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       if (!response.ok) {
           handleLoadingData(false)
           setLoading(false);
-          setError(json.error);
+          Toast.show({
+            type: 'error',
+            text1: 'An error has occured.',
+            text2: json[msg],
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 250,
+            bottomOffset:300,
+            onHide: () => setError(''),
+          });
           return;
       }
       if (response.ok) {
@@ -224,7 +233,18 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       } else {
         handleLoadingData(false)
         setLoading(false)
-        setError("An error has occurred. Please ensure that the set locations are within Marikina City")
+        // setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
+        Toast.show({
+          type: 'error',
+          text1: 'A server error has occurred.',
+          text2:'Please try again later.',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 250,
+          bottomOffset:300,
+          onHide: () => setError(''),
+          
+        });
       }
     }
   }
@@ -289,13 +309,14 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               <View style={styles.boxloader}>
 
               <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
+              {/* {error && <Text style={styles.error}>{error}</Text>}  */}
               
       
-              {error && <Text style={styles.error}>{error}</Text>} 
+              
               
               
               </View>
-              
+              <Toast ref={(ref) => Toast.setRef(ref)}  />
           </View>
 
           {/* Safest Path Instruction */}
@@ -303,12 +324,17 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             <ScrollView >
               <TouchableOpacity activeOpacity={1}>
 
+                {/* Label */}
+                <View style={styles.labelbox}>
+                <Text style={styles.labeltext}>Best Path</Text>
+                </View> 
+
               {/* Safest Progress Detail */}
               <SafeProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
                 
-                <CustomButton primary title='Begin Journey' 
+                <CustomButton primary title='Start Navigation' 
                 onPress={() => navigation.navigate(STARTNAV, {
                   preference: preference,
                   source: sourceCoords,
@@ -345,13 +371,18 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             <ScrollView >
               <TouchableOpacity activeOpacity={1} >
 
+                {/* Label */}
+                <View style={styles.labelbox}>
+                <Text style={styles.labeltext}>Alternative Path</Text>
+                </View>
+
                 {/* Fastest Progress Detail */}
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
                 {begin && <View style={styles.beginNav}>
                 
-                <CustomButton primary title='Begin Journey' 
+                <CustomButton primary title='Start Navigation' 
                 onPress={() => navigation.navigate(STARTNAV, {
                   preference: preference,
                   source: sourceCoords,

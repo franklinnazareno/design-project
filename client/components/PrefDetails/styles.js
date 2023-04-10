@@ -13,7 +13,7 @@ export default ScaledSheet.create ({
     preferenceDetails: {
         backgroundColor: colors.white,
         padding: '5@s',
-        marginTop:'5@s',
+        marginTop:'20@s',
         marginBottom: '1@s',
         borderRadius: '10@s',
         height:'500@s',
