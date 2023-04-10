@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import MapBoxPlacesAutocomplete from "react-native-mapbox-places-autocomplete";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../CustomButton';
 import Input from '../../inputs';
@@ -15,6 +15,7 @@ import SafeProgressComp from './SafeProgress/safeProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 
 var deviceWidth = Dimensions.get('window').width;
+navigator.geolocation = require('@react-native-community/geolocation');
 
 import Tts from 'react-native-tts';
 
@@ -69,62 +70,83 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
   //   setIsSpeaking(false);
   // };
 
-// const MapboxPlacesInput = ({id,placeholder}) => {
-//   return (
-//     <MapBoxPlacesAutocomplete
-//       id={id}
-//       placeholder={placeholder}
-//       accessToken={Config.MAPBOX_PUBLIC_TOKEN} // MAPBOX_PUBLIC_TOKEN is stored in .env root project folder
-//       onPlaceSelect={(data) => {
-//         if (id == "source"){
-//           setSource(data.place_name)
-//           console.log(data.place_name)
-//           console.log("Source set")
-//           value={source}
-//         } else {
-//           setDestination(data.place_name)
-//           console.log(data.place_name)
-//           console.log("Dest set")
-//           value={destination}
-//         }
-//       }}
-//       onClearInput={({ id }) => {
-//         console.log("cleared")
-//         if (id == "source"){
-//           if (id == "source"){
-//             setSource("")
-//           } else {
-//             setDestination("")
-//           }
-//         }
-//       }}
-//       countryId="ph"
-//       //style={{ backgroundColor: 'red', borderRadius: 8, borderWidth: 1, borderColor: '#ccc', padding: 10 }}
-//       containerStyle={{
-//         width: '100%',
-//         margin: 30,
-//         alignSelf: 'center',
-//         backgroundColor: 'red',
-//       }}
-//       inputStyle={{ 
-//       zIndex:9999,
-//       height: 50, // adjust the height value as needed
-//       backgroundColor: 'white',
-//       borderRadius: 8,
-//       borderWidth: 1,
-//       borderColor: '#ccc',
-//       paddingLeft: 10,
-//       paddingRight: 10,
-//       fontSize: 16,
-//       color: '#333',
-//       marginTop: 20,
-//       }}
+  const GooglePlacesInputSource = () => {
+    const ref = useRef();
 
-    
-//     />
-//   );
-// }; 
+    useEffect(() => {
+      ref.current?.setAddressText(source)
+    }, [source]);
 
+    return (
+      <GooglePlacesAutocomplete
+        ref={ref}
+        placeholder="Source"
+        onPress={(data, details = null) => {
+          setSourceCoords([details.geometry.location.lng, details.geometry.location.lat]); 
+          console.log("Source:", [details.geometry.location.lng, details.geometry.location.lat])
+          setSource(details.name)
+          console.log(details.name)
+        }}
+        query={{key: Config.GOOGLE_MAPS_API_KEY}}
+        fetchDetails={true}
+        onFail={error => console.log(error)}
+        onNotFound={() => console.log('no results')}
+        currentLocation={true}
+        currentLocationLabel='Current location'
+        styles={{
+          container: {
+            flex: 0,
+            paddingVertical: 20
+          },
+          description: {
+            color: '#000',
+            fontSize: 16,
+          },
+          predefinedPlacesDescription: {
+            color: '#3caf50',
+          },
+        }}
+      />
+    );
+  };
+  const GooglePlacesInputDestination = () => {
+    const ref = useRef();
+
+    useEffect(() => {
+      ref.current?.setAddressText(destination)
+    }, [destination]);
+
+    return (
+      <GooglePlacesAutocomplete
+        ref={ref}
+        placeholder="Destination"
+        onPress={(data, details = null) => {
+          setDestinationCoords([details.geometry.location.lng, details.geometry.location.lat])
+          console.log("Destination:", [details.geometry.location.lng, details.geometry.location.lat])
+          setDestination(details.name)
+          console.log(details.name)
+        }}
+        value={destination}
+        query={{key: Config.GOOGLE_MAPS_API_KEY}}
+        fetchDetails={true}
+        onFail={error => console.log(error)}
+        onNotFound={() => console.log('no results')}
+        styles={{
+          container: {
+            flex: 0,
+            paddingVertical: 20
+          },
+          description: {
+            color: '#000',
+            fontSize: 16,
+          },
+          predefinedPlacesDescription: {
+            color: '#3caf50',
+          },
+        }}
+      />
+    );
+  };
   const handleLocation = async () => {
     if (location) {
         const longitude = location.longitude
@@ -152,31 +174,32 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
     try {
-      const [sourceResponse, destinationResponse] = await Promise.all([
-              fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(source)}&key=${Config.GOOGLE_MAPS_API_KEY}`),
-              fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destination)}&key=${Config.GOOGLE_MAPS_API_KEY}`)
-          ]);
+      // const [sourceResponse, destinationResponse] = await Promise.all([
+      //         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(source)}&key=${Config.GOOGLE_MAPS_API_KEY}`),
+      //         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destination)}&key=${Config.GOOGLE_MAPS_API_KEY}`)
+      //     ]);
 
-      const sourceData = await sourceResponse.json();
-      const destinationData = await destinationResponse.json();
+      // const sourceData = await sourceResponse.json();
+      // const destinationData = await destinationResponse.json();
 
-      if (!sourceResponse.ok || !destinationResponse.ok) {
-          setError("Unable to connect to location services.");
-          setLoading(false)
-          handleLoadingData(false)
-      }
+      // if (!sourceResponse.ok || !destinationResponse.ok) {
+      //     setError("Unable to connect to location services.");
+      //     setLoading(false)
+      //     handleLoadingData(false)
+      // }
 
-      if (sourceData.results.length === 0 || destinationData.results.length === 0) {
-          setError("Unable to find the current location. Try another search.");
-          setLoading(false)
-          handleLoadingData(false)
-      }
+      // if (sourceData.results.length === 0 || destinationData.results.length === 0) {
+      //     setError("Unable to find the current location. Try another search.");
+      //     setLoading(false)
+      //     handleLoadingData(false)
+      // }
 
-      const sourceCoords = [sourceData.results[0].geometry.location.lng, sourceData.results[0].geometry.location.lat]
-      setSourceCoords(sourceCoords)
-      const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
-      setDestinationCoords(destCoords)
+      // const sourceCoords = [sourceData.results[0].geometry.location.lng, sourceData.results[0].geometry.location.lat]
+      // setSourceCoords(sourceCoords)
+      // const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
+      // setDestinationCoords(destCoords)
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
+      const destCoords = destinationCoords
       const postData = { preferences, sourceCoords, destCoords };
       console.log(postData)
 
@@ -270,7 +293,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           <View style={styles.firstView}>
           
           <View style={styles.Current}>
-              <Input
+              {/* <Input
               label="Source"
               placeholder='Location'
 
@@ -280,28 +303,17 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 iconPosition='right'
 
               onChangeText={(text) => setSource(text)}
-              value={source} />
-              {/* <MapboxPlacesInput
-                id="source"
-                placeholder="Source"
-                
-                /> */}
-              {/* <TouchableOpacity onPress={handleLocation} >
-                <MaterialCommunityIcons name = 'location' size={25}></MaterialCommunityIcons>
-              </TouchableOpacity> */}
+              value={source} /> */}
+              <GooglePlacesInputSource/>
               </View>
 
               <View style={styles.Destination}>
-              <Input
+              <GooglePlacesInputDestination/>
+              {/* <Input
               label="Destination"
               placeholder='Destination'
               onChangeText={(text) => setDestination(text)}
-              value={destination} />
-              {/* <MapboxPlacesInput
-                id="destination"
-                placeholder="Destination"
-                
-                /> */}
+              value={destination} /> */}
               </View>
 
               {/* Custom Button OnPress does not work use touchableopacity */}
