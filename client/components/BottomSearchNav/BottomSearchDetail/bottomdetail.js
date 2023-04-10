@@ -87,7 +87,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           setSource(details.name)
           console.log(details.name)
         }}
-        query={{key: Config.GOOGLE_MAPS_API_KEY}}
+        query={{key: Config.GOOGLE_MAPS_API_KEY, 
+                language: 'en',
+                location: '14.6507, 121.1029', //location bias of results
+                radius: '8000',
+                components: 'country:ph',}}
         fetchDetails={true}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
@@ -106,6 +110,60 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           predefinedPlacesDescription: {
             color: '#3caf50',
           },
+        }}
+        renderRow={(rowData) => {
+          if (rowData.isCurrentLocation == true){
+            return(
+              <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker-account" size={30} style={{marginRight: 8}}/>
+              <View>
+                <Text>Current Location</Text>
+              </View>
+              </View>
+            );
+          }
+          if (rowData.business_status) {
+            return(
+              <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+              <View>
+                <Text>{rowData.name}</Text>
+              </View>
+              </View>
+            )
+          }
+          const title = rowData.structured_formatting.main_text;
+          const address = rowData.structured_formatting.secondary_text;
+          return (
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+              <View>
+              <Text style={{fontSize: 14}}>{title}</Text>
+              <Text style={{fontSize: 14}}>{address}</Text>
+              </View>
+            </View>
+          );
         }}
       />
     );
@@ -128,7 +186,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           console.log(details.name)
         }}
         value={destination}
-        query={{key: Config.GOOGLE_MAPS_API_KEY}}
+        query={{key: Config.GOOGLE_MAPS_API_KEY, 
+                language: 'en',
+                location: '14.6507, 121.1029', // location bias of results
+                radius: '8000',
+                components: 'country:ph',}}
         fetchDetails={true}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
@@ -145,6 +207,26 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           predefinedPlacesDescription: {
             color: '#3caf50',
           },
+        }}
+        renderRow={(rowData) => {
+          const title = rowData.structured_formatting.main_text;
+          const address = rowData.structured_formatting.secondary_text;
+          return (
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+              <View>
+              <Text style={{fontSize: 14}}>{title}</Text>
+              <Text style={{fontSize: 14}}>{address}</Text>
+              </View>
+            </View>
+          );
         }}
       />
     );
@@ -340,7 +422,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               
               <View style={styles.boxloader}>
 
-              <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> 
+              { sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
               {/* {error && <Text style={styles.error}>{error}</Text>}  */}
               
       
