@@ -19,7 +19,7 @@ navigator.geolocation = require('@react-native-community/geolocation');
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -235,20 +235,30 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         setResults2(json['shortest_route'])
         setSwapped(json['swap'])
         handleCoordsData(json['optimized_route']['coordinates']);
+        setBestCoords(json['optimized_route']['coordinates'])
         handleCoordsData2(json['shortest_route']['coordinates'])
+        setOtherCoords(json['shortest_route']['coordinates'])
+        const stepsJson = json['optimized_route']['steps']
+        const stepsTemp = stepsJson.map(step => {
+          return {
+            coordinates: step.coordinates,
+            instruction: step.instruction
+          }
+        })
+        setBestSteps(stepsTemp)
+        const stepsJson2 = json['shortest_route']['steps']
+        const stepsTemp2 = stepsJson2.map(step => {
+          return {
+            coordinates: step.coordinates,
+            instruction: step.instruction
+          }
+        })
+        setOtherSteps(stepsTemp2)
         handleSafestCoverage(json['optimized_route']['coverage'])
         handleFastestCoverage(json['shortest_route']['coverage'])
         handleLoadingData(false)
         setLoading(false);
         setError(null);
-
-        const thresholdDistance = 50
-        const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
-        if (distance <= thresholdDistance) {
-          setBegin(true)
-        } else {
-          setBegin(false)
-        }
         return;
       }
     } catch (error) {
@@ -353,6 +363,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   preference: preference,
                   source: sourceCoords,
                   destination: destinationCoords,
+                  coords: bestCoords,
+                  steps: bestSteps,
+                  swapped: swapped,
                   option: swapped ? 'steps_with_coords_fastest' : 'steps_with_coords_safest'
                 })}
                 /> 
@@ -401,6 +414,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   preference: preference,
                   source: sourceCoords,
                   destination: destinationCoords,
+                  coords: otherCoords,
+                  steps: otherSteps,
+                  swapped: swapped,
                   option: swapped ? 'steps_with_coords_safest' : 'steps_with_coords_fastest'
                 })}
                 /> 
