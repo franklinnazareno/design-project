@@ -151,9 +151,9 @@ export default ScaledSheet.create ({
     alignItems:'center'
   },
   labeltext: {
-    padding: '2@s', 
+    padding: '5@s', 
     fontWeight:'bold', 
-    fontSize: '25@s',
+    fontSize: '20@s',
     color: colors.primary
   }
 
