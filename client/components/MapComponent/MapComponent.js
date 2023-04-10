@@ -134,13 +134,17 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
                 strokeColor="#D93029"
                 tappable
               />
-              {coordsData2 && <Polyline
-                coordinates={coordsData2}
-                strokeWidth={4}
-                strokeColor="#1E75E8"
-                tappable
-              />}
             </>
+          )}
+          {userView === 0 && coordsData2 && (
+            <>
+            <Polyline
+              coordinates={coordsData2}
+              strokeWidth={4}
+              strokeColor="#1E75E8"
+              tappable
+            />
+          </>
           )}
           {userView === 1 && coordsData && (
             <Polyline
