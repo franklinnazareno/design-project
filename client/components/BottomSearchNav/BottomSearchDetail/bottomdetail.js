@@ -96,9 +96,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         enablePoweredByContainer={false}
         styles={{
           container: {
-            marginTop: 20,
             flex: 0,
-            paddingVertical: 20
           },
           description: {
             color: '#000',
@@ -144,7 +142,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         styles={{
           container: {
             flex: 0,
-            paddingVertical: 20
+            marginBottom: 10
           },
           description: {
             color: '#000',
@@ -328,6 +326,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           <View style={styles.firstView}>
           
           <View style={styles.Current}>
+          <View style={styles.locationlabel}>
+            <Text>Source</Text>
+          </View>
               {/* <Input
               label="Source"
               placeholder='Location'
@@ -341,15 +342,21 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               value={source} /> */}
               <GooglePlacesInputSource/>
               </View>
-
+              
+              
               <View style={styles.Destination}>
+              <View style={styles.locationlabel}>
+                  <Text>Destination</Text>
+              </View> 
               <GooglePlacesInputDestination/>
+              
               {/* <Input
               label="Destination"
               placeholder='Destination'
               onChangeText={(text) => setDestination(text)}
               value={destination} /> */}
               </View>
+              
 
               {/* Custom Button OnPress does not work use touchableopacity */}
               

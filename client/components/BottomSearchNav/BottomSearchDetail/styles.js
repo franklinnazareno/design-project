@@ -58,6 +58,7 @@ export default ScaledSheet.create ({
       marginTop: '-25@s',
       width:'300@s',
       alignSelf:'center',
+      flexDirection:'column'
   },
   boxloader:{
     marginTop:'-5@s',
@@ -155,6 +156,11 @@ export default ScaledSheet.create ({
     fontWeight:'bold', 
     fontSize: '25@s',
     color: colors.primary
+  },
+  locationlabel:{
+    marginTop:'22@s', 
+    paddingHorizontal:'2@s', 
+    paddingVertical:'3@s'
   }
 
 });
