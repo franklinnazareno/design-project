@@ -5,14 +5,14 @@ import MapComponent from '../components/MapComponent/MapComponent'
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
 
 const StartNavScreen = ({ route }) => {
-  const { preference, source, destination, option } = route.params
+  const { preference, source, destination, coords, steps, swapped, option } = route.params
   const [location] = useContext(LocationContext)
 
   const [loading, setLoading] = useState(true)
 
   return (
     <View style={{ position: 'relative', height: '100%' }}>
-      <NavigatingMapComp preference={preference} source={source} destination={destination} location={location} option={option} loading={loading} setLoading={setLoading} >
+      <NavigatingMapComp preference={preference} source={source} destination={destination} location={location} coords={coords} steps={steps} swapped={swapped} option={option} loading={loading} setLoading={setLoading} >
       
       </NavigatingMapComp>
       {loading && (
