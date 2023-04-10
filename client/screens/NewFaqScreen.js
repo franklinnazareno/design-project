@@ -6,11 +6,11 @@ const NewFaqScreen = () => {
   const faqs = [
     {
       question: 'What is PathFinder?',
-      answer: 'PathFinder is an app designed to provide optimal paths based on safety factors\n\nYou can start interacting with the app by setting your preferred safety factors and start finding routes on the main screen',
+      answer: 'PathFinder is an app designed to provide optimal paths for pedestrians based on safety factors\n\nYou can start interacting with the app by setting your preferred safety factors and then start searching for routes on the main screen',
     },
     {
       question: 'How do I use this application?',
-      answer: '1. Start by pressing the search button found on the "Find Route" screen\n\n2. Input the source location and destination. There is a tappable button to choose your current location as the source.\n\n3. Press the "Find Path" button',
+      answer: '1. Start by pressing the search button found on the "Find Route" screen\n\n2. Input the source location and destination. Autocomplete suggestions will be provided, you can also set source as your current location and selecting a nearby landmark.\n\n3. Press the "Find Path" button',
     },
     {
       question: 'What are the graphs shown after finding path?',
@@ -20,6 +20,10 @@ const NewFaqScreen = () => {
       question: 'How do I set my User Preferences?',
       answer: '1. Visit the sidebar\n\n2. Tap on User Preference\n\n3. Toggle the safety factors by tapping on the switch beside it.\n\n4. Additionally, adjust the importance of this safety factor using the slider. Slide to the right for highest preference.',
     },
+    {
+      question: 'What is the Report feature for?',
+      answer: 'You can report safety or risk factors on this screen.\nThis will be delivered to the respective government organization to be checked and validated.'
+    }
   ];
 
   const [currentQuestion, setCurrentQuestion] = React.useState(null);

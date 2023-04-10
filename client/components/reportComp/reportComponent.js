@@ -1,17 +1,19 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {launchImageLibrary} from 'react-native-image-picker';
 import Config from 'react-native-config';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLogout } from '../../hooks/useLogout';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Input from '../inputs'
 import SecondaryInput from '../commons/secondaryInput'
 import styles from './styles'
 import CustomButton from '../CustomButton'
 import Container from '../commons/Contain';
 
+navigator.geolocation = require('@react-native-community/geolocation');
 
 const ReportComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -81,6 +83,44 @@ const ReportComponent = ({ location }) => {
     }
   })
 }
+const GooglePlacesInputSource = () => {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.setAddressText(source)
+  }, [source]);
+
+  return (
+    <GooglePlacesAutocomplete
+      ref={ref}
+      placeholder="Type or select current location"
+      onPress={(data, details = null) => {
+        setSource(details.formatted_address)
+        console.log(details.name)
+      }}
+      query={{key: Config.GOOGLE_MAPS_API_KEY}}
+      fetchDetails={true}
+      onFail={error => console.log(error)}
+      onNotFound={() => console.log('no results')}
+      currentLocation={true}
+      currentLocationLabel='Current location'
+      enablePoweredByContainer={false}
+      styles={{
+        container: {
+          flex: 0,
+          paddingVertical: 10
+        },
+        description: {
+          color: '#000',
+          fontSize: 16,
+        },
+        predefinedPlacesDescription: {
+          color: '#3caf50',
+        },
+      }}
+    />
+  );
+};
 
   const handleSubmit = async () => {
     console.log(user.token)
@@ -125,7 +165,7 @@ const ReportComponent = ({ location }) => {
 
   return (
     <Container>
-        <Text style={styles.subText}> Got a Problem? Report Now</Text>
+        <Text style={styles.subText}>Help us Improve Our Maps!</Text>
         <ImageBackground 
             height={70} 
             width={70} 
@@ -133,7 +173,7 @@ const ReportComponent = ({ location }) => {
             style={[styles.loginImage]}> 
         <View style={styles.Text}>
             
-        <Input
+        {/* <Input
             label='Location'
             value={source}
             onChangeText={setSource}
@@ -141,7 +181,9 @@ const ReportComponent = ({ location }) => {
             <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
             </TouchableOpacity>}
             iconPosition='right'
-            />
+            /> */}
+        <Text>Location</Text>
+        <GooglePlacesInputSource/>
 
         <View>
         <SecondaryInput
