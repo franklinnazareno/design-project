@@ -149,20 +149,20 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       />
     );
   };
-  const handleLocation = async () => {
-    if (location) {
-        const longitude = location.longitude
-        const latitude = location.latitude 
+  // const handleLocation = async () => {
+  //   if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
 
-        try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-          const currentLocation = await response.json();
-          setSource(currentLocation.results[0].formatted_address);
-        } catch (error) {
-          setError(error);
-        }
-      }
-  }
+  //       try {
+  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.results[0].formatted_address);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  // }
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -200,6 +200,14 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       // setSourceCoords(sourceCoords)
       // const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
       // setDestinationCoords(destCoords)
+      const thresholdDistance = 50
+      const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
+      if (distance <= thresholdDistance) {
+        setSourceCoords([location.longitude, location.latitude])
+        setBegin(true)
+      } else {
+        setBegin(false)
+      }
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const destCoords = destinationCoords
       const postData = { preferences, sourceCoords, destCoords };
@@ -226,7 +234,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             autoHide: true,
             topOffset: 250,
             bottomOffset:300,
-            onHide: () => setError(''),
+            onHide: () => setError(null),
           });
           return;
       }
@@ -277,7 +285,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           autoHide: true,
           topOffset: 250,
           bottomOffset:300,
-          onHide: () => setError(''),
+          onHide: () => setError(null),
           
         });
       }
