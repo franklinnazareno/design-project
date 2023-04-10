@@ -27,6 +27,7 @@
     "react-native-config": "^1.5.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-get-location": "^3.0.1",
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-image-crop-picker": "^0.39.0",
     "react-native-image-picker": "^5.3.1",
     "react-native-mapbox-places-autocomplete": "^0.0.3",
