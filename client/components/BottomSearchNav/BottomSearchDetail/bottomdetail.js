@@ -96,6 +96,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         enablePoweredByContainer={false}
         styles={{
           container: {
+            marginTop: 20,
             flex: 0,
             paddingVertical: 20
           },
@@ -105,6 +106,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           },
           predefinedPlacesDescription: {
             color: '#3caf50',
+          },
+          textInput:{
+            height:55,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor:colors.primary,
+
           },
         }}
       />
@@ -144,6 +152,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           },
           predefinedPlacesDescription: {
             color: '#3caf50',
+          },
+          textInput:{
+            height:55,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor:colors.primary,
+
           },
         }}
       />
