@@ -34,6 +34,10 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [destinationCoords, setDestinationCoords] = useState(null)
   const [begin, setBegin] = useState(false)
   const [swapped, setSwapped] = useState(false)
+  const [bestCoords, setBestCoords] = useState(null)
+  const [otherCoords, setOtherCoords] = useState(null)
+  const [bestSteps, setBestSteps] = useState(null)
+  const [otherSteps, setOtherSteps] = useState(null)
   const scrollview = useRef();
 
   const toggleModal = () => {
@@ -156,7 +160,15 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           begin={begin}
           setBegin={setBegin}
           swapped={swapped}
-          setSwapped={setSwapped}>
+          setSwapped={setSwapped}
+          bestCoords={bestCoords}
+          setBestCoords={setBestCoords}
+          otherCoords={otherCoords}
+          setOtherCoords={setOtherCoords}
+          bestSteps={bestSteps}
+          setBestSteps={setBestSteps}
+          otherSteps={otherSteps}
+          setOtherSteps={setOtherSteps}>
           </DetailBlock >
 
           </TouchableOpacity>
@@ -192,7 +204,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           {/* <Button title="yes" 
           onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}></Button> */}
         </View>
-         {results !== null && error === null && (
+         {results !== null && (
         <View style={styles.safest}>
           <TouchableOpacity 
             onPress={() => handlePress(0)}
