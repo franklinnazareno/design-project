@@ -93,6 +93,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         onNotFound={() => console.log('no results')}
         currentLocation={true}
         currentLocationLabel='Current location'
+        enablePoweredByContainer={false}
         styles={{
           container: {
             flex: 0,
@@ -131,6 +132,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         fetchDetails={true}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
+        enablePoweredByContainer={false}
         styles={{
           container: {
             flex: 0,
