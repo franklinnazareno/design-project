@@ -35,6 +35,7 @@ export default ScaledSheet.create ({
         borderTopLeftRadius: '20@s',
         minHeight: '375@s',
         paddingBottom: '1@s',
+        elevation:'15@s'
         
         
         
@@ -150,6 +151,15 @@ export default ScaledSheet.create ({
         paddingHorizontal: '5@s',
         opacity: 0.8,
         elevation: 10
-
+      },
+      recenter:{
+        margin: '10@s', 
+        alignSelf:'flex-end', 
+        paddingVertical: '6@s', 
+        backgroundColor: colors.primary, 
+        borderRadius:'100@s',
+        height: '40@s', 
+        width: '40@s', 
+        elevation: '10@s'
       }
 })

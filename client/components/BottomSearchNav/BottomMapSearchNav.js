@@ -10,12 +10,14 @@ ScrollView,
 Image,
 TouchableWithoutFeedback, 
 Dimensions} from "react-native";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Modal from "react-native-modal";
 import CustomButton from "../CustomButton";
 import Input from "../inputs";
 import styles from "./styles";
 import Config from "react-native-config";
 import DetailBlock from "./BottomSearchDetail/bottomdetail";
+import colors from "../../assets/themes/colors";
 
 var deviceWidth = Dimensions.get('window').width;
 
@@ -114,6 +116,13 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
       >
         
         {/* Ignore this its just styles for modal */}
+        
+        {/* <View style={styles.recenter}>
+        <TouchableOpacity style={{alignSelf:'center'}}>
+        <MaterialCommunityIcons name = 'target' size={30} color="white" ></MaterialCommunityIcons>
+        </TouchableOpacity>
+        </View> */}
+
         <View style={styles.modalContent}>
         <View style={styles.center}>
         <View style={styles.barIcon} />
