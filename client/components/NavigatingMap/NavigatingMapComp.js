@@ -1,17 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tts from 'react-native-tts';
+import isEqual from 'lodash/isEqual';
 import Config from 'react-native-config';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ preference, source, destination, location, option, setLoading }) => {
+const NavigatingMapComp = ({ preference, destination, location, option, setLoading }) => {
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -40,6 +41,8 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
       return R * c
     }
 
+    const polylineRef = useRef(null)
+
     useEffect(() => {
       const latitude = location.latitude
       const longitude = location.longitude 
@@ -55,49 +58,61 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
         const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
         const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
 
-        let counter = 0;
-        const maxRetries = 25;
+          let retryCount = 0;
+          const maxRetries = 25;
+          while (retryCount <= maxRetries) {
+            try {
+              const response = await fetch(`${Config.FLASK}/${option}/`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
+              });
 
-        while (counter < maxRetries) {
-          try {
-            const response = await fetch(`${Config.FLASK}/${option}/`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(postData)
-            });
+              const json = await response.json();
 
-            const json = await response.json();
-
-            if (response.ok) {
-              setCoords(json['coordinates'])
-              const stepsJson = json['steps']
-              const stepsTemp = stepsJson.map(step => {
-                return {
-                  coordinates: step.coordinates,
-                  instruction: step.instruction
+              if (response.ok) {
+                setCompletedSteps([]);
+                setSteps(null);
+                if (polylineRef.current) {
+                  // Update the Polyline's coordinates
+                  polylineRef.current.setNativeProps({
+                    coordinates: json['coordinates']
+                  })
+                } else {
+                  // Create the Polyline with the fetched coordinates
+                  setCoords(json['coordinates'])
                 }
-              })
-              setSteps(stepsTemp)
-              break; // break the while loop if response is okay
-            }
-          } catch (error) {
-            console.log(error)
-            if (counter >= maxRetries) {
-              setError("An error has occurred. Please check your network connection and try again.")
-            } else if (error instanceof TypeError && error.message === 'Network request failed') {
-              await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
-              counter++;
-            } else {
-              setError("An error has occured. Please ensure that you are within Marikina City")
-              break
+                const stepsJson = json['steps']
+                const stepsTemp = stepsJson.map(step => {
+                  return {
+                    coordinates: step.coordinates,
+                    instruction: step.instruction
+                  }
+                })
+                setSteps(stepsTemp)
+                break; // exit the loop if the request is successful
+              }
+            } catch (error) {
+              if (error instanceof TypeError && error.message === 'Network request failed') {
+                if (retryCount >= maxRetries) {
+                  setError("A network error has occurred. Please try again later.")
+                } else {
+                  retryCount++;
+                  await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
+                }
+              } else {
+                setError("A server error has occurred. Please try again later.")
+                break;
+              }
             }
           }
-        }
-      };
 
-      drawCoords();
+      };
+      if (!polylineRef.current || !isEqual(polylineRef.current.props.coordinates, [longitude, latitude])) {
+        drawCoords()
+      }
     }, [location]);
 
     useEffect(() => {
@@ -152,6 +167,7 @@ const NavigatingMapComp = ({ preference, source, destination, location, option, 
             </Marker>}
 
           {coords && <Polyline
+              ref={polylineRef}
               coordinates={coords}
               strokeWidth={4}
               strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}

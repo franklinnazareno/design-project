@@ -33,7 +33,7 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '310@s',
+        minHeight: '375@s',
         paddingBottom: '1@s',
         
         
@@ -50,7 +50,7 @@ export default ScaledSheet.create ({
       barIcon: {
         width: '60@s',
         height: '5@s',
-        backgroundColor:colors.primary,
+        backgroundColor:colors.white,
         borderRadius: '3@s',
         marginTop:'10@s',
         marginBottom:'10@s', 
@@ -71,13 +71,7 @@ export default ScaledSheet.create ({
         width:'300@s',
         backgroundColor:colors.primary,
         marginTop:'-790@s',
-        // position: 'absolute',
-        //           top: '-790@s',
-        //           left: '27@s',
-        //           right: 0,
-        //           bottom: 0,
-        
-        
+        elevation:'10@s'
       },
       navtext: {
         alignSelf:'center',
@@ -129,8 +123,8 @@ export default ScaledSheet.create ({
       safeBox: {
         backgroundColor: colors.primary,
         borderRadius: '20@s',
-        width:'80@s',
-        padding: '10@s',
+        width:'60@s',
+        padding: '5@s',
         marginTop: '20@s',
         alignSelf: 'center',
         marginTop:'1@s',
@@ -140,15 +134,15 @@ export default ScaledSheet.create ({
       },
       safetextBox:{
         color: colors.white,
-        fontSize: '16@s',
+        fontSize: '13@s',
         fontWeight: 'bold',
         alignSelf:'center'
 
       },
       safest:{
-        borderRadius:20 ,
-        height:'50@s',
-        padding:2 ,
+        borderRadius:'20@s' ,
+        height:'40@s',
+        padding:'2@s' ,
         flexDirection:'row',
         backgroundColor: colors.grey,
         alignSelf:'center',
