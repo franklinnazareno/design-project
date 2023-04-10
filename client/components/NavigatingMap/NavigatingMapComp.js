@@ -12,7 +12,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ preference, destination, location, option, setLoading }) => {
+const NavigatingMapComp = ({ preference, destination, location, coords, steps, swapped, option, setLoading }) => {
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -20,8 +20,8 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
       latitudeDelta: 0.001, 
       longitudeDelta: 0.001
     })
-    const [coords, setCoords] = useState(null)
-    const [steps, setSteps] = useState(null)
+    const [newCoords, setCoords] = useState(coords)
+    const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
     const [error, setError] = useState(null)
 
@@ -41,8 +41,6 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
       return R * c
     }
 
-    const polylineRef = useRef(null)
-
     useEffect(() => {
       const latitude = location.latitude
       const longitude = location.longitude 
@@ -53,10 +51,14 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
         latitudeDelta: 0.001,
         longitudeDelta: 0.001
       })
+    }, [location])
 
+
+
+    useEffect(() => {
       const drawCoords = async () => {
         const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-        const postData = { preferences, sourceCoords: [longitude, latitude], destCoords: destination }
+        const postData = { preferences, sourceCoords: [location.longitude, location.latitude], destCoords: destination }
 
           let retryCount = 0;
           const maxRetries = 25;
@@ -73,17 +75,8 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
               const json = await response.json();
 
               if (response.ok) {
-                setCompletedSteps([]);
-                setSteps(null);
-                if (polylineRef.current) {
-                  // Update the Polyline's coordinates
-                  polylineRef.current.setNativeProps({
-                    coordinates: json['coordinates']
-                  })
-                } else {
-                  // Create the Polyline with the fetched coordinates
-                  setCoords(json['coordinates'])
-                }
+                // Create the Polyline with the fetched coordinates
+                setCoords(json['coordinates'])
                 const stepsJson = json['steps']
                 const stepsTemp = stepsJson.map(step => {
                   return {
@@ -110,31 +103,27 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
           }
 
       };
-      if (!polylineRef.current || !isEqual(polylineRef.current.props.coordinates, [longitude, latitude])) {
         drawCoords()
-      }
     }, [location]);
 
     useEffect(() => {
-      if (steps) {
-        const thresholdDistance = 5
+      const thresholdDistance = 5
 
-        for (const step of steps) {
-          const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
+      for (const step of newSteps) {
+        const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
 
-          if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-            Tts.speak(step.instruction)
-            setCompletedSteps(prev => [...prev, step]);
-          }
+        if (distance <= thresholdDistance && !completedSteps.includes(step)) {
+          Tts.speak(step.instruction)
+          setCompletedSteps(prev => [...prev, step]);
         }
       }
     }, [location])
 
     useEffect(() => {
-      if (coords) {
+      if (newCoords) {
         setLoading(false)
       }
-    }, [coords])
+    }, [newCoords])
   
     
     return (
@@ -166,11 +155,18 @@ const NavigatingMapComp = ({ preference, destination, location, option, setLoadi
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
 
-          {coords && <Polyline
-              ref={polylineRef}
-              coordinates={coords}
+          {newCoords && <Polyline
+              coordinates={newCoords}
               strokeWidth={4}
-              strokeColor={option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"}
+              strokeColor={
+                option === 'steps_with_coords_safest'
+                  ? swapped
+                    ? "#1E75E8"
+                    : "#D93029"
+                  : swapped
+                    ? "#D93029"
+                    : "#1E75E8"
+              }
               tappable
             />}
 
