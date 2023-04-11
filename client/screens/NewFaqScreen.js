@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TouchableOpacity} from 'react-native'
 import React from 'react'
 import colors from '../assets/themes/colors'
 
+// restart deployment
 const NewFaqScreen = () => {
   const faqs = [
     {
