@@ -19,7 +19,7 @@ navigator.geolocation = require('@react-native-community/geolocation');
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -69,23 +69,38 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
   //   Tts.stop();
   //   setIsSpeaking(false);
   // };
-
+  useEffect(() => {
+    if(location){
+      const latitude = location.latitude;
+      const longitude = location.longitude;
+      
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+          const currentLocation = await response.json();
+          const name = currentLocation.results[0].formatted_address;
+          
+          setCurrentLoc({
+            name: name,
+            description: "Current Location",
+            geometry: {location: {lat: latitude, lng: longitude}}
+          });
+          
+        } catch(error) {
+          setError(error);
+        }
+      };
+      
+      fetchData(); // Call the async function
+    }
+  }, []);
+  
   const GooglePlacesInputSource = () => {
     const ref = useRef();
 
     useEffect(() => {
       ref.current?.setAddressText(source)
     }, [source]);
-
-    // useEffect(() => {
-    //   const latitude = location.latitude;
-    //   const longitude = location.longitude;
-
-    //   const currentLoc = {
-    //     description: "Current Location",
-    //     geometry: {location: {lat: latitude, lng: longitude}}
-    //   }
-    // }, []);
 
     return (
       <GooglePlacesAutocomplete
@@ -105,9 +120,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         fetchDetails={true}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
-        currentLocation={true}
-        currentLocationLabel='Current location'
-        // predefinedPlaces={[currentLoc]}
+        // currentLocation={true}
+        // currentLocationLabel='Current location'
+        predefinedPlaces={[currentLoc]}
         enablePoweredByContainer={false}
         keyboardShouldPersistTaps={'always'}
         styles={{
@@ -130,26 +145,10 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           },
         }}
         renderRow={(rowData) => {
-          if (rowData.isCurrentLocation == true){
+          if (rowData.isPredefinedPlace == true){
+            const title = rowData.description
             return(
-              <View
-              style={{
-                backgroundColor: 'white',
-                flex: 1,
-                height: '100%',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <MaterialCommunityIcons name="map-marker-account" size={30} style={{marginRight: 8}}/>
-              <View>
-                <Text>Current Location</Text>
-              </View>
-              </View>
-            );
-          }
-          if (rowData.business_status) {
-            return(
-              <View
+            <View
               style={{
                 backgroundColor: 'white',
                 flex: 1,
@@ -159,11 +158,45 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
               }}>
               <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
               <View>
-                <Text>{rowData.name}</Text>
+              <Text style={{fontSize: 14}}>{title}</Text>
               </View>
-              </View>
+            </View>
             )
           }
+          // if (rowData.isCurrentLocation == true){
+          //   return(
+          //     <View
+          //     style={{
+          //       backgroundColor: 'white',
+          //       flex: 1,
+          //       height: '100%',
+          //       flexDirection: 'row',
+          //       alignItems: 'center',
+          //     }}>
+          //     <MaterialCommunityIcons name="map-marker-account" size={30} style={{marginRight: 8}}/>
+          //     <View>
+          //       <Text>Current Location</Text>
+          //     </View>
+          //     </View>
+          //   );
+          // }
+          // if (rowData.business_status) {
+          //   return(
+          //     <View
+          //     style={{
+          //       backgroundColor: 'white',
+          //       flex: 1,
+          //       height: '100%',
+          //       flexDirection: 'row',
+          //       alignItems: 'center',
+          //     }}>
+          //     <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+          //     <View>
+          //       <Text>{rowData.name}</Text>
+          //     </View>
+          //     </View>
+          //   )
+          // }
           const title = rowData.structured_formatting.main_text;
           const address = rowData.structured_formatting.secondary_text;
           return (
@@ -272,6 +305,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
   //       }
   //     }
   // }
+  
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -349,31 +383,52 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           return;
       }
       if (response.ok) {
-        setResults(json['optimized_route']);
-        setResults2(json['shortest_route'])
-        setSwapped(json['swap'])
-        handleCoordsData(json['optimized_route']['coordinates']);
-        setBestCoords(json['optimized_route']['coordinates'])
-        handleCoordsData2(json['shortest_route']['coordinates'])
-        setOtherCoords(json['shortest_route']['coordinates'])
-        const stepsJson = json['optimized_route']['steps']
-        const stepsTemp = stepsJson.map(step => {
-          return {
-            coordinates: step.coordinates,
-            instruction: step.instruction
-          }
-        })
-        setBestSteps(stepsTemp)
-        const stepsJson2 = json['shortest_route']['steps']
-        const stepsTemp2 = stepsJson2.map(step => {
-          return {
-            coordinates: step.coordinates,
-            instruction: step.instruction
-          }
-        })
-        setOtherSteps(stepsTemp2)
-        handleSafestCoverage(json['optimized_route']['coverage'])
-        handleFastestCoverage(json['shortest_route']['coverage'])
+        if (json['shortest_route'] && Object.keys(json['shortest_route']).length > 0){
+          setResults(json['optimized_route']);
+          setResults2(json['shortest_route'])
+          setSwapped(json['swap'])
+          handleCoordsData(json['optimized_route']['coordinates']);
+          setBestCoords(json['optimized_route']['coordinates'])
+          handleCoordsData2(json['shortest_route']['coordinates'])
+          setOtherCoords(json['shortest_route']['coordinates'])
+          const stepsJson = json['optimized_route']['steps']
+          const stepsTemp = stepsJson.map(step => {
+            return {
+              coordinates: step.coordinates,
+              instruction: step.instruction
+            }
+          })
+          setBestSteps(stepsTemp)
+          const stepsJson2 = json['shortest_route']['steps']
+          const stepsTemp2 = stepsJson2.map(step => {
+            return {
+              coordinates: step.coordinates,
+              instruction: step.instruction
+            }
+          })
+          setOtherSteps(stepsTemp2)
+          handleSafestCoverage(json['optimized_route']['coverage'])
+          handleFastestCoverage(json['shortest_route']['coverage'])
+        } else {
+          setResults(json['optimized_route']);
+          setResults2(json['shortest_route']);
+          setSwapped(json['swap']);
+          handleCoordsData(json['optimized_route']['coordinates']);
+          setBestCoords(json['optimized_route']['coordinates']);
+          handleCoordsData2(null);
+          setOtherCoords(null);
+          const stepsJson = json['optimized_route']['steps']
+          const stepsTemp = stepsJson.map(step => {
+            return {
+              coordinates: step.coordinates,
+              instruction: step.instruction
+            }
+          })
+          setBestSteps(stepsTemp)
+          setOtherSteps(null)
+          handleSafestCoverage(json['optimized_route']['coverage'])
+          handleFastestCoverage(null)
+        }
         handleLoadingData(false)
         setLoading(false);
         setError(null);
@@ -487,6 +542,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           </View>
 
           {/* Safest Path Instruction */}
+          {console.log(safestCoverage)}
           {results && (
             <ScrollView >
               <TouchableOpacity activeOpacity={1}>
@@ -536,6 +592,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
           {/* Optimal Path Instruction */}
+          {console.log(fastestCoverage)}
           {results2 && (
             
             <ScrollView >
