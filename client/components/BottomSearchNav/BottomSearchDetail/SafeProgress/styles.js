@@ -135,7 +135,10 @@ export default ScaledSheet.create ({
     backgroundColor: '#fff', 
     borderRadius: '10@s', 
     padding: '20@s', 
-    height: '150@s', 
+    height: '100@s', 
     elevation:'10@s'
+  },
+  modaltext:{
+    textAlign:'justify'
   }
 });
