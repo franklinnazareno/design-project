@@ -5,8 +5,8 @@ import colors from '../../assets/themes/colors';
 export default ScaledSheet.create ({
 
 logoImage:{
-    height: '100@s',
-    width: '200@s',
+    height: '150@s',
+    width: '500@s',
     marginTop:'5@s',
     alignSelf:'center',
     
@@ -28,7 +28,7 @@ itemsText: {
 },
 regImage:{
     height:'720@s',
-    width:'250@s',
+    width:'290@s',
     alignSelf:'center',
     
 },
