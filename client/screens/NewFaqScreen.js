@@ -14,7 +14,7 @@ const NewFaqScreen = () => {
     },
     {
       question: 'What are the graphs shown after finding path?',
-      answer: 'They show each relevant safety factor and how much of it covers the area of the route shown on the map.\n\nThe biggest graph on the left shows their weighted total according to your set preferences.',
+      answer: 'They show each relevant safety or risk factor and how much of it covers the area of the route shown on the map.\n\nThe biggest graph on the left shows their weighted total according to your set preferences.',
     },
     {
       question: 'How do I set my User Preferences?',

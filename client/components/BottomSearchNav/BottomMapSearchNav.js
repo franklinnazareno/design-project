@@ -89,7 +89,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
       <StatusBar />
       <View styles={styles.ButtonView}>
         {/* Ignore this it is for modal */}
-        <TouchableOpacity onPress={toggleModal} style={styles.btnContainer}>
+        <TouchableOpacity onPress={() => {toggleModal(); handleUserView(0);}} style={styles.btnContainer}>
           <Text style={styles.navtext}>Search</Text>
         </TouchableOpacity>
       </View>
@@ -137,6 +137,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           ref={scrollview}
+          keyboardShouldPersistTaps={'always'}
           > 
             <TouchableOpacity activeOpacity={1}>
               

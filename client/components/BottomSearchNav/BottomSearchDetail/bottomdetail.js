@@ -77,6 +77,16 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       ref.current?.setAddressText(source)
     }, [source]);
 
+    // useEffect(() => {
+    //   const latitude = location.latitude;
+    //   const longitude = location.longitude;
+
+    //   const currentLoc = {
+    //     description: "Current Location",
+    //     geometry: {location: {lat: latitude, lng: longitude}}
+    //   }
+    // }, []);
+
     return (
       <GooglePlacesAutocomplete
         ref={ref}
@@ -97,7 +107,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         onNotFound={() => console.log('no results')}
         currentLocation={true}
         currentLocationLabel='Current location'
+        // predefinedPlaces={[currentLoc]}
         enablePoweredByContainer={false}
+        keyboardShouldPersistTaps={'always'}
         styles={{
           container: {
             flex: 0,
@@ -201,6 +213,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
         enablePoweredByContainer={false}
+        keyboardShouldPersistTaps={'always'}
         styles={{
           container: {
             flex: 0,
@@ -401,7 +414,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         horizontal={true} 
         pagingEnabled={true} 
         showsHorizontalScrollIndicator={false}
-        
+        keyboardShouldPersistTaps={'always'}
         >
           
           {/* Find Path Screen */}
