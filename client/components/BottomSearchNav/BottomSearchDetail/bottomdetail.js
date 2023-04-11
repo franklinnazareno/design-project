@@ -279,9 +279,8 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       setLoading(false);
       return;
     }
-    handleLoadingData(true)
+    handleLoadingData(true);
     setLoading(true);
-
 
     try {
       // const [sourceResponse, destinationResponse] = await Promise.all([
@@ -309,12 +308,14 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       // const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
       // setDestinationCoords(destCoords)
       const thresholdDistance = 50
-      const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
-      if (distance <= thresholdDistance) {
-        setSourceCoords([location.longitude, location.latitude])
-        setBegin(true)
-      } else {
-        setBegin(false)
+      if (location) {
+        const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
+        if (distance <= thresholdDistance) {
+          setSourceCoords([location.longitude, location.latitude])
+          setBegin(true)
+        } else {
+          setBegin(false)
+        }
       }
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
       const destCoords = destinationCoords
