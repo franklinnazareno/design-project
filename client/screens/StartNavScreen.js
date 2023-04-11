@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Button } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import { LocationContext } from '../context/LocationContext'
 import MapComponent from '../components/MapComponent/MapComponent'
@@ -30,6 +30,7 @@ const StartNavScreen = ({ route }) => {
           
         </View>
        )}
+       
     </View>
   )
 }
