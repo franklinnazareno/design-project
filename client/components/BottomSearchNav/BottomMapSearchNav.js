@@ -40,6 +40,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   const [otherCoords, setOtherCoords] = useState(null)
   const [bestSteps, setBestSteps] = useState(null)
   const [otherSteps, setOtherSteps] = useState(null)
+  const [currentLoc, setCurrentLoc] = useState(null)
   const scrollview = useRef();
 
   const toggleModal = () => {
@@ -178,7 +179,9 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           bestSteps={bestSteps}
           setBestSteps={setBestSteps}
           otherSteps={otherSteps}
-          setOtherSteps={setOtherSteps}>
+          setOtherSteps={setOtherSteps}
+          currentLoc={currentLoc}
+          setCurrentLoc={setCurrentLoc}>
           </DetailBlock >
 
           </TouchableOpacity>
