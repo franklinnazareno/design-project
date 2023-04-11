@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image, ScrollView } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -12,6 +12,7 @@ import SecondaryInput from '../commons/secondaryInput'
 import styles from './styles'
 import CustomButton from '../CustomButton'
 import Container from '../commons/Contain';
+import MapContainer from '../commons/mapContainer/Contain';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -222,7 +223,8 @@ const GooglePlacesInputSource = () => {
   }
 
   return (
-    <Container>
+    <MapContainer>
+      <ScrollView keyboardShouldPersistTaps='always'>
         <Text style={styles.subText}>Help us Improve Our Maps!</Text>
         <ImageBackground 
             height={70} 
@@ -274,7 +276,8 @@ const GooglePlacesInputSource = () => {
         </View>
         
     </ImageBackground>
-    </Container>
+    </ScrollView>
+    </MapContainer>
   )
 }
 

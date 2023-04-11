@@ -32,7 +32,7 @@ const LoginComp = () => {
             <Image  
             height={70} 
             width={70} 
-            source={require('../../assets/images/pd-logo2.png')}
+            source={require('../../assets/images/pd-logo3.png')}
             style={[styles.logoImage]}
             />
             
