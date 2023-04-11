@@ -55,56 +55,56 @@ const NavigatingMapComp = ({ preference, destination, location, coords, steps, s
 
 
 
-    useEffect(() => {
-      const drawCoords = async () => {
-        const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-        const postData = { preferences, sourceCoords: [location.longitude, location.latitude], destCoords: destination }
+    // useEffect(() => {
+    //   const drawCoords = async () => {
+    //     const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
+    //     const postData = { preferences, sourceCoords: [location.longitude, location.latitude], destCoords: destination }
 
-          let retryCount = 0;
-          const maxRetries = 25;
-          while (retryCount <= maxRetries) {
-            try {
-              const response = await fetch(`${Config.FLASK}/${option}/`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postData)
-              });
+    //       let retryCount = 0;
+    //       const maxRetries = 25;
+    //       while (retryCount <= maxRetries) {
+    //         try {
+    //           const response = await fetch(`${Config.FLASK}/${option}/`, {
+    //             method: 'POST',
+    //             headers: {
+    //               'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(postData)
+    //           });
 
-              const json = await response.json();
+    //           const json = await response.json();
 
-              if (response.ok) {
-                // Create the Polyline with the fetched coordinates
-                setCoords(json['coordinates'])
-                const stepsJson = json['steps']
-                const stepsTemp = stepsJson.map(step => {
-                  return {
-                    coordinates: step.coordinates,
-                    instruction: step.instruction
-                  }
-                })
-                setSteps(stepsTemp)
-                break; // exit the loop if the request is successful
-              }
-            } catch (error) {
-              if (error instanceof TypeError && error.message === 'Network request failed') {
-                if (retryCount >= maxRetries) {
-                  setError("A network error has occurred. Please try again later.")
-                } else {
-                  retryCount++;
-                  await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
-                }
-              } else {
-                setError("A server error has occurred. Please try again later.")
-                break;
-              }
-            }
-          }
+    //           if (response.ok) {
+    //             // Create the Polyline with the fetched coordinates
+    //             setCoords(json['coordinates'])
+    //             const stepsJson = json['steps']
+    //             const stepsTemp = stepsJson.map(step => {
+    //               return {
+    //                 coordinates: step.coordinates,
+    //                 instruction: step.instruction
+    //               }
+    //             })
+    //             setSteps(stepsTemp)
+    //             break; // exit the loop if the request is successful
+    //           }
+    //         } catch (error) {
+    //           if (error instanceof TypeError && error.message === 'Network request failed') {
+    //             if (retryCount >= maxRetries) {
+    //               setError("A network error has occurred. Please try again later.")
+    //             } else {
+    //               retryCount++;
+    //               await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
+    //             }
+    //           } else {
+    //             setError("A server error has occurred. Please try again later.")
+    //             break;
+    //           }
+    //         }
+    //       }
 
-      };
-        drawCoords()
-    }, [location]);
+    //   };
+    //     drawCoords()
+    // }, [location]);
 
     useEffect(() => {
       const thresholdDistance = 5

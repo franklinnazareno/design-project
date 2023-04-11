@@ -30,7 +30,7 @@ export default styles = ScaledSheet.create({
 
     logoImage:{
         height: '150@s',
-        width: '600@s',
+        width: '300@s',
         marginTop:'30@s',
         marginBottom: '100@s',
         alignSelf:'center',
