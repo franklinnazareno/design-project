@@ -36,7 +36,7 @@ export default styles = ScaledSheet.create({
         
     },
     loginImage:{
-        height: '650@s',
+        height: '750@s',
         width: '350@s',
         flex:1,
         alignSelf:'center',
