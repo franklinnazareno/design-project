@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button, KeyboardAvoidingView } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
 import Config from 'react-native-config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
@@ -415,12 +415,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         pagingEnabled={true} 
         showsHorizontalScrollIndicator={false}
         keyboardShouldPersistTaps={'always'}
+        
         >
           
           {/* Find Path Screen */}
-
           <View style={styles.firstView}>
-
           
           <View style={styles.Current}>
           <View style={styles.locationlabel}>
