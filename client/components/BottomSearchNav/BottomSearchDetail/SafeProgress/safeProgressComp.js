@@ -72,7 +72,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
           <View style={styles.modalContent}>
             <ScrollView>
             <TouchableOpacity>
-            <Text>This value shows the total average of all safety factors while taking into consideration your preferences on safety factors.</Text>
+            <Text style={styles.modaltext}>This value shows the total average of all safety factors while taking into consideration your preferences on safety factors.</Text>
             </TouchableOpacity>
             </ScrollView>    
           </View>
@@ -104,7 +104,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route will pass through a tourist attraction or a notable area.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will pass through a tourist attraction or a notable area.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -133,7 +133,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route is under well-lit street lights during the night.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route is under well-lit street lights during the night.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -164,7 +164,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route is friendly to motor-impared individuals. This includes PWD ramps, hand rails, and wide sidewalks.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route is friendly to motor-impared individuals. This includes PWD ramps, hand rails, and wide sidewalks.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -193,7 +193,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route will be under the view of a government-maintained CCTV camera.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be under the view of a government-maintained CCTV camera.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -221,7 +221,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route will be in a major road/thoroughfare. A lesser value is desirable for this safety factor.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be in a major road/thoroughfare. A lesser value is desirable for this safety factor.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -251,7 +251,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>This value shows how much of the route will be under flood hazard in the event of a major rain event. A lesser value is desirable for this safety factor.</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be under flood hazard in the event of a major rain event. A lesser value is desirable for this safety factor.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>

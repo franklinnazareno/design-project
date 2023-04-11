@@ -51,7 +51,7 @@ export default ScaledSheet.create ({
       barIcon: {
         width: '60@s',
         height: '5@s',
-        backgroundColor:colors.white,
+        backgroundColor:colors.primary,
         borderRadius: '3@s',
         marginTop:'10@s',
         marginBottom:'10@s', 
