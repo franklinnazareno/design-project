@@ -214,6 +214,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         onNotFound={() => console.log('no results')}
         enablePoweredByContainer={false}
         keyboardShouldPersistTaps={'always'}
+        
         styles={{
           container: {
             flex: 0,
@@ -379,23 +380,36 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       }
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Network request failed') {
+        // Toast.show({
+        //   type: 'error',
+        //   text1: 'A server error has occurred.',
+        //   A server error has occurred.
+        //   visibilityTime: 3000,
+        //   autoHide: true,
+        //   topOffset: 250,
+        //   bottomOffset:300,
+        //   onHide: () => setError(null),
+          
+        // });
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await handleSubmitWithRetry(retryCount - 1);
       } else {
         handleLoadingData(false)
         setLoading(false)
-        // setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
-        Toast.show({
-          type: 'error',
-          text1: 'A server error has occurred.',
-          text2:'Please try again later.',
-          visibilityTime: 3000,
-          autoHide: true,
-          topOffset: 250,
-          bottomOffset:300,
-          onHide: () => setError(null),
-          
-        });
+        setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
+        if (error && error.toString().trim() !== "") {
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            //text2: error.toString(),
+            text2: 'A server error has occurred.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 250,
+            bottomOffset: 300,
+            onHide: () => setError(null),
+          });
+        }
       }
     }
   }
