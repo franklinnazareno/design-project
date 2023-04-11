@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { LocationContext } from '../context/LocationContext'
 import MapComponent from '../components/MapComponent/MapComponent'
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
+import NavInstruction from '../components/NavigatingMap/NavInstruction/NavInstruction'
 
 const StartNavScreen = ({ route }) => {
   const { preference, source, destination, coords, steps, swapped, option } = route.params
@@ -30,7 +31,7 @@ const StartNavScreen = ({ route }) => {
           
         </View>
        )}
-       
+       <NavInstruction></NavInstruction>
     </View>
   )
 }
