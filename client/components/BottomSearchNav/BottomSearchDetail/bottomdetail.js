@@ -395,6 +395,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           const stepsTemp = stepsJson.map(step => {
             return {
               coordinates: step.coordinates,
+              distance: step.distance,
               instruction: step.instruction
             }
           })
@@ -403,6 +404,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           const stepsTemp2 = stepsJson2.map(step => {
             return {
               coordinates: step.coordinates,
+              distance: step.distance,
               instruction: step.instruction
             }
           })
