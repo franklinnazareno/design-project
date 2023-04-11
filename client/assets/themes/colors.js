@@ -7,4 +7,6 @@ export default {
   grey: '#adb5bd',
   white: '#ffffff',
   blue:'#4266f5',
+  polyline_blue: '#1E75E8',
+  polyline_red: '#D93029'
 };

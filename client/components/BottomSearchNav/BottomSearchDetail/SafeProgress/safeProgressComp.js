@@ -72,7 +72,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
           <View style={styles.modalContent}>
             <ScrollView>
             <TouchableOpacity>
-            <Text>Progress: SAFE</Text>
+            <Text style={styles.modaltext}>This value shows the total average of all safety factors while taking into consideration your preferences on safety factors.</Text>
             </TouchableOpacity>
             </ScrollView>    
           </View>
@@ -104,7 +104,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: LANDMARK</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will pass through a tourist attraction or a notable area.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -133,7 +133,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: Light</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route is under well-lit street lights during the night.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -164,7 +164,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: PWD</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route is friendly to motor-impared individuals. This includes PWD ramps, hand rails, and wide sidewalks.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -193,7 +193,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: CCTV</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be under the view of a government-maintained CCTV camera.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -207,7 +207,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
             <SmallCustomCircularProgress 
               title='Major Road'
               percentageTextColor={'red'}
-              value={safestCoverage.not_major_road} 
+              value={safestCoverage.not_major_road === 0 ? 0 : 100 - safestCoverage.not_major_road } 
               progressValueColor={'red'}
               radius={35}
             />
@@ -221,7 +221,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: MAJOR ROAD</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be in a major road/thoroughfare. A lesser value is desirable for this safety factor.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
@@ -237,7 +237,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
             <SmallCustomCircularProgress
               title='Flood' 
               percentageTextColor={'red'}
-              value={safestCoverage.not_flood_hazard}
+              value={safestCoverage.not_flood_hazard === 0 ? 0 : 100 - safestCoverage.not_flood_hazard}
               progressValueColor={'red'}  
               radius={35}
             />
@@ -251,7 +251,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               <View style={styles.modalContent}>
                 <ScrollView>
                 <TouchableOpacity>
-                <Text>Progress: fLOOD</Text>
+                <Text style={styles.modaltext}>This value shows how much of the route will be under flood hazard in the event of a major rain event. A lesser value is desirable for this safety factor.</Text>
                 </TouchableOpacity>
                 </ScrollView>    
               </View>
