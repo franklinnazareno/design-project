@@ -63,24 +63,24 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
   }
 
-  useEffect(() => {
-    async function getLocation() {
-      if (location) {
-        const longitude = location.longitude
-        const latitude = location.latitude 
+  // useEffect(() => {
+  //   async function getLocation() {
+  //     if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
 
-        try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-          const currentLocation = await response.json();
-          setSource(currentLocation.results[0].formatted_address);
-        } catch (error) {
-          setError(error);
-        }
-      }
-    }
+  //       try {
+  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.results[0].formatted_address);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  //   }
 
-    getLocation();
-  }, []);
+  //   getLocation();
+  // }, []);
 
 
   return (
