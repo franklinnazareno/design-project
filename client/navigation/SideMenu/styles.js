@@ -27,7 +27,7 @@ itemsText: {
     paddingHorizontal:'1@s'
 },
 regImage:{
-    height:'620@s',
+    height:'720@s',
     width:'250@s',
     alignSelf:'center',
     
