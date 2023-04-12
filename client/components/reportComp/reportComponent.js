@@ -188,13 +188,13 @@ const GooglePlacesInputSource = () => {
       const formData = new FormData()
       formData.append('Source', source)
       formData.append('Description', description)
-      if (image) {
-        formData.append('Image', {
-          uri: image.uri,
-          name: image.fileName,
-          type: image.type
-        })
-      }
+      // if (image) {
+      //   formData.append('Image', {
+      //     uri: image.uri,
+      //     name: image.fileName,
+      //     type: image.type
+      //   })
+      // }
 
       const response = await fetch(`${Config.EXPRESS}/api/report`, {
         method: 'POST',
@@ -233,7 +233,7 @@ const GooglePlacesInputSource = () => {
             style={[styles.loginImage]}> 
         <View style={styles.Text}>
             
-        {/* <Input
+        <Input
             label='Location'
             value={source}
             onChangeText={setSource}
@@ -241,9 +241,9 @@ const GooglePlacesInputSource = () => {
             <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
             </TouchableOpacity>}
             iconPosition='right'
-            /> */}
+            />
         <Text>Location</Text>
-        <GooglePlacesInputSource/>
+        {/* <GooglePlacesInputSource/> */}
 
         <View>
         <SecondaryInput
@@ -257,19 +257,19 @@ const GooglePlacesInputSource = () => {
         />
         </View>
 
-        <View style={styles.Imageupload}>
+        {/* <View style={styles.Imageupload}>
         <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
         <Text style={styles.saveButtonText}>Upload Image</Text>
         </TouchableOpacity>
-        </View>
-        {image && (
+        </View> */}
+        {/* {image && (
           <View style={styles.imagePreview}>
             {image.uri && (
               <Image source={{ uri: image.uri }} style={styles.image} />
             )}
             <Text style={styles.imageName}>{image.fileName}</Text>
           </View>
-        )}
+        )} */}
         <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/>
         {error && <Text style={styles.error}>{error}</Text>}
         {success && <Text style={styles.success}>Report sent successfully!</Text>}

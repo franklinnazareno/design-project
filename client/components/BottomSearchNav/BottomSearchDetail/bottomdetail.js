@@ -437,6 +437,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         return;
       }
     } catch (error) {
+      console.log(error)
       if (error instanceof TypeError && error.message === 'Network request failed') {
         // Toast.show({
         //   type: 'error',
@@ -458,9 +459,9 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         if (error && error.toString().trim() !== "") {
           Toast.show({
             type: 'error',
-            text1: 'Error',
+            text1: 'An error has occurred.',
             //text2: error.toString(),
-            text2: 'A server error has occurred.',
+            text2: 'Please ensure that the set locations are within Marikina City.',
             visibilityTime: 3000,
             autoHide: true,
             topOffset: 250,

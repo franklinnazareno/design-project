@@ -31,7 +31,7 @@ const StartNavScreen = ({ route }) => {
           
         </View>
        )}
-       <NavInstruction steps={steps} locaton={location}></NavInstruction>
+       {/* <NavInstruction steps={steps} locaton={location}></NavInstruction> */}
     </View>
   )
 }
