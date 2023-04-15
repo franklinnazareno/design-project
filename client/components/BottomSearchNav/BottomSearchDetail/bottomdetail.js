@@ -552,6 +552,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <Text style={styles.labeltext}>Best Path</Text>
                 </View> 
 
+                {/* Label Distance */}
+                <View 
+                //style={styles.labelbox}
+                >
+                <Text style={styles.labelDistance}>Distance:</Text>
+                </View> 
+
               {/* Safest Progress Detail */}
               <SafeProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
@@ -600,6 +607,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View style={styles.labelbox}>
                 <Text style={styles.labeltext}>Alternative Path</Text>
                 </View>
+
+                {/* Label Distance */}
+                <View 
+                //style={styles.labelbox}
+                >
+                <Text style={styles.labelDistance}>Distance:</Text>
+                </View> 
 
                 {/* Fastest Progress Detail */}
                 <OptimalProgressComp fastestCoverage={fastestCoverage} />

@@ -161,6 +161,11 @@ export default ScaledSheet.create ({
     marginTop:'22@s', 
     paddingHorizontal:'2@s', 
     paddingVertical:'3@s'
+  },
+  labelDistance:{
+     padding: 5, 
+     fontSize: 15, 
+     alignSelf:'center'
   }
 
 });
