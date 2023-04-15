@@ -61,6 +61,8 @@ const NavInstruction = ({ steps, location }) => {
       
       <View styles={styles.ButtonView}>
         {/* Ignore this it is for modal */}
+        {console.log(currentDistance)}
+        {console.log(currentStep)}
         <View style={styles.btnContainer}>
         <Text style={styles.navtext}>Distance: {currentDistance ? currentDistance : 0}m</Text>
         <Text style={styles.navtext2}>Instruction: {currentStep ? currentStep : ''}</Text>
