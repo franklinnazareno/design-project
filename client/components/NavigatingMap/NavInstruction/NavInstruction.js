@@ -10,6 +10,7 @@ ScrollView,
 Image,
 TouchableWithoutFeedback, 
 Dimensions} from "react-native";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import styles from "./styles";
 
@@ -64,8 +65,15 @@ const NavInstruction = ({ steps, location }) => {
         {console.log(currentDistance)}
         {console.log(currentStep)}
         <View style={styles.btnContainer}>
-        <Text style={styles.navtext}>Distance: {currentDistance ? currentDistance : 0}m</Text>
-        <Text style={styles.navtext2}>Instruction: {currentStep ? currentStep : ''}</Text>
+            {currentStep.includes('Head') ? <MaterialCommunityIcons name="flag-checkered" style={styles.icon}></MaterialCommunityIcons> : null}
+            {currentStep.includes('Cross') ? <MaterialCommunityIcons name="walk" style={styles.icon}></MaterialCommunityIcons> : null}
+            {currentStep.includes('Continue Straight') ? <MaterialCommunityIcons name="arrow-up-thick" style={styles.icon}></MaterialCommunityIcons> : null}
+            {currentStep.includes('Turn Right') ? <MaterialCommunityIcons name="arrow-right-top-bold" style={styles.icon}></MaterialCommunityIcons> : null}
+            {currentStep.includes('Turn Left') ? <MaterialCommunityIcons name="arrow-left-top-bold" style={styles.icon}></MaterialCommunityIcons> : null}
+            <View style={{alignSelf: 'center', flex: 1}}>
+                <Text style={styles.navtext}>{currentDistance ? currentDistance : 0} meters</Text>
+                <Text style={styles.navtext2}>{currentStep ? currentStep : ''}</Text>
+            </View>
         </View>
       </View>
 
