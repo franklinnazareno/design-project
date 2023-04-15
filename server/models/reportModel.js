@@ -10,9 +10,6 @@ const reportSchema = new Schema({
     type: String,
     required: true
   },
-  Image: {
-    type: Buffer,
-  },
   user_id: {
     type: String,
     required: true
