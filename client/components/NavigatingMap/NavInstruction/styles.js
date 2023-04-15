@@ -17,15 +17,18 @@ export default ScaledSheet.create ({
         //display: "flex",
         borderRadius:'10@s',
         alignSelf: "center",
-        justifyContent: "center",
+        alignItems:'flex-start',
         height: '80@s',
         width:'300@s',
+        padding: '10@s',
         backgroundColor:colors.white,
         marginTop:'-790@s',
-        elevation:'10@s'
+        elevation:'10@s',
+        flexDirection: 'row',
       },
       navtext: {
         textAlign:'center',
+        alignSelf: "center",
         // color:colors.white,
         fontWeight:'bold',
         fontSize:'15@s',
@@ -33,10 +36,15 @@ export default ScaledSheet.create ({
       },
       navtext2: {
         textAlign:'center',
+        alignSelf: "center",
         // color:colors.white,
         // fontWeight:'bold',
         fontSize:'15@s',
         marginTop:'-2@s'
       },
-      
+      icon: {
+        alignSelf: 'center', 
+        fontSize: 50,
+        marginRight: 5
+      }
 })
