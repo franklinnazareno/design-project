@@ -19,8 +19,8 @@ const NavInstruction = ({ steps, location }) => {
 
   const [newSteps, setNewSteps] = useState(steps)
   const [completedSteps, setCompletedSteps] = useState([])
-  const [currentStep, setCurrentStep] = useState('')
-  const [currentDistance, setCurrentDistance] = useState('')
+  const [currentStep, setCurrentStep] = useState(steps[0].instruction)
+  const [currentDistance, setCurrentDistance] = useState(steps[0].distance)
 
   const toRadians = (degrees) => {
     return degrees * Math.PI / 180
@@ -39,17 +39,17 @@ const NavInstruction = ({ steps, location }) => {
   }
 
   useEffect(() => {
-    const thresholdDistance = 5
-    let currentStepIndex = 0
+    if (location) {
+      const thresholdDistance = 5
 
-    for (const step of newSteps) {
-      const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
+      for (const step of newSteps) {
+        const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
 
-      if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-        setCompletedSteps(prev => [...prev, step]);
-        currentStepIndex++
-        setCurrentStep(newSteps[currentStepIndex]?.instruction)
-        setCurrentDistance(newSteps[currentStepIndex]?.distance)
+        if (distance <= thresholdDistance && !completedSteps.includes(step)) {
+          setCurrentStep(step.instruction)
+          setCurrentDistance(step.distance)
+          setCompletedSteps(prev => [...prev, step]);
+        }
       }
     }
   }, [location])
