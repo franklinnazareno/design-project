@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MapView, {Polyline, Marker, ProviderPropType, Geojson} from 'react-native-maps';
@@ -24,7 +24,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     })
 
     useEffect(() => {
-      if (location) {
+      if (location){
         const latitude = location.latitude
         const longitude = location.longitude 
 
@@ -35,6 +35,9 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           longitudeDelta: 0.005
         })
       }
+    }, [location])
+
+    useEffect(() => {
 
       if (coordsData && coordsData.length > 1) {
         const firstCoords = coordsData[0]
@@ -67,7 +70,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         })
       }
 
-    }, [location, coordsData])
+    }, [coordsData])
 
     const {setOptions, toggleDrawer} = useNavigation();
     
@@ -100,7 +103,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             geojson={myBoundary}
             strokeColor="red"
             strokeWidth={2}/>
-            
+
             {location && <Marker 
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
@@ -205,4 +208,4 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     );
 };
 
-export default MapComponent;
+export default memo(MapComponent);

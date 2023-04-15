@@ -545,7 +545,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           </View>
 
           {/* Safest Path Instruction */}
-          {console.log(safestCoverage)}
           {results && (
             <ScrollView >
               <TouchableOpacity activeOpacity={1}>
@@ -595,7 +594,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
 
 
           {/* Optimal Path Instruction */}
-          {console.log(fastestCoverage)}
           {results2 && (
             
             <ScrollView >

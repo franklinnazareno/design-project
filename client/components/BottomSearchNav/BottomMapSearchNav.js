@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { 
 Button,
 StatusBar,
@@ -104,6 +104,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
         transparent={true}
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}
+        keyboardShouldPersistTaps={true}
         isVisible={isModalVisible}
         swipeDirection="down"
         onSwipeComplete={toggleModal}
@@ -252,5 +253,5 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   );
 }
 
-export default BottomNavComp;
+export default memo(BottomNavComp);
 
