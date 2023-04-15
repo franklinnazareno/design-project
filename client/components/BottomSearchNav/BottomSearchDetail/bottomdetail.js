@@ -556,7 +556,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View 
                 //style={styles.labelbox}
                 >
-                <Text style={styles.labelDistance}>Distance:</Text>
+                <Text style={styles.labelDistance}>{results.length / 1000} km</Text>
                 </View> 
 
               {/* Safest Progress Detail */}
@@ -581,7 +581,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   
                   {results.steps && (
                     <View>
-                      <Text style={styles.intruction}>Distance: {results.length / 1000} km</Text>
                       {results.steps.map((step, index) => (
                         <View key={index} >
                           <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>
@@ -612,7 +611,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View 
                 //style={styles.labelbox}
                 >
-                <Text style={styles.labelDistance}>Distance:</Text>
+                <Text style={styles.labelDistance}>{results2.length / 1000} km</Text>
                 </View> 
 
                 {/* Fastest Progress Detail */}
@@ -637,7 +636,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                 <View style={styles.thirdView}>
                   {results2.steps && (
                     <View >
-                      <Text style={styles.intruction}>Distance: {results2.length / 1000} km</Text>
                       {results2.steps.map((step, index) => (
                         <View key={index} >
                           <Text style={styles.intruction}>{index + 1}. {step.instruction}</Text>   
