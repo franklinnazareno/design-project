@@ -19,7 +19,7 @@ navigator.geolocation = require('@react-native-community/geolocation');
 
 import Tts from 'react-native-tts';
 
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, swapped, setSwapped, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -386,7 +386,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         if (json['shortest_route'] && Object.keys(json['shortest_route']).length > 0){
           setResults(json['optimized_route']);
           setResults2(json['shortest_route'])
-          setSwapped(json['swap'])
           handleCoordsData(json['optimized_route']['coordinates']);
           setBestCoords(json['optimized_route']['coordinates'])
           handleCoordsData2(json['shortest_route']['coordinates'])
@@ -414,7 +413,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
         } else {
           setResults(json['optimized_route']);
           setResults2(json['shortest_route']);
-          setSwapped(json['swap']);
           handleCoordsData(json['optimized_route']['coordinates']);
           setBestCoords(json['optimized_route']['coordinates']);
           handleCoordsData2(null);
@@ -566,8 +564,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   destination: destinationCoords,
                   coords: bestCoords,
                   steps: bestSteps,
-                  swapped: swapped,
-                  option: swapped ? 'steps_with_coords_fastest' : 'steps_with_coords_safest'
+                  option: 'steps_with_coords_safest'
                 })}
                 /> 
 
@@ -617,8 +614,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   destination: destinationCoords,
                   coords: otherCoords,
                   steps: otherSteps,
-                  swapped: swapped,
-                  option: swapped ? 'steps_with_coords_safest' : 'steps_with_coords_fastest'
+                  option: 'steps_with_coords_fastest'
                 })}
                 /> 
 
