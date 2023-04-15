@@ -33,7 +33,7 @@ export default ScaledSheet.create ({
         paddingHorizontal: '1@s',
         borderTopRightRadius: '20@s',
         borderTopLeftRadius: '20@s',
-        minHeight: '375@s',
+        minHeight: '400@s',
         paddingBottom: '1@s',
         elevation:'15@s'
         
@@ -100,14 +100,10 @@ export default ScaledSheet.create ({
         marginBottom: '1@s',
         borderRadius: '10@s',
         height:'150@s',
-        
         elevation:'15@s',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-        
-        
-        
       },
       instructText: {
         fontWeight:'5@s',
