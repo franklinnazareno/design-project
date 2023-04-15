@@ -211,7 +211,7 @@ const GooglePlacesInputSource = () => {
             </TouchableOpacity>}
             iconPosition='right'
             />
-        <Text>Location</Text>
+        {/* <Text>Location</Text> */}
         {/* <GooglePlacesInputSource/> */}
   
         <View>
