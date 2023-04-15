@@ -1,14 +1,13 @@
 const express = require('express')
 const { createReport } = require('../controllers/reportController')
 const requireAuth = require('../middleware/requireAuth')
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 const router = express.Router()
 
+// require auth for the report route
 router.use(requireAuth)
 
-router.post('/', upload.single('Image'), createReport)
+// POST a new report
+router.post('/', createReport)
 
 module.exports = router
