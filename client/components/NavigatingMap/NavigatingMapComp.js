@@ -12,7 +12,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ preference, destination, location, coords, steps, swapped, option, setLoading }) => {
+const NavigatingMapComp = ({ preference, destination, location, coords, steps, option, setLoading }) => {
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -159,13 +159,7 @@ const NavigatingMapComp = ({ preference, destination, location, coords, steps, s
               coordinates={newCoords}
               strokeWidth={4}
               strokeColor={
-                option === 'steps_with_coords_safest'
-                  ? swapped
-                    ? "#1E75E8"
-                    : "#D93029"
-                  : swapped
-                    ? "#D93029"
-                    : "#1E75E8"
+                option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"
               }
               tappable
             />}
