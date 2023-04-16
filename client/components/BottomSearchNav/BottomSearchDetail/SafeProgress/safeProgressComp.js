@@ -238,7 +238,7 @@ const SafeProgressComp = ({ safestCoverage }) => {
               title='Flood' 
               percentageTextColor={'red'}
               value={safestCoverage.not_flood_hazard === 0 ? 0 : 100 - safestCoverage.not_flood_hazard}
-              progressValueColor={'red'}  
+              progressValueColor={'red'}
               radius={35}
             />
             </TouchableOpacity>

@@ -1,15 +1,20 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Svg, Circle, G, Text as SvgText } from 'react-native-svg';
+import colors from '../../../assets/themes/colors';
 
 const strokeWidth = 7; // Change the stroke width as per your requirement
 const radius = 50; // Change the radius as per your requirement
 
-const SmallCustomCircularProgress = ({ title, value, radius: propRadius, progressValueColor, percentageTextColor }) => {
+const SmallCustomCircularProgress = ({ title, value, radius: propRadius, progressValueColor, percentageTextColor, newvalue }) => {
   const circumference = 2 * Math.PI * propRadius;
   const progress = value <= 0 ? 0 : value; // If value is less than or equal to 0, progress will be 0
   const progressColor = value <= 0 ? '#A9A9A9' : progressValueColor || 'green'; // If value is less than or equal to 0, progress color will be grey
-  const textColor = value <= 0 ? '#A9A9A9' : percentageTextColor || '#2cc70a'; // If value is less than or equal to 0, text color will be grey
+  let textColor = value <= 0 ? '#A9A9A9' : percentageTextColor || colors.primary; // If value is less than or equal to 0, text color will be grey
+  if ((value === 0) && (title === 'Flood' || title === 'Major Road')) {
+    textColor = colors.primary;
+    
+  }
 
   return (
     <View style={styles.container}>
