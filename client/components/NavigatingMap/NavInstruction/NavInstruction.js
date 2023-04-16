@@ -56,7 +56,7 @@ const NavInstruction = ({ steps, location }) => {
           // and setTimeout achieves the desired delay effect
           // Note: setTimeout is not blocking, so other code outside of useEffect
           // will continue to execute immediately
-        }, 2000);
+        }, 1000);
         }
       }
     }
