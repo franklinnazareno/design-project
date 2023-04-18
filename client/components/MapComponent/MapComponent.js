@@ -24,12 +24,14 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
       longitudeDelta: 0.005
     })
 
+    const [regionTemp, setRegionTemp] = useState(null)
+
     useEffect(() => {
       if (location){
         const latitude = location.latitude
         const longitude = location.longitude 
 
-        setRegion({
+        setRegionTemp({
           latitude: latitude,
           longitude: longitude,
           latitudeDelta: 0.005,
@@ -87,6 +89,10 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           ),
         });
       }, []);
+
+    const handleRelocate = () => {
+      setRegion(regionTemp)
+    }
     
     return (
       
@@ -212,7 +218,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         <View 
         style={styles.CenterBox}> 
             <View style={styles.ReCenter}>
-        <TouchableOpacity style={{alignSelf:'center'}}>
+        <TouchableOpacity style={{alignSelf:'center'}} onPress={handleRelocate}>
         <MaterialCommunityIcons name = 'target' size={30} color="white" ></MaterialCommunityIcons>
         </TouchableOpacity>
         </View>
