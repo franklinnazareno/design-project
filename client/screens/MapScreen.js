@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
 import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
@@ -8,7 +8,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
 import Geolocation from '@react-native-community/geolocation';
 import Config from 'react-native-config'
-import styles from './styles'
+
 
 
 const MapScreen = () => {
@@ -129,6 +129,7 @@ const MapScreen = () => {
                 handleCoordsData2={handleCoordsData2}
                 handleLoadingData={handleLoadingData} 
                 handleUserView={handleUserView}/>
+                
           
           </View>
         
