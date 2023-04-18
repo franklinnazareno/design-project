@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, memo } from 'react';
 import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, {Polyline, Marker, ProviderPropType, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
@@ -10,7 +11,7 @@ import BottomNavComp from '../BottomSearchNav/BottomMapSearchNav';
 import { Button } from 'react-native-paper';
 import myBoundary from './boundary';
 
-// import MapSearchComp from '../MapSearch/MapSearchComp';
+
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
@@ -201,7 +202,22 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
 
         </MapView.Animated>
         
+        <View>
+      
+      
+      
+     
+        {/* Recenter Button */}
         
+        <View 
+        style={styles.CenterBox}> 
+            <View style={styles.ReCenter}>
+        <TouchableOpacity style={{alignSelf:'center'}}>
+        <MaterialCommunityIcons name = 'target' size={30} color="white" ></MaterialCommunityIcons>
+        </TouchableOpacity>
+        </View>
+        </View>
+      </View>
         </MapContainer>
           
         

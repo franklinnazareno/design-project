@@ -11,5 +11,24 @@ export default ScaledSheet.create ({
     },
     map:{
         height: '100%'
-    }
+    },
+    CenterBox:{
+        borderRadius:'30@s',
+        alignSelf: 'center',
+        alignItems:'flex-start',
+        padding: '-10@s',
+        backgroundColor:colors.primary,
+        marginTop:'-750@s',
+        elevation:'10@s',
+        flexDirection: 'row',
+        marginLeft:'260@s'
+      },
+    ReCenter:{
+        margin: '3@s',  
+        backgroundColor: colors.primary, 
+        borderRadius:'30@s',
+        height: '38@s', 
+        width: '38@s', 
+        padding: '5@s'
+      }
 })

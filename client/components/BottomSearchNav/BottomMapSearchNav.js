@@ -185,35 +185,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           </TouchableOpacity>
           </ScrollView>
           
-          {/* <View style={styles.safest}>
-          <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: 0})}
-          style={styles.safeBox}
-          >
-            <Text style={styles.safetextBox}>Search</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}
-          style={styles.safeBox}
-          >
-            <Text style={styles.safetextBox}>Safest</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}
-          style={styles.safeBox}
-          >
-            <Text style={styles.safetextBox}>Fastest</Text>
-          </TouchableOpacity>
-          </View> */}
-
-          
-          {/* <Button title="yes" 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth})}></Button> */}
-
-          {/* <Button title="yes" 
-          onPress={() => scrollview.current.scrollTo({x: deviceWidth * 2})}></Button> */}
+         
         </View>
          {results !== null && (
         <View style={styles.safest}>
