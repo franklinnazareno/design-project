@@ -21,7 +21,7 @@ import colors from "../../assets/themes/colors";
 
 var deviceWidth = Dimensions.get('window').width;
 
-const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView }) => {
+const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView, handleModal }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
@@ -44,6 +44,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+    handleModal(!isModalVisible)
   };
 
   const slideModal = () => {
