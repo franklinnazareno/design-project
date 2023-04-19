@@ -1,14 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, memo } from 'react';
-import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import MapView, {Polyline, Marker, ProviderPropType, Geojson} from 'react-native-maps';
+import MapView, {Polyline, Marker, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
-import BottomNavComp from '../BottomSearchNav/BottomMapSearchNav';
-import { Button } from 'react-native-paper';
 import myBoundary from './boundary';
 
 
@@ -172,58 +170,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               tappable
             />
           )}
-          
-          {/* {userView === 0 && coordsData && coordsData2 && (
-            <>
-              <Polyline
-                coordinates={coordsData}
-                strokeWidth={4}
-                strokeColor="#ff0000"
-                tappable
-              />
-              <Polyline
-                coordinates={coordsData2}
-                strokeWidth={4}
-                strokeColor="#0000ff"
-                tappable
-              />
-            </>
-          )}
-          {userView === 1 && coordsData && (
-            <Polyline
-              coordinates={coordsData}
-              strokeWidth={4}
-              strokeColor="#ff0000"
-              tappable
-            />
-          )}
-          {userView === 2 && coordsData2 && (
-            <Polyline
-              coordinates={coordsData2}
-              strokeWidth={4}
-              strokeColor="#0000ff"
-              tappable
-            />
-          )} */}
 
         </MapView.Animated>
         
-        <View>
-      
-      
-      
-     
         {/* Recenter Button */}
-        
-        <View 
-        style={styles.CenterBox}> 
-            <View style={styles.ReCenter}>
+        <View>
+        <View style={styles.CenterBox}> 
+        <View style={styles.ReCenter}>
         <TouchableOpacity style={{alignSelf:'center'}} onPress={handleRelocate}>
         <MaterialCommunityIcons name = 'target' size={30} color="white" ></MaterialCommunityIcons>
         </TouchableOpacity>
         </View>
         </View>
-      </View>
+        </View>
         </MapContainer>
           
         

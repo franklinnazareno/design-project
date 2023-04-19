@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Switch, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Switch, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { usePreferencesContext } from '../../hooks/usePreferencesContext';
 import { moderateScale } from 'react-native-size-matters';

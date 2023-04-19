@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import tw from 'tw-tailwind'
-import Input from '../inputs';
-import colors from '../../assets/themes/colors';
+import Input from '../commons/inputs';
 import { useLogin } from '../../hooks/useLogin';
 import styles from './styles';
-import Container from '../commons/Contain';
-import CustomButton from '../CustomButton';
+import CustomButton from '../commons/CustomButton';
+import Container from '../commons/Container/Contain';
 
 
 const LoginComp = () => {

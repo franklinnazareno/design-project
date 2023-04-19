@@ -1,5 +1,4 @@
 import { ScaledSheet } from 'react-native-size-matters';
-
 import {Dimensions} from 'react-native';
 import colors from '../../../assets/themes/colors';
 var deviceHeight = Dimensions.get('window').width;
@@ -10,11 +9,7 @@ export default ScaledSheet.create ({
         height:deviceHeight,
         backgroundColor: 'red',
       },
-      
       btnContainer: {
-        // borderTopLeftRadius:'100@s',
-        // borderTopRightRadius:'100@s',
-        //display: "flex",
         borderRadius:'10@s',
         alignSelf: "center",
         alignItems:'flex-start',
@@ -29,7 +24,6 @@ export default ScaledSheet.create ({
       navtext: {
         textAlign:'center',
         alignSelf: "center",
-        // color:colors.white,
         fontWeight:'bold',
         fontSize:'15@s',
         marginTop:'-2@s'
@@ -37,8 +31,6 @@ export default ScaledSheet.create ({
       navtext2: {
         textAlign:'center',
         alignSelf: "center",
-        // color:colors.white,
-        // fontWeight:'bold',
         fontSize:'15@s',
         marginTop:'-2@s'
       },

@@ -5,10 +5,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 import Login from './Login';
 import Config from 'react-native-config';
-
-// components
 import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
-import Container from '../components/commons/Contain';
+
 
 const PrefDetail = () => {
     const [loading, setLoading] = useState(true)
