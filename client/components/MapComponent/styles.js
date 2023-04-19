@@ -1,7 +1,5 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
-import {Dimensions} from 'react-native';
-var deviceHeight = Dimensions.get('window').width;
 
 
 export default ScaledSheet.create ({
@@ -21,7 +19,7 @@ export default ScaledSheet.create ({
         marginTop:'-750@s',
         elevation:'10@s',
         flexDirection: 'row',
-        marginLeft:'260@s'
+        marginLeft:'260@s',
       },
     ReCenter:{
         margin: '3@s',  

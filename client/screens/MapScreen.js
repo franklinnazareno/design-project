@@ -1,15 +1,13 @@
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
-import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { LocationContext } from '../context/LocationContext'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
 import Geolocation from '@react-native-community/geolocation';
 import Config from 'react-native-config'
-
-
+import BottomSearchNav from '../components/BottomSearchNav/BottomSearchNav'
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -19,10 +17,8 @@ const MapScreen = () => {
   const [modOpen, setModOpen] = useState(false)
   const [location, setLocation] = useContext(LocationContext)
   const [userView, setUserView] = useState(0)
-
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
-
   const { logout } = useLogout()
 
   const handleCoordsData = (data) => {
@@ -138,7 +134,7 @@ const MapScreen = () => {
                   
                 </View>
               )}
-                <BottomNavComp 
+                <BottomSearchNav
                 preference={preferences} 
                 location={location} 
                 handleCoordsData={handleCoordsData} 
@@ -147,7 +143,6 @@ const MapScreen = () => {
                 handleUserView={handleUserView}
                 handleModal={handleModal}/>
                 
-          
           </View>
         
       )}

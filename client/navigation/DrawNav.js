@@ -1,15 +1,8 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import {Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MenuNav from './MenuNav';
-import SideMenu from './SideMenu/sideMenu';
-
-
-const NavItems=(navigation) => {
-    
-};
+import SideMenu from './SideMenu/SideMenuComp';
 
 const getDrawerContent = (navigation)=>{
     return (
@@ -19,7 +12,6 @@ const getDrawerContent = (navigation)=>{
 const DrawNav =() => {
     const Drawer = createDrawerNavigator();
     return ( 
-        
         <Drawer.Navigator 
         screenOptions={{ headerShown: false }}
         drawerType='Slide'
@@ -30,7 +22,4 @@ const DrawNav =() => {
         
     );
 };
-
-// screen > home > drawer
-// screen > Auth
 export default DrawNav;

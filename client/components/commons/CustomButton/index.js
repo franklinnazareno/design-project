@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
-import { set } from "react-native-reanimated";
-import colors from "../../assets/themes/colors";
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
+import colors from "../../../assets/themes/colors";
 import styles from "./styles";
+
 
 const CustomButton = ({
     title,

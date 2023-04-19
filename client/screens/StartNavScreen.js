@@ -1,7 +1,6 @@
-import { View, ActivityIndicator, Button } from 'react-native'
-import React, { useState, useEffect, useContext } from 'react'
+import { View, ActivityIndicator } from 'react-native'
+import React, { useState, useContext } from 'react'
 import { LocationContext } from '../context/LocationContext'
-import MapComponent from '../components/MapComponent/MapComponent'
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
 import NavInstruction from '../components/NavigatingMap/NavInstruction/NavInstruction'
 

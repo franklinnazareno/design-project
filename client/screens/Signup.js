@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
 import React from 'react'
-import SignupComp from '../components/Signup/signupComponent'
+import SignupComp from '../components/SignupComp/SignupComp'
 
 const Signup = () => {
   return (

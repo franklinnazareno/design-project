@@ -1,27 +1,19 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useRef, memo } from "react";
 import { 
-Button,
 StatusBar,
-StyleSheet,
 Text,
 View,
 TouchableOpacity,
 ScrollView,
-Image,
-TouchableWithoutFeedback, 
 Dimensions} from "react-native";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Modal from "react-native-modal";
-import CustomButton from "../CustomButton";
-import Input from "../inputs";
 import styles from "./styles";
-import Config from "react-native-config";
-import DetailBlock from "./BottomSearchDetail/bottomdetail";
-import colors from "../../assets/themes/colors";
+import BottomSearchDetail from "./BottomSearchDetail/BottomSearchDetail";
+
 
 var deviceWidth = Dimensions.get('window').width;
 
-const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView, handleModal }) => {
+const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView, handleModal }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [results, setResults] = useState(null);
@@ -47,10 +39,6 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     handleModal(!isModalVisible)
   };
 
-  const slideModal = () => {
-    setModalVisible2(!isModalVisible2);
-  };
-
   const handleSafestCoverage = (data) => {
     setSafestCoverage(data)
   }
@@ -63,26 +51,6 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
     handleUserView(viewIndex)
     scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
   }
-
-  // useEffect(() => {
-  //   async function getLocation() {
-  //     if (location) {
-  //       const longitude = location.longitude
-  //       const latitude = location.latitude 
-
-  //       try {
-  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-  //         const currentLocation = await response.json();
-  //         setSource(currentLocation.results[0].formatted_address);
-  //       } catch (error) {
-  //         setError(error);
-  //       }
-  //     }
-  //   }
-
-  //   getLocation();
-  // }, []);
-
 
   return (
     <View style={styles.flexView}>
@@ -98,8 +66,6 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
       {/* Modal for the up and down bouncy animation */}
       <Modal
         propagateSwipe={true}
-        // coverScreen={false}
-        // hasBackdrop={false}
         backdropOpacity={0}
         transparent={true}
         onBackdropPress={() => setModalVisible(false)}
@@ -114,24 +80,13 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
         animationOutTiming={500}
         backdropTransitionInTiming={1000}
         backdropTransitionOutTiming={500}
-        style={styles.modal}
-      >
+        style={styles.modal}>
         
         {/* Ignore this its just styles for modal */}
-        
-        {/* <View style={styles.recenter}>
-        <TouchableOpacity style={{alignSelf:'center'}}>
-        <MaterialCommunityIcons name = 'target' size={30} color="white" ></MaterialCommunityIcons>
-        </TouchableOpacity>
-        </View> */}
-
         <View style={styles.modalContent}>
         <View style={styles.center}>
         <View style={styles.barIcon} />
-
-        
-          
-          </View>
+        </View>
              
           <ScrollView 
           horizontal={true}
@@ -139,11 +94,10 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           ref={scrollview}
-          keyboardShouldPersistTaps={'always'}
-          > 
-            <TouchableOpacity activeOpacity={1}>
-              
-          <DetailBlock 
+          keyboardShouldPersistTaps={'always'}>
+             
+          <TouchableOpacity activeOpacity={1}>   
+          <BottomSearchDetail 
           preference={preference}
           location={location}
           handleCoordsData={handleCoordsData} 
@@ -181,12 +135,10 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
           setOtherSteps={setOtherSteps}
           currentLoc={currentLoc}
           setCurrentLoc={setCurrentLoc}>
-          </DetailBlock >
-
+          </BottomSearchDetail>
           </TouchableOpacity>
           </ScrollView>
           
-         
         </View>
          {results !== null && (
         <View style={styles.safest}>
@@ -194,14 +146,14 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
             onPress={() => handlePress(0)}
             style={styles.safeBox}
           >
-            <Text style={styles.safetextBox}>Home</Text>
+          <Text style={styles.safetextBox}>Home</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             onPress={() => handlePress(1)}
             style={styles.safeBox}
           >
-            <Text style={styles.safetextBox}>Best</Text>
+          <Text style={styles.safetextBox}>Best</Text>
           </TouchableOpacity>
 
           {results2 !== null && Object.keys(results2).length > 0 && (
@@ -209,7 +161,7 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
               onPress={() => handlePress(2)}
               style={styles.safeBox}
             >
-              <Text style={styles.safetextBox}>Other</Text>
+            <Text style={styles.safetextBox}>Other</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -223,5 +175,5 @@ const BottomNavComp = ({ preference, location, handleCoordsData, handleCoordsDat
   );
 }
 
-export default memo(BottomNavComp);
+export default memo(BottomSearchNav);
 

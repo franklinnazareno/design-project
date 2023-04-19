@@ -40,7 +40,7 @@ const NewFaqScreen = () => {
     <View style={styles.container}>
       {currentQuestion === null ? (
         <>
-          <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 50 }}>Frequently Asked Questions</Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 40 }}>Frequently Asked Questions</Text>
           {faqs.map((faq, index) => (
             <TouchableOpacity key={index} onPress={() => handleQuestionClick(index)}>
               <Text style={styles.question}>{faq.question}</Text>
