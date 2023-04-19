@@ -18,13 +18,13 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
-      latitude: 14.6507,
-      longitude: 121.1029,
+      latitude: location.latitude,
+      longitude: location.longitude,
       latitudeDelta: 0.005, 
       longitudeDelta: 0.005
     })
-
     const [regionTemp, setRegionTemp] = useState(null)
+    
 
     useEffect(() => {
       if (location){
@@ -113,7 +113,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
 
             {location && <Marker 
             title={"Current Location"}
-            coordinate={{latitude: location.latitude, longitude: location.longitude}}
+            coordinate={{latitude: location?.latitude, longitude: location?.longitude}}
             tracksViewChanges={true}>
                 <View style={{ borderRadius: 40, backgroundColor: 'white' }}>
                     <Icon name="circle" size={20} color="#1E75E8" />
