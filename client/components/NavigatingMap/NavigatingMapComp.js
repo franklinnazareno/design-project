@@ -50,7 +50,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     }, [location])
 
     useEffect(() => {
-      const thresholdDistance = 5
+      const thresholdDistance = 10
 
       for (const step of newSteps) {
         const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
