@@ -8,13 +8,14 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../commons/CustomButton';
 import styles from './styles';
-import OptimalProgressComp from './OptimalProgress/optimalProgressComp';
-import SafeProgressComp from './SafeProgress/safeProgressComp';
+import BestProgressComp from './BestProgress/BestProgressComp';
+import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
+
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -358,6 +359,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
 
   const handleSubmit = async () => {
       handleSubmitWithRetry(25);
+      handleModal(false)
   };
 
   
@@ -419,19 +421,22 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 </View> 
 
               {/* Safest Progress Detail */}
-              <SafeProgressComp safestCoverage={safestCoverage} />
+              <BestProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Start Navigation' 
-                onPress={() => navigation.navigate(STARTNAV, {
-                  preference: preference,
-                  source: sourceCoords,
-                  destination: destinationCoords,
-                  coords: bestCoords,
-                  steps: bestSteps,
-                  option: 'steps_with_coords_safest'
-                })}
+                  onPress={() => {
+                    navigation.navigate(STARTNAV, {
+                      preference: preference,
+                      source: sourceCoords,
+                      destination: destinationCoords,
+                      coords: bestCoords,
+                      steps: bestSteps,
+                      option: 'steps_with_coords_safest'
+                    });
+                    handleModal(false);
+                  }}
                 /> 
 
                 </View>}
@@ -473,22 +478,25 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 <Text style={styles.labelDistance}>{results2.length / 1000} km</Text>
                 </View> 
 
-                {/* Fastest Progress Detail */}
-                <OptimalProgressComp fastestCoverage={fastestCoverage} />
+                {/* Alternate Progress Detail */}
+                <AlternateProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
                 {begin && <View style={styles.beginNav}>
                 
                 <CustomButton primary title='Start Navigation' 
-                onPress={() => navigation.navigate(STARTNAV, {
-                  preference: preference,
-                  source: sourceCoords,
-                  destination: destinationCoords,
-                  coords: otherCoords,
-                  steps: otherSteps,
-                  option: 'steps_with_coords_fastest'
-                })}
-                /> 
+                  onPress={() => {
+                    navigation.navigate(STARTNAV, {
+                      preference: preference,
+                      source: sourceCoords,
+                      destination: destinationCoords,
+                      coords: otherCoords,
+                      steps: otherSteps,
+                      option: 'steps_with_coords_fastest'
+                    });
+                    handleModal(false);
+                  }}
+                />
 
                 </View>}
 
