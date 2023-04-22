@@ -193,7 +193,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         <View style={styles.CenterBox}> 
         <View style={styles.ReCenter}>
         <TouchableOpacity style={styles.Icon} onPress={handleRelocate}>
-        <MaterialCommunityIcons name = 'target' size={30} color="white"></MaterialCommunityIcons>
+        <MaterialCommunityIcons name = 'target' size={32} color="white"></MaterialCommunityIcons>
         </TouchableOpacity>
         </View>
         </View>
