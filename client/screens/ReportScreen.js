@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { LocationContext } from '../context/LocationContext';
-import ReportComponent from '../components/ReportComp/ReportComponent';
+import ReportComponent from '../components/reportComp/reportComponent';
 
 
 
