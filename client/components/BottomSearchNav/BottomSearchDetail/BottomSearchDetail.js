@@ -8,9 +8,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../commons/CustomButton';
 import styles from './styles';
-import OptimalProgressComp from './OptimalProgress/optimalProgressComp';
-import SafeProgressComp from './SafeProgress/safeProgressComp';
+import BestProgressComp from './BestProgress/BestProgressComp';
+import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
+
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -417,7 +418,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 </View> 
 
               {/* Safest Progress Detail */}
-              <SafeProgressComp safestCoverage={safestCoverage} />
+              <BestProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
                 
@@ -471,8 +472,8 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 <Text style={styles.labelDistance}>{results2.length / 1000} km</Text>
                 </View> 
 
-                {/* Fastest Progress Detail */}
-                <OptimalProgressComp fastestCoverage={fastestCoverage} />
+                {/* Alternate Progress Detail */}
+                <AlternateProgressComp fastestCoverage={fastestCoverage} />
 
                 {/* Start your FAST nav here */}
                 {begin && <View style={styles.beginNav}>
