@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
-import colors from '../../assets/themes/colors';
+import { View, Text, ImageBackground } from 'react-native';
 import { useSignup } from '../../hooks/useSignup';
-import Container from '../commons/Contain';
-import CustomButton from '../CustomButton';
-import Input from '../inputs';
+import Container from '../commons/Container/Contain';
+import CustomButton from '../commons/CustomButton';
+import Input from '../commons/inputs';
 import styles from './styles';
+
 
 
 const SignupComp = () => {
@@ -29,7 +29,6 @@ const SignupComp = () => {
       <Text style={styles.subText}>Sign Up</Text>
 
       <View style={styles.loginText}>
-      {/* <Text>Email address:</Text> */}
       <Input
         label='Email Address:'
         onChangeText={(text) => setEmail(text)}
@@ -38,7 +37,6 @@ const SignupComp = () => {
       </View>
       
       <View style={styles.passText}>
-      {/* <Text>Password:</Text> */}
       <Input
         label='Password:'
         secureTextEntry={true}

@@ -1,18 +1,13 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Button, ImageBackground, Image, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import {launchImageLibrary} from 'react-native-image-picker';
 import Config from 'react-native-config';
-
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { useLogout } from '../../hooks/useLogout';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Input from '../inputs'
+import Input from '../commons/inputs'
 import SecondaryInput from '../commons/secondaryInput'
-import styles from './styles'
-import CustomButton from '../CustomButton'
-import Container from '../commons/Contain';
+import CustomButton from '../commons/CustomButton'
 import MapContainer from '../commons/mapContainer/Contain';
+import styles from './styles';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -58,104 +53,6 @@ const ReportComponent = ({ location }) => {
         }
       }
   }
-
-
-const GooglePlacesInputSource = () => {
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current?.setAddressText(source)
-  }, [source]);
-
-  return (
-    <GooglePlacesAutocomplete
-      ref={ref}
-      placeholder="Type or select current location"
-      onPress={(data, details = null) => {
-        setSource(details.formatted_address)
-        console.log(details.name)
-      }}
-      query={{key: Config.GOOGLE_MAPS_API_KEY,
-              language: 'en',
-              location: '14.6507, 121.1029', // location bias of results
-              radius: '8000', 
-              components: 'country:ph',}}
-      fetchDetails={true}
-      onFail={error => console.log(error)}
-      onNotFound={() => console.log('no results')}
-      currentLocation={true}
-      currentLocationLabel='Current location'
-      enablePoweredByContainer={false}
-      styles={{
-        container: {
-          flex: 0,
-          paddingVertical: 10
-        },
-        description: {
-          color: '#000',
-          fontSize: 16,
-        },
-        predefinedPlacesDescription: {
-          color: '#3caf50',
-        },
-      }}
-      renderRow={(rowData) => {
-        if (rowData.isCurrentLocation == true){
-          return(
-            <View
-            style={{
-              backgroundColor: 'white',
-              flex: 1,
-              height: '100%',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <MaterialCommunityIcons name="map-marker-account" size={30} style={{marginRight: 8}}/>
-            <View>
-              <Text>Current Location</Text>
-            </View>
-            </View>
-          );
-        }
-        if (rowData.business_status) {
-          return(
-            <View
-            style={{
-              backgroundColor: 'white',
-              flex: 1,
-              height: '100%',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
-            <View>
-              <Text>{rowData.name}</Text>
-            </View>
-            </View>
-          )
-        }
-        const title = rowData.structured_formatting.main_text;
-        const address = rowData.structured_formatting.secondary_text;
-        return (
-          <View
-            style={{
-              backgroundColor: 'white',
-              flex: 1,
-              height: '100%',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
-            <View>
-            <Text style={{fontSize: 14}}>{title}</Text>
-            <Text style={{fontSize: 14}}>{address}</Text>
-            </View>
-          </View>
-        );
-      }}
-    />
-  );
-};
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -211,8 +108,6 @@ const GooglePlacesInputSource = () => {
             </TouchableOpacity>}
             iconPosition='right'
             />
-        {/* <Text>Location</Text> */}
-        {/* <GooglePlacesInputSource/> */}
   
         <View>
         <SecondaryInput

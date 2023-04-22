@@ -1,20 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { 
-Button,
-StatusBar,
-StyleSheet,
-Text,
-View,
-TouchableOpacity,
-ScrollView,
-Image,
-TouchableWithoutFeedback, 
-Dimensions} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StatusBar, Text, View, Dimensions } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
 import styles from "./styles";
 
-var deviceWidth = Dimensions.get('window').width;
 
 const NavInstruction = ({ steps, location }) => {
 
@@ -41,7 +29,7 @@ const NavInstruction = ({ steps, location }) => {
 
   useEffect(() => {
     if (location) {
-      const thresholdDistance = 5
+      const thresholdDistance = 10
 
       for (const step of newSteps) {
         const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
@@ -68,7 +56,6 @@ const NavInstruction = ({ steps, location }) => {
       <StatusBar />
       
       <View styles={styles.ButtonView}>
-        {/* Ignore this it is for modal */}
         {console.log(currentDistance)}
         {console.log(currentStep)}
         <View style={styles.btnContainer}>

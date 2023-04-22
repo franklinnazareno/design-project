@@ -2,24 +2,19 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button, KeyboardAvoidingView } from 'react-native';
 import Config from 'react-native-config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import colors from '../../../assets/themes/colors';
-import CustomButton from '../../CustomButton';
-import Input from '../../inputs';
+import CustomButton from '../../commons/CustomButton';
 import styles from './styles';
 import OptimalProgressComp from './OptimalProgress/optimalProgressComp';
 import SafeProgressComp from './SafeProgress/safeProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 
-var deviceWidth = Dimensions.get('window').width;
 navigator.geolocation = require('@react-native-community/geolocation');
 
-import Tts from 'react-native-tts';
-
-const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -32,43 +27,11 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
     const phi2 = toRadians(lat2)
     const deltaPhi = toRadians(lat2 - lat1)
     const deltaLambda = toRadians(lon2 - lon1)
-
     const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     return R * c
   }
 
-  // const [isSpeaking, setIsSpeaking] = useState(false);
-
-  // const handleSpeak = () => {
-  //   let instructions = '';
-  //   for (let i = 0; i < results.steps.length; i++) {
-  //     const instructionText = `${i + 1}. ${results.steps[i].instruction}. `;
-  //     instructions += instructionText;
-  //   }
-  //   Tts.speak(instructions);
-  //   setIsSpeaking(true);
-  // };
-
-  // const handlePause = () => {
-  //   Tts.stop();
-  //   setIsSpeaking(false);
-  // };
-
-  // const handleSpeak2 = () => {
-  //   let instructions = '';
-  //   for (let i = 0; i < results2.steps.length; i++) {
-  //     const instructionText = `${i + 1}. ${results2.steps[i].instruction}. `;
-  //     instructions += instructionText;
-  //   }
-  //   Tts.speak(instructions);
-  //   setIsSpeaking(true);
-  // };
-
-  // const handlePause2 = () => {
-  //   Tts.stop();
-  //   setIsSpeaking(false);
-  // };
   useEffect(() => {
     if(location){
       const latitude = location.latitude;
@@ -163,40 +126,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             </View>
             )
           }
-          // if (rowData.isCurrentLocation == true){
-          //   return(
-          //     <View
-          //     style={{
-          //       backgroundColor: 'white',
-          //       flex: 1,
-          //       height: '100%',
-          //       flexDirection: 'row',
-          //       alignItems: 'center',
-          //     }}>
-          //     <MaterialCommunityIcons name="map-marker-account" size={30} style={{marginRight: 8}}/>
-          //     <View>
-          //       <Text>Current Location</Text>
-          //     </View>
-          //     </View>
-          //   );
-          // }
-          // if (rowData.business_status) {
-          //   return(
-          //     <View
-          //     style={{
-          //       backgroundColor: 'white',
-          //       flex: 1,
-          //       height: '100%',
-          //       flexDirection: 'row',
-          //       alignItems: 'center',
-          //     }}>
-          //     <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
-          //     <View>
-          //       <Text>{rowData.name}</Text>
-          //     </View>
-          //     </View>
-          //   )
-          // }
+
           const title = rowData.structured_formatting.main_text;
           const address = rowData.structured_formatting.secondary_text;
           return (
@@ -291,21 +221,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
       />
     );
   };
-  // const handleLocation = async () => {
-  //   if (location) {
-  //       const longitude = location.longitude
-  //       const latitude = location.latitude 
-
-  //       try {
-  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-  //         const currentLocation = await response.json();
-  //         setSource(currentLocation.results[0].formatted_address);
-  //       } catch (error) {
-  //         setError(error);
-  //       }
-  //     }
-  // }
-  
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -318,30 +233,7 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
     setLoading(true);
 
     try {
-      // const [sourceResponse, destinationResponse] = await Promise.all([
-      //         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(source)}&key=${Config.GOOGLE_MAPS_API_KEY}`),
-      //         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destination)}&key=${Config.GOOGLE_MAPS_API_KEY}`)
-      //     ]);
 
-      // const sourceData = await sourceResponse.json();
-      // const destinationData = await destinationResponse.json();
-
-      // if (!sourceResponse.ok || !destinationResponse.ok) {
-      //     setError("Unable to connect to location services.");
-      //     setLoading(false)
-      //     handleLoadingData(false)
-      // }
-
-      // if (sourceData.results.length === 0 || destinationData.results.length === 0) {
-      //     setError("Unable to find the current location. Try another search.");
-      //     setLoading(false)
-      //     handleLoadingData(false)
-      // }
-
-      // const sourceCoords = [sourceData.results[0].geometry.location.lng, sourceData.results[0].geometry.location.lat]
-      // setSourceCoords(sourceCoords)
-      // const destCoords = [destinationData.results[0].geometry.location.lng, destinationData.results[0].geometry.location.lat]
-      // setDestinationCoords(destCoords)
       const thresholdDistance = 50
       if (location) {
         const distance = haversineDistance(location.latitude, location.longitude, sourceCoords[1], sourceCoords[0])
@@ -438,17 +330,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
     } catch (error) {
       console.log(error)
       if (error instanceof TypeError && error.message === 'Network request failed') {
-        // Toast.show({
-        //   type: 'error',
-        //   text1: 'A server error has occurred.',
-        //   A server error has occurred.
-        //   visibilityTime: 3000,
-        //   autoHide: true,
-        //   topOffset: 250,
-        //   bottomOffset:300,
-        //   onHide: () => setError(null),
-          
-        // });
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await handleSubmitWithRetry(retryCount - 1);
       } else {
@@ -499,17 +380,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
           <View style={styles.locationlabel}>
             <Text>Source</Text>
           </View>
-              {/* <Input
-              label="Source"
-              placeholder='Location'
-
-              icon={<TouchableOpacity onPress={handleLocation} >
-                <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
-                </TouchableOpacity>}
-                iconPosition='right'
-
-              onChangeText={(text) => setSource(text)}
-              value={source} /> */}
               <GooglePlacesInputSource/>
               </View>
               
@@ -519,27 +389,13 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
                   <Text>Destination</Text>
               </View> 
               <GooglePlacesInputDestination/>
-              
-              {/* <Input
-              label="Destination"
-              placeholder='Destination'
-              onChangeText={(text) => setDestination(text)}
-              value={destination} /> */}
               </View>
               
-
               {/* Custom Button OnPress does not work use touchableopacity */}
-              
               <View style={styles.boxloader}>
-
               { sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
-              {/* {error && <Text style={styles.error}>{error}</Text>}  */}
-              
-      
-              
-              
-              
               </View>
+
               <Toast ref={(ref) => Toast.setRef(ref)}  />
           </View>
 
@@ -651,10 +507,6 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
             </ScrollView>
             
           )}
-    
-          {/* <View style={styles.forthView}>
-            <Text style={styles.headerText}>Forth View</Text>
-          </View> */}
          
         </ScrollView>
        
@@ -665,59 +517,4 @@ const DetailBlock = ({ preference, location, handleCoordsData, handleCoordsData2
   }
 
 
-export default DetailBlock;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "#e5e5e5",
-//   },
-//   headerText: {
-//     fontSize: 30,
-//     textAlign: "center",
-//     margin: 10,
-//     color: 'white',
-//     fontWeight: "bold"
-//   },
-//   firstView: {
-//     width: deviceWidth,
-//     alignSelf:'flex-start'
-//   },
-//   secondView: {
-    
-//     height:400,
-//     width:385,
-//     backgroundColor: colors.grey,
-//     borderRadius: 10,
-//     alignSelf:'center',
-//     marginTop: 1
-//   },
-//   thirdView: {
-//     width: deviceWidth,
-//   },
-//   forthView: {
-//     width: deviceWidth,
-//   },
-//   Current: {
-//     marginTop: -10,
-//     width:300,
-//     alignSelf:'center'
-// },
-//     Destination: {
-//     marginTop: -25,
-//     width:300,
-//     alignSelf:'center',
-// },
-// boxloader:{
-//   marginTop:-10,
-//   flex:1,
-// },
-// error: {
-//   color: 'red',
-//   fontSize: 16,
-//   alignSelf:'center'
-// },
-
-// });
+export default BottomSearchDetail;

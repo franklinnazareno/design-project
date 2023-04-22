@@ -1,7 +1,8 @@
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
+
 
 
 const Container = ({style, children}) => {

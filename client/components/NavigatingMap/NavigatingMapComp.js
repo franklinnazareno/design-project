@@ -1,18 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, useRef } from 'react';
-import {Text, View, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MapView, {Polyline, Marker, ProviderPropType} from 'react-native-maps';
+import { View } from 'react-native';
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tts from 'react-native-tts';
-import isEqual from 'lodash/isEqual';
-import Config from 'react-native-config';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 
 
 
-const NavigatingMapComp = ({ preference, destination, location, coords, steps, option, setLoading }) => {
+const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -53,61 +49,8 @@ const NavigatingMapComp = ({ preference, destination, location, coords, steps, o
       })
     }, [location])
 
-
-
-    // useEffect(() => {
-    //   const drawCoords = async () => {
-    //     const preferences = preference.preferences.map(({ name, value }) => ({ name, value }));
-    //     const postData = { preferences, sourceCoords: [location.longitude, location.latitude], destCoords: destination }
-
-    //       let retryCount = 0;
-    //       const maxRetries = 25;
-    //       while (retryCount <= maxRetries) {
-    //         try {
-    //           const response = await fetch(`${Config.FLASK}/${option}/`, {
-    //             method: 'POST',
-    //             headers: {
-    //               'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(postData)
-    //           });
-
-    //           const json = await response.json();
-
-    //           if (response.ok) {
-    //             // Create the Polyline with the fetched coordinates
-    //             setCoords(json['coordinates'])
-    //             const stepsJson = json['steps']
-    //             const stepsTemp = stepsJson.map(step => {
-    //               return {
-    //                 coordinates: step.coordinates,
-    //                 instruction: step.instruction
-    //               }
-    //             })
-    //             setSteps(stepsTemp)
-    //             break; // exit the loop if the request is successful
-    //           }
-    //         } catch (error) {
-    //           if (error instanceof TypeError && error.message === 'Network request failed') {
-    //             if (retryCount >= maxRetries) {
-    //               setError("A network error has occurred. Please try again later.")
-    //             } else {
-    //               retryCount++;
-    //               await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before retrying
-    //             }
-    //           } else {
-    //             setError("A server error has occurred. Please try again later.")
-    //             break;
-    //           }
-    //         }
-    //       }
-
-    //   };
-    //     drawCoords()
-    // }, [location]);
-
     useEffect(() => {
-      const thresholdDistance = 5
+      const thresholdDistance = 10
 
       for (const step of newSteps) {
         const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
@@ -134,7 +77,6 @@ const NavigatingMapComp = ({ preference, destination, location, coords, steps, o
           region={region}
           style={styles.Mapsize}
           zoomEnabled
-          // minZoomLevel={16}
           rotateEnabled={false}
            >
 
@@ -165,11 +107,8 @@ const NavigatingMapComp = ({ preference, destination, location, coords, steps, o
             />}
 
         </MapView.Animated>
-        
-        
         </MapContainer>
-          
-        
+              
     );
 };
 

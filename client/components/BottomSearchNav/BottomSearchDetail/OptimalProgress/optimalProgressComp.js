@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
-import CircularProgress from 'react-native-circular-progress-indicator';
 import React, { useState, useEffect } from 'react'
 import Modal from "react-native-modal";
 import styles from './styles';
