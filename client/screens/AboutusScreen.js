@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import AboutusComp from '../components/AboutusComp/AboutusComp'
 
 const AboutusScreen = () => {
   return (
-    <View>
-      <Text>AboutusScreen</Text>
-    </View>
+    <AboutusComp>
+      
+    </AboutusComp>
   )
 }
 
