@@ -3,10 +3,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import PrefDetail from '../screens/Home';
 import MapScreen from '../screens/MapScreen';
 import colors from '../assets/themes/colors';
-import { FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';
+import { ABOUT_US, FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';
 import ReportScreen from '../screens/ReportScreen';
 import StartNavScreen from '../screens/StartNavScreen';
 import NewFaqScreen from '../screens/NewFaqScreen';
+import AboutusScreen from '../screens/AboutusScreen';
 
 const MenuNav =() => {
     const HomeStack = createStackNavigator();
@@ -68,10 +69,19 @@ const MenuNav =() => {
                 },
                 }}>
                 </HomeStack.Screen>
+                <HomeStack.Screen name={ABOUT_US} component={AboutusScreen}
+            options={{
+                headerStyle: {
+                backgroundColor: colors.primary,
+                },
+                headerTintColor: colors.white,
+                headerTitleStyle: {
+                fontWeight: 'bold',
+                },
+                }}>
+                </HomeStack.Screen>
         </HomeStack.Navigator>
     );
 };
 
-// screen > home > drawer
-// screen > Auth
 export default MenuNav;
