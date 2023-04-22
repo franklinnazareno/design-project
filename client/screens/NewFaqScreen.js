@@ -57,7 +57,7 @@ const NewFaqScreen = () => {
         </>
       )}
       <View style={styles.divider} />
-      <Text style={{ fontSize: 16 }}>Can't find the answer you're looking for? Contact us at qkjqbaturiano@tip.edu.ph</Text>
+      <Text style={{ fontSize: 16 }}>Can't find the answer you're looking for? Contact us at pathfindertipqcapp@gmail.com.</Text>
     </View>
   );
 };
