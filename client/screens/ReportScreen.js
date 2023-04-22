@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { LocationContext } from '../context/LocationContext';
-import ReportComponent from '../components/ReportComp/ReportComponent';
+import ReportingComponent from '../components/ReportComp/ReportingComponent';
+
+
 
 
 
@@ -8,7 +10,7 @@ const ReportScreen = () => {
   const [location] = useContext(LocationContext)
 
   return (
-      <ReportComponent location={location} />
+      <ReportingComponent location={location} />
     )
 
 }
