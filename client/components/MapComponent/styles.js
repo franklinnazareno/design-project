@@ -27,6 +27,9 @@ export default ScaledSheet.create ({
         borderRadius:'30@s',
         height: '38@s', 
         width: '38@s', 
-        padding: '5@s'
-      }
+      },
+    Icon:{
+        padding:'6@s',
+        alignSelf: 'center'
+    }
 })
