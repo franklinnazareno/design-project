@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, TextInput } from "react-native";
-import { set } from "react-native-reanimated";
-import colors from "../../assets/themes/colors";
+import colors from "../../../assets/themes/colors";
 import styles from "./styles";
 
 

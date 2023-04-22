@@ -1,27 +1,24 @@
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
-import BottomNavComp from '../components/BottomSearchNav/BottomMapSearchNav'
 import { LocationContext } from '../context/LocationContext'
 import { usePreferencesContext } from '../hooks/usePreferencesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
 import Geolocation from '@react-native-community/geolocation';
 import Config from 'react-native-config'
-
-
+import BottomSearchNav from '../components/BottomSearchNav/BottomSearchNav'
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
   const [loadingData, setDataLoading] = useState(false)
   const [coords, setCoords] = useState(null)
   const [coords2, setCoords2] = useState(null)
+  const [modOpen, setModOpen] = useState(false)
   const [location, setLocation] = useContext(LocationContext)
   const [userView, setUserView] = useState(0)
-
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
-
   const { logout } = useLogout()
 
   const handleCoordsData = (data) => {
@@ -40,53 +37,68 @@ const MapScreen = () => {
     setUserView(data)
   }
 
+  const handleModal = (data) => {
+    setModOpen(data)
+  }
+
   useEffect(() => {
-    let isMounted = true;
+  let isMounted = true;
 
-    const fetchUserPreferences = async () => {
-      const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
-        headers: {'Authorization': `Bearer ${user.token}`}
-      })
-      const json = await response.json()
+  const fetchUserPreferences = async () => {
+    const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
+      headers: {'Authorization': `Bearer ${user.token}`}
+    })
+    const json = await response.json()
 
-      if (response.ok) {
-        dispatch({type: 'SET_PREFERENCES', payload: json})
-      }
-
-      if (!response.ok) {
-        logout()
-      }
+    if (response.ok) {
+      dispatch({type: 'SET_PREFERENCES', payload: json})
     }
 
-    const watchId = Geolocation.watchPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      },
-      error => {
-        console.warn(error.code, error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        distanceFilter: 5, // update location every meter inputted
-      }
-    );
+    if (!response.ok) {
+      logout()
+    }
+  }
 
-    Promise.all([fetchUserPreferences(), watchId])
-      .then(() => {
-        if (isMounted) {
-          setLoading(false);
+  const watchId = !modOpen && Geolocation.watchPosition( // added conditional statement
+    position => {
+      const { latitude, longitude } = position.coords;
+      setLocation({ latitude, longitude });
+    },
+    error => {
+      console.warn(error.code, error.message);
+    },
+    {
+      enableHighAccuracy: true,
+      distanceFilter: 5, // update location every meter inputted
+    }
+  );
+
+  Promise.all([fetchUserPreferences(), watchId])
+    .then(() => {
+      if (isMounted) {
+        if (location) {
+          setLoading(false)
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        // setLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
-    return () => {
-      isMounted = false;
-      Geolocation.clearWatch(watchId);
-    };
-  }, [dispatch, user]);
+  return () => {
+    isMounted = false;
+    Geolocation.clearWatch(watchId);
+  };
+}, [dispatch, user, location, modOpen]); // added modOpen to the dependency array
+
+
+  // useEffect(() => {
+  //   if (location) {
+  //     setLoading(false)
+  //   }
+  // }, [location])
+
 
 
   if (!user) {
@@ -96,7 +108,7 @@ const MapScreen = () => {
   return (
     
     <View>
-      
+      {console.log(location)}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -122,15 +134,15 @@ const MapScreen = () => {
                   
                 </View>
               )}
-                <BottomNavComp 
+                <BottomSearchNav
                 preference={preferences} 
                 location={location} 
                 handleCoordsData={handleCoordsData} 
                 handleCoordsData2={handleCoordsData2}
                 handleLoadingData={handleLoadingData} 
-                handleUserView={handleUserView}/>
+                handleUserView={handleUserView}
+                handleModal={handleModal}/>
                 
-          
           </View>
         
       )}

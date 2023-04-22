@@ -1,19 +1,12 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PrefDetail from '../screens/Home';
 import MapScreen from '../screens/MapScreen';
 import colors from '../assets/themes/colors';
 import { FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';
 import ReportScreen from '../screens/ReportScreen';
-import ReportComponent from '../components/reportComp/reportComponent';
 import StartNavScreen from '../screens/StartNavScreen';
 import NewFaqScreen from '../screens/NewFaqScreen';
-
-
-
-
 
 const MenuNav =() => {
     const HomeStack = createStackNavigator();

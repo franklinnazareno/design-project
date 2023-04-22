@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Modal from "react-native-modal";
 import styles from './styles';
 import CustomCircularProgress from '../../../commons/CustomCircle/CustomCircleProgress';

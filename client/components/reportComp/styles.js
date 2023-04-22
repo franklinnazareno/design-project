@@ -37,14 +37,14 @@ export default ScaledSheet.create({
         alignSelf: 'center',
     },
     error: {
-    color: 'red',
-    fontSize: '16@s',
-    alignSelf:'center'
+        color: 'red',
+        fontSize: '16@s',
+        alignSelf:'center'
     },
     success: {
-    color: 'green',
-    fontSize: '16@s',
-    alignSelf:'center'
+        color: 'green',
+        fontSize: '16@s',
+        alignSelf:'center'
     },
     Imageupload: {
         marginBottom: '8@s'

@@ -1,9 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters';
-
 import {Dimensions} from 'react-native';
 import colors from '../../../assets/themes/colors';
 var deviceWidth = Dimensions.get('window').width;
-var deviceHeight = Dimensions.get('window').width;
 
 export default ScaledSheet.create ({
   container: {
@@ -95,11 +93,8 @@ export default ScaledSheet.create ({
     alignSelf:'center',
     marginTop: '1@s',
     alignItems:'center',
-    flexDirection:'row',
-    
-        
+    flexDirection:'row',       
   },
-  
   Mainprogress:{
     height:'150@s',
     width:'240@s',
@@ -113,11 +108,9 @@ export default ScaledSheet.create ({
     paddingVertical: '3@s',
     paddingHorizontal: '3@s',
     marginLeft:'1@s'
-    
   },
   progresspaddingMAIN:{
     paddingLeft:'5@s',
-    
   },
   marginbox: {
     height:'100@s'
@@ -134,15 +127,12 @@ export default ScaledSheet.create ({
     alignSelf: 'center',
     marginTop:'1@s',
     marginHorizontal: '2@s',
-    
-    
   },
   safetextBox:{
     color: colors.white,
     fontSize: '16@s',
     fontWeight: 'bold',
     alignSelf:'center'
-
   },
   labelbox:{
     height:'40@s',
