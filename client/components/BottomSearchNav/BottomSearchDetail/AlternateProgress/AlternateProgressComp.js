@@ -6,7 +6,7 @@ import CustomCircularProgress from '../../../commons/CustomCircle/CustomCirclePr
 import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
-const OptimalProgressComp = ({ fastestCoverage }) => {
+const AlternateProgressComp = ({ fastestCoverage }) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisible2, setIsModalVisible2] = useState(false);
@@ -263,4 +263,4 @@ const OptimalProgressComp = ({ fastestCoverage }) => {
   )
 }
 
-export default OptimalProgressComp
+export default AlternateProgressComp

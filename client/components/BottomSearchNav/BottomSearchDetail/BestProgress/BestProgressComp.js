@@ -7,7 +7,7 @@ import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
 
-const SafeProgressComp = ({ safestCoverage }) => {
+const BestProgressComp = ({ safestCoverage }) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisible2, setIsModalVisible2] = useState(false);
@@ -265,4 +265,4 @@ const SafeProgressComp = ({ safestCoverage }) => {
   )
 }
 
-export default SafeProgressComp
+export default BestProgressComp
