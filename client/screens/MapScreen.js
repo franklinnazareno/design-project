@@ -76,10 +76,7 @@ const MapScreen = () => {
   Promise.all([fetchUserPreferences(), watchId])
     .then(() => {
       if (isMounted) {
-        if (location) {
-          setLoading(false)
-        }
-        // setLoading(false);
+        setLoading(false);
       }
     })
     .catch((error) => {
@@ -90,7 +87,7 @@ const MapScreen = () => {
     isMounted = false;
     Geolocation.clearWatch(watchId);
   };
-}, [dispatch, user, location, modOpen]); // added modOpen to the dependency array
+}, [dispatch, user, modOpen]); // added modOpen to the dependency array
 
 
   // useEffect(() => {

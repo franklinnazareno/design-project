@@ -16,12 +16,27 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
-      latitude: location.latitude,
-      longitude: location.longitude,
+      latitude: 14.6507,
+      longitude: 121.1029,
       latitudeDelta: 0.005, 
       longitudeDelta: 0.005
     })
     const [regionTemp, setRegionTemp] = useState(null)
+
+
+    useEffect(() => {
+      if (location && location.latitude && location.longitude){
+        const latitude = location.latitude
+        const longitude = location.longitude 
+
+        setRegion({
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005
+        })
+      }
+    }, [])
     
 
     useEffect(() => {
