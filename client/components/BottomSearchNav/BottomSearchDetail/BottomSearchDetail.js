@@ -38,33 +38,35 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
       const latitude = location.latitude;
       const longitude = location.longitude;
       
-      const fetchData = async () => {
-        try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-          const currentLocation = await response.json();
-          const name = currentLocation.results[0].formatted_address;
-          
-          setCurrentLoc({
-            name: name,
-            description: "Current Location",
-            geometry: {location: {lat: latitude, lng: longitude}}
-          });
-          
-        } catch(error) {
-          setError(error);
-        }
-      };
-      
-      fetchData(); // Call the async function
+      setCurrentLoc({
+        name: "Current Location",
+        description: "Current Location",
+        geometry: {location: {lat: latitude, lng: longitude}}
+      });
+
     }
   }, []);
-  
+
   const GooglePlacesInputSource = () => {
     const ref = useRef();
 
     useEffect(() => {
       ref.current?.setAddressText(source)
+      
     }, [source]);
+
+    useEffect(() => {
+      if(source == "Current Location"){
+        const fetchData = async () => {
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${sourceCoords[1]},${sourceCoords[0]}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+            const currentLocation = await response.json();
+            console.log(currentLocation)
+            const name = currentLocation.results[0].formatted_address;
+            
+            ref.current?.setAddressText(name)
+        };
+        fetchData();}
+    })
 
     return (
       <GooglePlacesAutocomplete
