@@ -134,7 +134,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           otherSteps={otherSteps}
           setOtherSteps={setOtherSteps}
           currentLoc={currentLoc}
-          setCurrentLoc={setCurrentLoc}>
+          setCurrentLoc={setCurrentLoc}
+          handleModal={handleModal}>
           </BottomSearchDetail>
           </TouchableOpacity>
           </ScrollView>
