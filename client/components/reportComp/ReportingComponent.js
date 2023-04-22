@@ -11,7 +11,7 @@ import styles from './styles';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const ReportComponent = ({ location }) => {
+const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
   const [description, setDescription] = useState('')
   const [error, setError] = useState(null)
@@ -127,4 +127,4 @@ const ReportComponent = ({ location }) => {
   )
 }
 
-export default ReportComponent
+export default ReportingComponent
