@@ -94,9 +94,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.client"
+    namespace "com.jovelites.pathfinder"
     defaultConfig {
-        applicationId "com.client"
+        applicationId "com.jovelites.pathfinder"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
