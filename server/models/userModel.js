@@ -26,8 +26,28 @@ userSchema.statics.signup = async function(email, password) {
     if (!validator.isEmail(email)) {
         throw Error('Email not valid')
     }
-    if (!validator.isStrongPassword(password)) {
-        throw Error('Password must contain at least 1 of each: uppercase and lowercase letter, number, and special character (\\!\\"#\\$%\\&\'\\(\\)\\*\\+,-\\.\\/\\:;<=>\\?@\\[\\\\\\]^_`{|}~)')
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!validator.matches(password, passwordRegex)) {
+    const errors = [];
+
+    if (!validator.matches(password, /^(?=.*[a-z])/)) {
+        errors.push('Password must contain at least one lowercase letter');
+    }
+
+    if (!validator.matches(password, /^(?=.*[A-Z])/)) {
+        errors.push('Password must contain at least one uppercase letter');
+    }
+
+    if (!validator.matches(password, /^(?=.*\d)/)) {
+        errors.push('Password must contain at least one number');
+    }
+
+    if (!validator.matches(password, /^(?=.*[@$!%*?&])/)) {
+        errors.push('Password must contain at least one special character');
+    }
+
+    throw new Error(errors.join('\n'));
     }
     
     const exists = await this.findOne({ email })
