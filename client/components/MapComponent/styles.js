@@ -13,7 +13,6 @@ export default ScaledSheet.create ({
     CenterBox:{
         borderRadius:'30@s',
         alignSelf: 'center',
-        alignItems:'flex-start',
         padding: '-10@s',
         backgroundColor:colors.primary,
         marginTop:'-750@s',
@@ -22,14 +21,16 @@ export default ScaledSheet.create ({
         marginLeft:'260@s',
       },
     ReCenter:{
+        alignSelf:'center',
         margin: '3@s',  
-        backgroundColor: colors.primary, 
+        backgroundColor:colors.primary, 
         borderRadius:'30@s',
-        height: '38@s', 
-        width: '38@s', 
+        height: '40@s', 
+        width: '40@s', 
+   
       },
     Icon:{
-        padding:'6@s',
+        margin:'5@s',
         alignSelf: 'center'
     }
 })
