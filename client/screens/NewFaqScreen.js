@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   backButton: {
+    width:'100%',
     backgroundColor: colors.primary,
     borderRadius: 5,
     padding: 10,
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
+    alignSelf:'center'
   },
 });
 
