@@ -4,7 +4,7 @@ import colors from '../../assets/themes/colors';
 export default styles = ScaledSheet.create({
     
     loginImage:{
-        height: '650@s',
+        height: '680@s',
         width: '350@s',
         flex:1,
         alignSelf:'center',
