@@ -64,6 +64,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             const name = currentLocation.results[0].formatted_address;
             
             ref.current?.setAddressText(name)
+            setSource(name)
         };
         fetchData();}
     })
@@ -338,13 +339,13 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
       } else {
         handleLoadingData(false)
         setLoading(false)
-        setError("An error has occurred. \n Please ensure that the set locations are within Marikina City")
+        setError("An error has occurred. \n Ensure the set locations are within the Map Boundary")
         if (error && error.toString().trim() !== "") {
           Toast.show({
             type: 'error',
             text1: 'An error has occurred.',
             //text2: error.toString(),
-            text2: 'Please ensure that the set locations are within Marikina City.',
+            text2: 'Ensure the set locations are within the Map Boundary.',
             visibilityTime: 3000,
             autoHide: true,
             topOffset: 250,
