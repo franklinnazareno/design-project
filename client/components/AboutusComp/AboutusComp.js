@@ -2,10 +2,11 @@ import { View, Text, ImageBackground, Image, SafeAreaView } from 'react-native'
 import React from 'react'
 import styles from './styles'
 import MapContainer from '../commons/mapContainer/Contain'
+import Container from '../commons/Container/Contain'
 
 const AboutusComp = () => {
   return (
-    <MapContainer>
+    <Container>
         <ImageBackground 
           source={require('../../assets/images/Reg4.png')}
           style={[styles.loginImage]}>
@@ -47,7 +48,7 @@ const AboutusComp = () => {
           </View>
 
         </ImageBackground>
-    </MapContainer>
+    </Container>
   )
 }
 
