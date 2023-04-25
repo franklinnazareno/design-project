@@ -64,6 +64,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             const name = currentLocation.results[0].formatted_address;
             
             ref.current?.setAddressText(name)
+            setSource(name)
         };
         fetchData();}
     })
