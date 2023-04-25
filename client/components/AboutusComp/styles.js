@@ -4,7 +4,7 @@ import colors from '../../assets/themes/colors';
 export default styles = ScaledSheet.create({
     
     loginImage:{
-        height: '610@s',
+        height: '650@s',
         width: '350@s',
         flex:1,
         alignSelf:'center',
@@ -18,7 +18,7 @@ export default styles = ScaledSheet.create({
         padding:'15@s',
     },
     memberimage:{
-        height:'150@s', 
+        height:'160@s', 
         width:'140@s', 
         alignItems:'center', 
         backgroundColor: colors.white, 
@@ -33,8 +33,12 @@ export default styles = ScaledSheet.create({
         borderRadius:'15@s'
     },
     namefont:{
-        padding:'5@s',
+        padding:'3@s',
         alignSelf:'center', 
         fontSize: 12
-    }
+    },
+    namefont2:{
+        alignSelf:'center',
+        fontSize: 12 
+    },
 })
