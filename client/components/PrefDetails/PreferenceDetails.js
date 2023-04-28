@@ -8,6 +8,7 @@ import styles from './styles';
 import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import MapContainer from '../commons/mapContainer/Contain';
 
 
 
@@ -81,44 +82,46 @@ const PreferenceDetails = ({ preference }) => {
   }, [preference, preferences]);
 
   return (
-    <View style={styles.preferenceDetails}>
-      <Text style={styles.title}>{preference.name}</Text>
-      {preferences.map((pref, index) => (
-        <View style={styles.subPreferenceDetails} key={pref._id}>
-          <View style={styles.preferenceRow}>
-            <Switch
-              style={{ transform: [{ 
-                scaleX: moderateScale(1, 1.5) }, 
-                { scaleY: moderateScale(1, 1.5) }] }}
-                trackColor={{false: colors.grey, true: colors.primary}}
-                thumbColor={pref.enabled ? '#f4f3f4' : '#f4f3f4'}
-                value={pref.enabled}
-                onValueChange={() => handlePreferenceToggle(index)}
+    <MapContainer>
+        <View style={styles.preferenceDetails}>
+        <Text style={styles.title}>{preference.name}</Text>
+        {preferences.map((pref, index) => (
+            <View style={styles.subPreferenceDetails} key={pref._id}>
+            <View style={styles.preferenceRow}>
+                <Switch
+                style={{ transform: [{ 
+                    scaleX: moderateScale(1, 1.5) }, 
+                    { scaleY: moderateScale(1, 1.5) }] }}
+                    trackColor={{false: colors.grey, true: colors.primary}}
+                    thumbColor={pref.enabled ? '#f4f3f4' : '#f4f3f4'}
+                    value={pref.enabled}
+                    onValueChange={() => handlePreferenceToggle(index)}
+                />
+                <Text style={styles.preferenceName}>{pref.display}</Text>
+            </View>
+            <Slider
+                disabled={!pref.enabled}
+                value={pref.value}
+                minimumValue={0}
+                maximumValue={5}
+                step={1}
+                onValueChange={value => handleSliderChange(index, value)}
             />
-            <Text style={styles.preferenceName}>{pref.display}</Text>
-          </View>
-          <Slider
-            disabled={!pref.enabled}
-            value={pref.value}
-            minimumValue={0}
-            maximumValue={5}
-            step={1}
-            onValueChange={value => handleSliderChange(index, value)}
-          />
+            </View>
+        ))}
+        <TouchableOpacity
+            disabled={loading}
+            style={styles.saveButton}
+            onPress={handleSavePreferences}
+        >
+            <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
         </View>
-      ))}
-      <TouchableOpacity
-        disabled={loading}
-        style={styles.saveButton}
-        onPress={handleSavePreferences}
-      >
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
-      {/* {error && <Text style={styles.error}>{error}</Text>} */}
-      <Toast ref={(ref) => Toast.setRef(ref)}  />
-      {success && <Text style={styles.success}>Successfully changed preferences</Text>}
-
-    </View>
+        {/* {error && <Text style={styles.error}>{error}</Text>} */}
+        <Toast ref={(ref) => Toast.setRef(ref)}  />
+        {success && <Text style={styles.success}>Successfully changed preferences</Text>}
+        
+    </MapContainer>
     
   );
 };

@@ -124,7 +124,8 @@ const ReportingComponent = ({ location }) => {
             visibilityTime: 3000,
             autoHide: true,
             onHide: () => setError(null),
-            position: 'bottom'
+            position: 'bottom',
+            bottomOffset: 200
           });
           console.log(errorLog)
         }
@@ -149,54 +150,56 @@ const ReportingComponent = ({ location }) => {
 
   return (
     <MapContainer>
-      <ScrollView keyboardShouldPersistTaps='always'>
-        <Text style={styles.subText}>Help us Improve Our Maps!</Text>
-        <ImageBackground 
-            height={70} 
-            width={70} 
-            source={require('../../assets/images/Reg4.png')}
-            style={[styles.loginImage]}> 
-        <View style={styles.Text}>
-        <Input
-            label='Location'
-            value={source}
-            onChangeText={setSource}
-            icon={<TouchableOpacity onPress={handleLocation} >
-            <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
-            </TouchableOpacity>}
-            iconPosition='right'
+        <ScrollView keyboardShouldPersistTaps='always'>
+            <Text style={styles.subText}>Help us Improve Our Maps!</Text>
+            <ImageBackground 
+                height={70} 
+                width={70} 
+                source={require('../../assets/images/Reg4.png')}
+                style={[styles.loginImage]}> 
+            <View style={styles.Text}>
+            <Input
+                label='Location'
+                value={source}
+                onChangeText={setSource}
+                icon={<TouchableOpacity onPress={handleLocation} >
+                <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
+                </TouchableOpacity>}
+                iconPosition='right'
+                />
+
+            <View>
+            <SecondaryInput
+            label='Description'
+            value={description}
+            onChangeText={setDescription}
             />
-  
-        <View>
-        <SecondaryInput
-        label='Description'
-        value={description}
-        onChangeText={setDescription}
-        />
-        </View>
-        <View style={styles.Imageupload}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
-        <Text style={styles.saveButtonText}>Upload Image</Text>
-        </TouchableOpacity>
-        </View>
-        {image && (
-          <View style={styles.imagePreview}>
-            {image.uri && (
-              <Image source={{ uri: image.uri }} style={styles.image} />
+            </View>
+            <View style={styles.Imageupload}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
+            <Text style={styles.saveButtonText}>Upload Image</Text>
+            </TouchableOpacity>
+            </View>
+            {image && (
+            <View style={styles.imagePreview}>
+                {image.uri && (
+                <Image source={{ uri: image.uri }} style={styles.image} />
+                )}
+                <Text style={styles.imageName}>Image uploaded successfully</Text>
+            </View>
             )}
-            <Text style={styles.imageName}>Image uploaded successfully</Text>
-          </View>
-        )}
-        {source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
-        : <CustomButton disabled primary title='Report'/>}
-        {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
-        <Toast ref={(ref) => Toast.setRef(ref)}  />
-        {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
-        </View>
+            {source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
+            : <CustomButton disabled primary title='Report'/>}
+            </View>
+            
+            {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
+            <Toast ref={(ref) => Toast.setRef(ref)}  />
+            {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
+            </ImageBackground>
         
+        </ScrollView>
+    
         
-    </ImageBackground>
-    </ScrollView>
     </MapContainer>
   )
 }
