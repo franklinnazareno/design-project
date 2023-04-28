@@ -9,6 +9,7 @@ import SecondaryInput from '../commons/secondaryInput'
 import CustomButton from '../commons/CustomButton'
 import MapContainer from '../commons/mapContainer/Contain';
 import styles from './styles';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -101,14 +102,36 @@ const ReportingComponent = ({ location }) => {
 
       if (response.ok) {
         console.log(responseData)
+        Toast.show({
+          type: 'success',
+          text1: 'Report sent successfully.',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 470,
+          bottomOffset: 300,
+          onHide: () => setError(null),
+        });
         setSuccess(true)
+        
       }
       if (!response.ok) {
         console.log(responseData)
       }
       setLoading(false)
     } catch (error) {
-      setError(error)
+      if (error && error.toString().trim() !== "") {
+        Toast.show({
+          type: 'error',
+          text1: 'An error has occurred.',
+          text2: error,
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 250,
+          bottomOffset: 300,
+          onHide: () => setError(null),
+        });
+      }
+
       setLoading(false)
     }
   }
@@ -155,8 +178,9 @@ const ReportingComponent = ({ location }) => {
         )}
         {source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
         : <CustomButton disabled primary title='Report'/>}
-        {error && <Text style={styles.error}>Error: {error.message}</Text>}
-        {success && <Text style={styles.success}>Report sent successfully!</Text>}
+        {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
+        <Toast ref={(ref) => Toast.setRef(ref)}  />
+        {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
         </View>
         
     </ImageBackground>
