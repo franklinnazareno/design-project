@@ -117,6 +117,18 @@ const ReportingComponent = ({ location }) => {
       }
       if (!response.ok) {
         console.log(responseData)
+          const errorLog = responseData.error
+          if (errorLog && errorLog.toString().trim() !== "") {
+          Toast.show({
+            type: 'error',
+            text1: 'An error has occurred.',
+            text2: errorLog,
+            visibilityTime: 3000,
+            autoHide: true,
+            onHide: () => setError(null),
+            position: 'bottom'
+          });
+        }
       }
       setLoading(false)
     } catch (error) {
