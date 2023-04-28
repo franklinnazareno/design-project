@@ -101,7 +101,6 @@ const ReportingComponent = ({ location }) => {
       const responseData = await response.json()
 
       if (response.ok) {
-        console.log(responseData)
         Toast.show({
           type: 'success',
           text1: 'Report sent successfully.',
@@ -116,7 +115,6 @@ const ReportingComponent = ({ location }) => {
         setImage(null)
       }
       if (!response.ok) {
-        console.log(responseData)
           const errorLog = responseData.error
           if (errorLog && errorLog.toString().trim() !== "") {
           Toast.show({
@@ -128,6 +126,7 @@ const ReportingComponent = ({ location }) => {
             onHide: () => setError(null),
             position: 'bottom'
           });
+          console.log(errorLog)
         }
       }
       setLoading(false)
