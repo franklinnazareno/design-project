@@ -8,7 +8,7 @@ import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import myBoundary from './boundary';
 import Toast from 'react-native-toast-message';
-
+import colors from '../../assets/themes/colors';
 
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
@@ -114,8 +114,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           text2: 'Make sure precise location is turned on',
           visibilityTime: 3000,
           autoHide: true,
-          topOffset: 250,
-          bottomOffset:300
+          position: 'bottom',
+          bottomOffset: 200
         })
       }
     }
@@ -136,7 +136,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
            >
           <Geojson
             geojson={myBoundary}
-            strokeColor="red"
+            strokeColor={colors.primary}
             strokeWidth={2}/>
 
             {location && <Marker 
