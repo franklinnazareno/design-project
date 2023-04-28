@@ -109,9 +109,9 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         mapViewRef.current?.animateToRegion(regionTemp)
       } else {
         Toast.show({
-          type: 'info',
+          type: 'error',
           text1: 'No precise location found',
-          text2: 'Make sure precise location is turned on',
+          text2: 'Make sure precise location is turned on.',
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
