@@ -56,5 +56,8 @@ export default ScaledSheet.create ({
     success: {
       marginTop:'5@s',
       alignSelf:'center',
-  }
+    },
+    toastContainer: {
+        height: '100%'
+    }
 });

@@ -8,7 +8,6 @@ import styles from './styles';
 import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import MapContainer from '../commons/mapContainer/Contain';
 
 
 
@@ -82,7 +81,7 @@ const PreferenceDetails = ({ preference }) => {
   }, [preference, preferences]);
 
   return (
-    <MapContainer>
+    <View style={styles.toastContainer}>
         <View style={styles.preferenceDetails}>
         <Text style={styles.title}>{preference.name}</Text>
         {preferences.map((pref, index) => (
@@ -121,7 +120,7 @@ const PreferenceDetails = ({ preference }) => {
         <Toast ref={(ref) => Toast.setRef(ref)}  />
         {success && <Text style={styles.success}>Successfully changed preferences</Text>}
         
-    </MapContainer>
+    </View>
     
   );
 };
