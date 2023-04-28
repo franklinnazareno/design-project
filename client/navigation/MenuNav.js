@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import PrefDetail from '../screens/Home';
+import PrefDetail from '../screens/PreferenceScreen';
 import MapScreen from '../screens/MapScreen';
 import colors from '../assets/themes/colors';
 import { ABOUT_US, FAQ_DETAIL, MAP_LIST, REPORT_DETAIL, STARTNAV, USER_DETAIL } from '../context/initialRoutenNames';

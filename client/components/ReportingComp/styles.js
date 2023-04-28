@@ -47,7 +47,7 @@ export default ScaledSheet.create({
         alignSelf:'center'
     },
     Imageupload: {
-        marginBottom: '1@s'
+        marginBottom: '10@s'
     },
     imageName: {
         alignSelf:'center',

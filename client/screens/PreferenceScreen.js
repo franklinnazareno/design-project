@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView } f
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
-import Login from './Login';
+import Login from './LoginScreen';
 import Config from 'react-native-config';
 import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
 
@@ -22,7 +22,7 @@ const PrefDetail = () => {
                 headers: {'Authorization': `Bearer ${user.token}`}
             })
             const json = await response.json()
-
+            
             if (response.ok) {
                 dispatch({type: 'SET_PREFERENCES', payload: json})
             }
