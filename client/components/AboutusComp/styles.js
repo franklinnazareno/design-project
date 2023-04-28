@@ -10,7 +10,6 @@ export default styles = ScaledSheet.create({
         alignSelf:'center',
     },
     aboutWrapper:{ 
-        backgroundColor:'red',
         height:500,
         marginTop: '20@s', 
         flexWrap: 'wrap',
