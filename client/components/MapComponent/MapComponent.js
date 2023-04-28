@@ -1,18 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useRef} from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, {Polyline, Marker, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import myBoundary from './boundary';
+import Toast from 'react-native-toast-message';
 
 
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
+    const mapViewRef = useRef(null);
     const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
@@ -45,7 +46,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         const longitude = location.longitude 
 
         setRegionTemp({
-          latitude: latitude,
+          latitude: latitude-0.0018,
           longitude: longitude,
           latitudeDelta: 0.005,
           longitudeDelta: 0.005
@@ -104,7 +105,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
       }, []);
 
     const handleRelocate = () => {
-      setRegion(regionTemp)
+      if (regionTemp){
+        mapViewRef.current?.animateToRegion(regionTemp)
+      } else {
+        Toast.show({
+          type: 'info',
+          text1: 'No precise location found',
+          text2: 'Make sure precise location is turned on',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 250,
+          bottomOffset:300
+        })
+      }
     }
     
     return (
@@ -112,8 +125,10 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
       <MapContainer>
         
         <MapView.Animated
+          ref={mapViewRef}
           initialRegion={region}
           region={region}
+          onRegionChange={this.handleRegionChange}
           style={styles.Mapsize}
           zoomEnabled
           // minZoomLevel={16}
@@ -187,18 +202,21 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           )}
 
         </MapView.Animated>
-        
+
         {/* Recenter Button */}
         <View>
         <View style={styles.CenterBox}> 
         <View style={styles.ReCenter}>
         <TouchableOpacity style={styles.Icon} onPress={handleRelocate}>
-        <MaterialCommunityIcons name = 'target' size={32} color="white"></MaterialCommunityIcons>
+        {location ? <MaterialIcon name = 'my-location' size={32} color="white"/> : <MaterialIcon name = 'location-disabled' size={32} color="white"/> }
         </TouchableOpacity>
         </View>
         </View>
         </View>
+        
+        <Toast ref={(ref) => Toast.setRef(ref)}  />
         </MapContainer>
+        
           
         
     );
