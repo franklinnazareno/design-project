@@ -26,7 +26,7 @@ const FaqScreenComp = () => {
       answer: 'You can report safety or risk factors on this screen.\nThis will be delivered to the respective government organization to be checked and validated.'
     },
     {
-      question: 'What is the Map Boundary/red line on the map?',
+      question: 'What is the Map Boundary/green line on the map?',
       answer: 'Currently Pathfinder only supports map data of Marikina City and Quezon City 3rd District. Only route searches within these areas can be done on the app.'
     }
   ];
