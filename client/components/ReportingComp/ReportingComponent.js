@@ -107,8 +107,7 @@ const ReportingComponent = ({ location }) => {
           text1: 'Report sent successfully.',
           visibilityTime: 3000,
           autoHide: true,
-          topOffset: 470,
-          bottomOffset: 300,
+          position: 'bottom',
           onHide: () => setError(null),
         });
         setSuccess(true)
@@ -126,9 +125,8 @@ const ReportingComponent = ({ location }) => {
           text2: error,
           visibilityTime: 3000,
           autoHide: true,
-          topOffset: 250,
-          bottomOffset: 300,
           onHide: () => setError(null),
+          position: 'bottom'
         });
       }
 
@@ -182,6 +180,7 @@ const ReportingComponent = ({ location }) => {
         <Toast ref={(ref) => Toast.setRef(ref)}  />
         {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
         </View>
+        
         
     </ImageBackground>
     </ScrollView>

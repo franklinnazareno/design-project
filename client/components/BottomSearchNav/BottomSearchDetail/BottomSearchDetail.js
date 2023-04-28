@@ -272,8 +272,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             text2: json[msg],
             visibilityTime: 3000,
             autoHide: true,
-            topOffset: 250,
-            bottomOffset:300,
+            position: 'bottom',
             onHide: () => setError(null),
           });
           return;
@@ -348,8 +347,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             text2: 'Ensure the set locations are within the Map Boundary.',
             visibilityTime: 3000,
             autoHide: true,
-            topOffset: 250,
-            bottomOffset: 300,
+            position: 'bottom',
             onHide: () => setError(null),
           });
         }
