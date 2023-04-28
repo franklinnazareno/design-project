@@ -1,4 +1,3 @@
-
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
 
@@ -15,8 +14,6 @@ items: {
     flexDirection:'row',
     justifyContent:'flex-start',
     alignSelf:'center',
-    // borderWidth: '2@s',
-    // borderRadius: '10@s',
     width:'220@s',
     marginTop:'2@s',
     borderColor:colors.primary
