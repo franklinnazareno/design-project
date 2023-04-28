@@ -4,13 +4,13 @@ import colors from '../../assets/themes/colors';
 export default styles = ScaledSheet.create({
     
     loginImage:{
-        height: '680@s',
+        height: '690@s',
         width: '350@s',
         flex:1,
         alignSelf:'center',
     },
     aboutWrapper:{ 
-        height:500,
+        height:'70%',
         marginTop: '20@s', 
         flexWrap: 'wrap',
         alignSelf:'center' ,  
@@ -26,17 +26,19 @@ export default styles = ScaledSheet.create({
         elevation: 20,
     },
     imagesize:{
-        height:'95@s', 
-        width:'95@s',
+        height:'90@s', 
+        width:'90@s',
         borderRadius:'15@s'
     },
     namefont:{
         padding:'3@s',
         alignSelf:'center', 
-        fontSize: 12
+        fontSize: 10,
+        fontWeight:'bold' 
     },
     namefont2:{
         alignSelf:'center',
-        fontSize: 12 
+        fontSize: 10,
+        fontWeight:'bold' 
     },
 })
