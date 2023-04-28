@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Config from 'react-native-config';
