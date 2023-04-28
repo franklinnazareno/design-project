@@ -65,9 +65,8 @@ const PreferenceDetails = ({ preference }) => {
         text1: 'Successfully changed preferences.',
         visibilityTime: 3000,
         autoHide: true,
-        topOffset: 580,
-        bottomOffset: 300,
         onHide: () => setError(null),
+        position: 'bottom'
       });
       dispatch({type: 'SET_PREFERENCES', payload: json})
       setLoading(false)
