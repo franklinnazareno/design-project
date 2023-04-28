@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Config from 'react-native-config';
@@ -187,7 +187,7 @@ const ReportingComponent = ({ location }) => {
             <Text style={styles.imageName}>Image uploaded successfully</Text>
           </View>
         )}
-        {source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
+        {loading ? <ActivityIndicator size="large"/> : source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
         : <CustomButton disabled primary title='Report'/>}
         {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
         <Toast ref={(ref) => Toast.setRef(ref)}  />
