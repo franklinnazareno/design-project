@@ -6,7 +6,8 @@ import { moderateScale } from 'react-native-size-matters';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import styles from './styles';
 import colors from '../../assets/themes/colors';
-
+import Config from 'react-native-config';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 
 
@@ -43,7 +44,7 @@ const PreferenceDetails = ({ preference }) => {
 
     const updatedPreferences = { preferences }
 
-    const response = await fetch('https://design-project-production.up.railway.app/api/preferences/' + preference._id, {
+    const response = await fetch(`${Config.EXPRESS}/api/preferences/` + preference._id, {
       method: 'PATCH',
       body: JSON.stringify(updatedPreferences),
       headers: {
@@ -52,14 +53,22 @@ const PreferenceDetails = ({ preference }) => {
       }
     })
     const json = await response.json()
-
+    console.log(json)
     if (!response.ok) {
       setError(json.error)
       setLoading(false)
     }
     if (response.ok) {
       setError(null)
-      setSuccess(true)
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully changed preferences.',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 580,
+        bottomOffset: 300,
+        onHide: () => setError(null),
+      });
       dispatch({type: 'SET_PREFERENCES', payload: json})
       setLoading(false)
     }
@@ -106,7 +115,8 @@ const PreferenceDetails = ({ preference }) => {
       >
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
-      {error && <Text style={styles.error}>{error}</Text>}
+      {/* {error && <Text style={styles.error}>{error}</Text>} */}
+      <Toast ref={(ref) => Toast.setRef(ref)}  />
       {success && <Text style={styles.success}>Successfully changed preferences</Text>}
 
     </View>
