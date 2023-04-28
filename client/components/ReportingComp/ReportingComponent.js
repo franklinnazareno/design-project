@@ -111,7 +111,9 @@ const ReportingComponent = ({ location }) => {
           onHide: () => setError(null),
         });
         setSuccess(true)
-        
+        setSource(null)
+        setDescription(null)
+        setImage(null)
       }
       if (!response.ok) {
         console.log(responseData)
