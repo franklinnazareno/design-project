@@ -19,6 +19,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       latitudeDelta: 0.001, 
       longitudeDelta: 0.001
     })
+    const [regionTemp, setRegionTemp] = useState();
     const [newCoords, setCoords] = useState(coords)
     const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
@@ -72,12 +73,14 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       const latitude = location.latitude
       const longitude = location.longitude 
 
-      setRegion({
+      setRegionTemp({
         latitude: latitude,
         longitude: longitude,
         latitudeDelta: 0.001,
         longitudeDelta: 0.001
       })
+
+      mapRef.current?.animateToRegion(regionTemp)
     }, [location])
 
     useEffect(() => {
@@ -114,6 +117,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             center: { latitude: location.latitude, longitude: location.longitude },
             zoom: 20,
             heading: 0,
+            pitch: 0
           }}
            >
 
