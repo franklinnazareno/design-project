@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, Button, KeyboardAvoidingView } from 'react-native';
 import Config from 'react-native-config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -11,6 +12,7 @@ import styles from './styles';
 import BestProgressComp from './BestProgress/BestProgressComp';
 import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
+import { ActivityIndicator } from 'react-native';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -60,7 +62,6 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
         const fetchData = async () => {
             const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${sourceCoords[1]},${sourceCoords[0]}&key=${Config.GOOGLE_MAPS_API_KEY}`);
             const currentLocation = await response.json();
-            console.log(currentLocation)
             const name = currentLocation.results[0].formatted_address;
             
             ref.current?.setAddressText(name)
@@ -85,6 +86,30 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 radius: '8000',
                 components: 'country:ph',}}
         fetchDetails={true}
+        textInputProps={{
+          clearButtonMode: 'never',
+          ref: input => {
+            this.textInput = input;
+          }
+        }}
+        renderRightButton={() => {
+          if (sourceCoords && !loading){
+            return(
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={() => {
+              this.textInput.clear();
+              setSource('')
+              setSourceCoords(null)
+            }}
+          >
+            <MaterialIcon
+              name="remove-circle"
+              size={20}
+            />
+          </TouchableOpacity>)
+          }
+        }}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
         // currentLocation={true}
@@ -177,11 +202,34 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                 radius: '8000',
                 components: 'country:ph',}}
         fetchDetails={true}
+        textInputProps={{
+          clearButtonMode: 'never',
+          ref: input => {
+            this.textInput = input;
+          }
+        }}
+        renderRightButton={() => {
+          if (destinationCoords && !loading){
+            return(
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={() => {
+              this.textInput.clear();
+              setDestination('')
+              setDestinationCoords(null)
+            }}
+          >
+            <MaterialIcon
+              name="remove-circle"
+              size={20}
+            />
+          </TouchableOpacity>)
+          }
+        }}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
         enablePoweredByContainer={false}
         keyboardShouldPersistTaps={'always'}
-        
         styles={{
           container: {
             flex: 0,
@@ -396,7 +444,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
               
               {/* Custom Button OnPress does not work use touchableopacity */}
               <View style={styles.boxloader}>
-              { sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
+              { loading ? <ActivityIndicator size="large" color={colors.primary} style={{marginTop: 10}}/> : sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
               </View>
 
               <Toast ref={(ref) => Toast.setRef(ref)}  />
