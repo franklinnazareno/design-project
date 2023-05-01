@@ -12,6 +12,7 @@ import styles from './styles';
 import BestProgressComp from './BestProgress/BestProgressComp';
 import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
+import { ActivityIndicator } from 'react-native';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -443,7 +444,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
               
               {/* Custom Button OnPress does not work use touchableopacity */}
               <View style={styles.boxloader}>
-              { sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
+              { loading ? <ActivityIndicator size="large" color={colors.primary} style={{marginTop: 10}}/> : sourceCoords && destinationCoords ? <CustomButton disabled={loading} onPress={handleSubmit} primary title='Find Path'/> : <CustomButton disabled primary title='Find Path'/> }
               </View>
 
               <Toast ref={(ref) => Toast.setRef(ref)}  />
