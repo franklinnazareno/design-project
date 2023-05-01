@@ -1,7 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
 import {Dimensions} from 'react-native';
-var deviceHeight = Dimensions.get('window').width;
+var deviceWIDTH = Dimensions.get('window').width;
 
 
 export default ScaledSheet.create ({
@@ -57,7 +57,7 @@ export default ScaledSheet.create ({
         marginBottom:'10@s', 
       },
       ButtonView: {
-        height:deviceHeight,
+        height:deviceWIDTH,
         backgroundColor: 'red',
       },
       
