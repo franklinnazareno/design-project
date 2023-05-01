@@ -5,11 +5,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tts from 'react-native-tts';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
-
-
+import { magnetometer } from 'react-native-sensors';
+import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
+setUpdateIntervalForType(SensorTypes.magnetometer, 1000)
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
-    
+  const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
+  const [heading, setHeading] = useState(null);
+  const mapRef = useRef(null);
     const [region, setRegion] = useState({
       latitude: 14.6507,
       longitude: 121.1029,
@@ -36,6 +39,34 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       return R * c
     }
+
+    useEffect(() => {
+      const magnetometerSubscription = magnetometer.subscribe(({ x, y, z, timestamp }) => {
+        setMagnetometerData({ x, y, z });
+      });
+  
+      return () => {
+        magnetometerSubscription.unsubscribe();
+      };
+    }, []);
+
+    useEffect(() => {
+      const { x, y, z } = magnetometerData;
+      const heading = Math.atan2(y, x) * (180 / Math.PI);
+      setHeading(heading);
+    }, [magnetometerData]);
+
+    useEffect(() => {
+      if (mapRef.current) {
+          const newCamera = {
+              center: { latitude: location.latitude, longitude: location.longitude },
+              heading: heading
+          }
+
+          mapRef.current.animateCamera(newCamera, { duration: 2000 });
+
+      }
+  }, [heading]);
 
     useEffect(() => {
       const latitude = location.latitude
@@ -73,11 +104,17 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       
       <MapContainer>
         <MapView.Animated
+          ref={mapRef}
           initialRegion={region}
           region={region}
           style={styles.Mapsize}
           zoomEnabled
           rotateEnabled={false}
+          initialCamera={{
+            center: { latitude: location.latitude, longitude: location.longitude },
+            zoom: 20,
+            heading: 0,
+          }}
            >
 
           {location && <Marker 
