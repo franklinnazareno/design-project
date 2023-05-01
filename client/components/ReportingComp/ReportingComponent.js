@@ -26,7 +26,7 @@ const ReportingComponent = ({ location }) => {
   const [reportCoords, setReportCoords] = useState(null)
   const [currentLoc, setCurrentLoc] = useState(null)
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [category, setCategory] = useState(null);
   const [items, setItems] = useState([
     {label: 'Closure',
      value: 'closure',
@@ -87,10 +87,10 @@ const ReportingComponent = ({ location }) => {
           marginRight: 10
         }}
         open={open}
-        value={value}
+        value={category}
         items={items}
         setOpen={setOpen}
-        setValue={setValue}
+        setValue={setCategory}
         setItems={setItems}
       />
     );
@@ -145,7 +145,7 @@ const ReportingComponent = ({ location }) => {
             }}
           >
             <MaterialIcon
-              name="highlight-remove"
+              name="remove-circle"
               size={20}
             />
           </TouchableOpacity>)
@@ -266,7 +266,11 @@ const ReportingComponent = ({ location }) => {
     try {
       const formData = new FormData()
       formData.append('source', source)
+      formData.append('coordinates', reportCoords)
+      formData.append('category', category)
       formData.append('description', description)
+      console.log(formData)
+      console.log(formData._parts[1])
       formData.append('image', {
         name: image.fileName,
         type: image.type,
@@ -295,8 +299,9 @@ const ReportingComponent = ({ location }) => {
           onHide: () => setError(null),
         });
         setSuccess(true)
-        setSource(null)
+        setSource('')
         setDescription(null)
+        setCategory(null)
         setImage(null)
       }
       if (!response.ok) {
@@ -372,7 +377,7 @@ const ReportingComponent = ({ location }) => {
                 <Text style={styles.imageName}>Image uploaded successfully</Text>
             </View>
             )}
-            {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
+            {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && category && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
             : <CustomButton disabled primary title='Report'/>}
             </View>
             
