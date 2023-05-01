@@ -39,7 +39,9 @@ const ReportingComponent = ({ location }) => {
      icon: () => <MaterialIcon name='local-police' size={15}/>},
     {label: 'Crash',
      value: 'crash',
-     icon: () => <FontAwesome5 name='car-crash' size={15}/>}
+     icon: () => <FontAwesome5 name='car-crash' size={15}/>},
+     {label: 'Other',
+     value: 'others'}
   ]);
 
   const { user } = useAuthContext()
@@ -79,7 +81,7 @@ const ReportingComponent = ({ location }) => {
   const CategorySelect = () => {
     return (
       <DropDownPicker
-        style={{marginBottom: open ? 175 : 0}}
+        style={{marginBottom: open ? 190 : 0}}
         placeholder="Select report category"
         iconContainerStyle={{
           marginRight: 10
