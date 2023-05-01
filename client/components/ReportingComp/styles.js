@@ -52,5 +52,10 @@ export default ScaledSheet.create({
     imageName: {
         alignSelf:'center',
         marginBottom: '12@s'
+    },
+    clearButton: {
+        position: 'absolute',
+        top: 18,
+        right: 14
     }
 });

@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
 import {launchImageLibrary} from 'react-native-image-picker';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -10,6 +12,9 @@ import CustomButton from '../commons/CustomButton'
 import MapContainer from '../commons/mapContainer/Contain';
 import styles from './styles';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import DropDownPicker from 'react-native-dropdown-picker';
+import colors from '../../assets/themes/colors';
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -18,28 +23,208 @@ const ReportingComponent = ({ location }) => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [reportCoords, setReportCoords] = useState(null)
+  const [currentLoc, setCurrentLoc] = useState(null)
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Closure',
+     value: 'closure',
+     icon: () => <MaterialIcon name='do-not-disturb-on' size={15}/>},
+    {label: 'Hazard',
+     value: 'hazard',
+     icon: () => <MaterialIcon name='warning' size={15}/>},
+    {label: 'Police', 
+     value: 'police',
+     icon: () => <MaterialIcon name='local-police' size={15}/>},
+    {label: 'Crash',
+     value: 'crash',
+     icon: () => <FontAwesome5 name='car-crash' size={15}/>},
+     {label: 'Other',
+     value: 'others'}
+  ]);
 
   const { user } = useAuthContext()
 
 
+  // useEffect(() => {
+  //   async function getLocation() {
+  //     if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
+
+  //       try {
+  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.results[0].formatted_address);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  //   }
+
+  //   getLocation();
+  // }, []);
   useEffect(() => {
-    async function getLocation() {
-      if (location) {
-        const longitude = location.longitude
-        const latitude = location.latitude 
+    if(location){
+      const latitude = location.latitude;
+      const longitude = location.longitude;
+      
+      setCurrentLoc({
+        name: "Current Location",
+        description: "Current Location",
+        geometry: {location: {lat: latitude, lng: longitude}}
+      });
 
-        try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-          const currentLocation = await response.json();
-          setSource(currentLocation.results[0].formatted_address);
-        } catch (error) {
-          setError(error);
-        }
-      }
     }
-
-    getLocation();
   }, []);
+  const CategorySelect = () => {
+    return (
+      <DropDownPicker
+        style={{marginBottom: open ? 190 : 0}}
+        placeholder="Select report category"
+        iconContainerStyle={{
+          marginRight: 10
+        }}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
+    );
+  }
+  const GooglePlacesInputSource = () => {
+    const ref = useRef(null);
+
+    useEffect(() => {
+      ref.current?.setAddressText(source)
+      
+    }, [source]);
+
+    useEffect(() => {
+      if(source == "Current Location"){
+        const fetchData = async () => {
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${reportCoords[1]},${reportCoords[0]}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+            const currentLocation = await response.json();
+            const name = currentLocation.results[0].formatted_address;
+            console.log(name)
+            
+            ref.current?.setAddressText(name)
+            setSource(name)
+        };
+        fetchData();}
+    })
+
+    return (
+      <GooglePlacesAutocomplete
+        ref={ref}
+        placeholder="Source"
+        onPress={(data, details = null) => {
+          setReportCoords([details.geometry.location.lng, details.geometry.location.lat]); 
+          console.log("Source:", [details.geometry.location.lng, details.geometry.location.lat])
+          setSource(details.name)
+          console.log(details.name)
+        }}
+        textInputProps={{
+          clearButtonMode: 'never',
+          ref: input => {
+            this.textInput = input;
+          }
+        }}
+        renderRightButton={() => {
+          if (reportCoords && !loading){
+            return(
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={() => {
+              this.textInput.clear();
+              setSource('')
+              setReportCoords(null)
+            }}
+          >
+            <MaterialIcon
+              name="highlight-remove"
+              size={20}
+            />
+          </TouchableOpacity>)
+          }
+        }}
+        query={{key: Config.GOOGLE_MAPS_API_KEY, 
+                language: 'en',
+                location: '14.6507, 121.1029', //location bias of results
+                radius: '8000',
+                components: 'country:ph',}}
+        fetchDetails={true}
+        onFail={error => console.log(error)}
+        onNotFound={() => console.log('no results')}
+        // currentLocation={true}
+        // currentLocationLabel='Current location'
+        predefinedPlaces={[currentLoc]}
+        enablePoweredByContainer={false}
+        keyboardShouldPersistTaps={'always'}
+        styles={{
+          container: {
+            flex: 0,
+          },
+          description: {
+            color: '#000',
+            fontSize: 16,
+          },
+          predefinedPlacesDescription: {
+            color: '#3caf50',
+          },
+          textInput:{
+            height:55,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor:colors.primary,
+
+          },
+        }}
+        renderRow={(rowData) => {
+          if (rowData.isPredefinedPlace == true){
+            const title = rowData.description
+            return(
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+              <View>
+              <Text style={{fontSize: 14}}>{title}</Text>
+              </View>
+            </View>
+            )
+          }
+
+          const title = rowData.structured_formatting.main_text;
+          const address = rowData.structured_formatting.secondary_text;
+          return (
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <MaterialCommunityIcons name="map-marker" size={30} style={{marginRight: 8}}/>
+              <View>
+              <Text style={{fontSize: 14}}>{title}</Text>
+              <Text style={{fontSize: 14}}>{address}</Text>
+              </View>
+            </View>
+          );
+        }}
+      />
+    );
+  };
 
   const handleImageUpload = () => {
     const options = {
@@ -61,20 +246,20 @@ const ReportingComponent = ({ location }) => {
     })
   }
 
-  const handleLocation = async () => {
-    if (location) {
-        const longitude = location.longitude
-        const latitude = location.latitude 
+  // const handleLocation = async () => {
+  //   if (location) {
+  //       const longitude = location.longitude
+  //       const latitude = location.latitude 
 
-        try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
-          const currentLocation = await response.json();
-          setSource(currentLocation.results[0].formatted_address);
-        } catch (error) {
-          setError(error);
-        }
-      }
-  }
+  //       try {
+  //         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+  //         const currentLocation = await response.json();
+  //         setSource(currentLocation.results[0].formatted_address);
+  //       } catch (error) {
+  //         setError(error);
+  //       }
+  //     }
+  // }
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -150,13 +335,13 @@ const ReportingComponent = ({ location }) => {
 
   return (
     <MapContainer>
-        <ScrollView keyboardShouldPersistTaps='always'>
+        {/* <ScrollView keyboardShouldPersistTaps='always'> */}
             <Text style={styles.subText}>Help us Improve Our Maps!</Text>
             <ImageBackground  
                 source={require('../../assets/images/Reg4.png')}
                 style={[styles.loginImage]}> 
             <View style={styles.Text}>
-            <Input
+            {/* <Input
                 label='Location'
                 value={source}
                 onChangeText={setSource}
@@ -164,9 +349,10 @@ const ReportingComponent = ({ location }) => {
                 <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
                 </TouchableOpacity>}
                 iconPosition='right'
-                />
-
+                /> */}
+            <GooglePlacesInputSource/>
             <View>
+            <CategorySelect/>
             <SecondaryInput
             label='Description'
             value={description}
@@ -195,7 +381,7 @@ const ReportingComponent = ({ location }) => {
             {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
             </ImageBackground>
         
-        </ScrollView>
+        {/* </ScrollView> */}
     
         
     </MapContainer>
