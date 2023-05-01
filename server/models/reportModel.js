@@ -49,10 +49,48 @@ reportSchema.pre('save', function(next) {
     this.model('Report').deleteOne({ _id: this._id }).exec();
   }
   const timeToExpiry = this.expiry - now;
-  setTimeout(() => {
+  console.log(timeToExpiry, "from pre.save")
+  if (this.timeoutId) {
+    clearTimeout(this.timeoutId);
+  }
+  this.timeoutId = setTimeout(() => {
     this.model('Report').deleteOne({ _id: this._id }).exec();
   }, timeToExpiry);
   next();
 });
+
+reportSchema.pre('findOneAndUpdate', function(next) {
+  const updatedFields = this.getUpdate();
+  const now = new Date();
+
+  if (updatedFields.expiry) {
+    const doc = this;
+    const originalExpiry = doc._update.$set.expiry || doc.expiry;
+    const newExpiry = updatedFields.expiry;
+    const timeToExpiry = newExpiry - now;
+    console.log(timeToExpiry, "from pre.updateOne")
+
+    // If the new expiry time is earlier than the original expiry time,
+    // update the timeout accordingly.
+    if (newExpiry < originalExpiry) {
+      clearTimeout(doc.timeoutId);
+      doc.timeoutId = setTimeout(() => {
+        mongoose.model('Report').deleteOne({ _id: doc.getQuery()._id }).exec();
+      }, timeToExpiry);
+    }
+
+    // If the document is already expired, delete it immediately.
+    if (now >= newExpiry) {
+      mongoose.model('Report').deleteOne({ _id: doc.getQuery()._id }).exec();
+    } else {
+      doc.timeoutId = setTimeout(() => {
+        mongoose.model('Report').deleteOne({ _id: doc.getQuery()._id }).exec();
+      }, timeToExpiry);
+    }
+  }
+
+  next();
+});
+
 
 module.exports = mongoose.model('Report', reportSchema);
