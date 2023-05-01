@@ -127,6 +127,30 @@ const ReportingComponent = ({ location }) => {
           setSource(details.name)
           console.log(details.name)
         }}
+        textInputProps={{
+          clearButtonMode: 'never',
+          ref: input => {
+            this.textInput = input;
+          }
+        }}
+        renderRightButton={() => {
+          if (reportCoords){
+            return(
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={() => {
+              this.textInput.clear();
+              setSource('')
+              setReportCoords(null)
+            }}
+          >
+            <MaterialIcon
+              name="highlight-remove"
+              size={15}
+            />
+          </TouchableOpacity>)
+          }
+        }}
         query={{key: Config.GOOGLE_MAPS_API_KEY, 
                 language: 'en',
                 location: '14.6507, 121.1029', //location bias of results
