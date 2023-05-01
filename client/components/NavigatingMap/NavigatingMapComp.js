@@ -42,6 +42,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     }
 
     useEffect(() => {
+      try {
       const magnetometerSubscription = magnetometer.subscribe(({ x, y, z, timestamp }) => {
         setMagnetometerData({ x, y, z });
       });
@@ -49,6 +50,9 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       return () => {
         magnetometerSubscription.unsubscribe();
       };
+      } catch (error) {
+        console.log('No magnetometer found')
+      }
     }, []);
 
     useEffect(() => {
