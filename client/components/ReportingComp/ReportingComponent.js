@@ -106,7 +106,7 @@ const ReportingComponent = ({ location }) => {
     useEffect(() => {
       if(source == "Current Location"){
         const fetchData = async () => {
-            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${reportCoords[1]},${reportCoords[0]}&key=${Config.GOOGLE_MAPS_API_KEY}`);
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${reportCoords.latitude},${reportCoords.longitude}&key=${Config.GOOGLE_MAPS_API_KEY}`);
             const currentLocation = await response.json();
             const name = currentLocation.results[0].formatted_address;
             console.log(name)
@@ -122,7 +122,7 @@ const ReportingComponent = ({ location }) => {
         ref={ref}
         placeholder="Source"
         onPress={(data, details = null) => {
-          setReportCoords([details.geometry.location.lng, details.geometry.location.lat]); 
+          setReportCoords({latitude: details.geometry.location.lat, longitude: details.geometry.location.lng}); 
           console.log("Source:", [details.geometry.location.lng, details.geometry.location.lat])
           setSource(details.name)
           console.log(details.name)
