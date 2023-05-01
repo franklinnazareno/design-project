@@ -11,7 +11,7 @@ const StartNavScreen = ({ route }) => {
   const [loading, setLoading] = useState(true)
 
   return (
-    <View style={{ position: 'relative', height: '100%' }}>
+    (location ? <View style={{ position: 'relative', height: '100%' }}>
       <NavigatingMapComp preference={preference} source={source} destination={destination} location={location} coords={coords} steps={steps} option={option} loading={loading} setLoading={setLoading} >
       
       </NavigatingMapComp>
@@ -31,7 +31,13 @@ const StartNavScreen = ({ route }) => {
         </View>
        )}
        <NavInstruction steps={steps} location={location}></NavInstruction>
-    </View>
+    </View> : 
+    <View>
+      <ActivityIndicator size='large' color={colors.primary}/>
+      <Text>
+        Obtaining current location...
+      </Text>
+    </View>)
   )
 }
 
