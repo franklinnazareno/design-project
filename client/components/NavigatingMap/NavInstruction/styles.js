@@ -17,7 +17,7 @@ export default ScaledSheet.create ({
         width:'300@s',
         padding: '10@s',
         backgroundColor:colors.white,
-        marginTop:'-790@s',
+        marginTop:'-750@s',
         elevation:'10@s',
         flexDirection: 'row',
       },
