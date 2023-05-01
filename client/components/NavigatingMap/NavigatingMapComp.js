@@ -54,7 +54,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       const { x, y, z } = magnetometerData;
       const heading = Math.atan2(y, x) * (180 / Math.PI);
       setHeading(heading);
-      console.log(heading)
     }, [magnetometerData]);
 
     useEffect(() => {
@@ -64,7 +63,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
               heading: heading
           }
 
-          mapRef.current.animateCamera(newCamera, { duration: 5000 });
+          mapRef.current.animateCamera(newCamera, { duration: 2000 });
 
       }
   }, [heading]);
