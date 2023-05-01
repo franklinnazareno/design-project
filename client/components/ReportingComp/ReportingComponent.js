@@ -152,9 +152,7 @@ const ReportingComponent = ({ location }) => {
     <MapContainer>
         <ScrollView keyboardShouldPersistTaps='always'>
             <Text style={styles.subText}>Help us Improve Our Maps!</Text>
-            <ImageBackground 
-                height={70} 
-                width={70} 
+            <ImageBackground  
                 source={require('../../assets/images/Reg4.png')}
                 style={[styles.loginImage]}> 
             <View style={styles.Text}>

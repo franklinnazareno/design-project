@@ -9,7 +9,7 @@ export default ScaledSheet.create({
         alignSelf:'center', 
     },
     loginImage:{
-        height: '600@s',
+        height: '750@s',
         width: '350@s',
         flex:1,
         alignSelf:'center',

@@ -5,7 +5,7 @@ var deviceWidth = Dimensions.get('window').width;
 
 export default ScaledSheet.create ({
   progressBox:{
-    height:'200@s',
+    height:'220@s',
     width:deviceWidth,
     backgroundColor: colors.white,
     borderRadius: '10@s',

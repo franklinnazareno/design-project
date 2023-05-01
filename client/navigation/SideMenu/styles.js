@@ -1,5 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
+import { Dimensions } from 'react-native';
+var deviceheight = Dimensions.get('window').height;
 
 export default ScaledSheet.create ({
 
@@ -24,8 +26,8 @@ itemsText: {
     paddingHorizontal:'1@s'
 },
 regImage:{
-    height:'720@s',
-    width:'250@s',
+    height:deviceheight,
+    width:'255@s',
     alignSelf:'center',
     
 },
