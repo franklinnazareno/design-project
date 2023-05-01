@@ -1,8 +1,10 @@
 const Report = require('../models/reportModel')
+const mongoose = require('mongoose')
 
 // create new report
 const createReport = async (req, res) => {
     const { source, coordinates, category, description } = req.body;
+
     if (!req.file) {
         return res.status(400).json({ error: "No image file was uploaded" })
     }
@@ -20,9 +22,7 @@ const createReport = async (req, res) => {
     try {
         const user_id = req.user._id;
 
-        // Parse coordinates into an array of numbers
-        const parsedCoordinates = JSON.parse(coordinates);
-        const report = await Report.create({ source, coordinates: parsedCoordinates, category, description, image, user_id });
+        const report = await Report.create({ source, coordinates, category, description, image, user_id });
 
         return res.status(200).json(report);
     } catch (error) {
@@ -30,5 +30,22 @@ const createReport = async (req, res) => {
     }
 };
 
+// update report expiry
+const updateReportExpiry = async (req, res) => {
+    const { id } = req.params
 
-module.exports = { createReport }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such report'})
+    }
+
+    const report = await Report.findOneAndUpdate({_id: id}, { expiry: new Date(req.body.expiry) }, {new: true})
+
+    if (!report) {
+        return res.status(404).json({error: 'No such report'})
+    }
+
+    res.status(200).json(report)
+}
+
+
+module.exports = { createReport, updateReportExpiry }
