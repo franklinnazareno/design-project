@@ -372,7 +372,7 @@ const ReportingComponent = ({ location }) => {
                 <Text style={styles.imageName}>Image uploaded successfully</Text>
             </View>
             )}
-            {source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
+            {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
             : <CustomButton disabled primary title='Report'/>}
             </View>
             
