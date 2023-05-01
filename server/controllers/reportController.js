@@ -3,7 +3,6 @@ const Report = require('../models/reportModel')
 // create new report
 const createReport = async (req, res) => {
     const { source, coordinates, category, description } = req.body;
-
     if (!req.file) {
         return res.status(400).json({ error: "No image file was uploaded" })
     }
@@ -22,9 +21,8 @@ const createReport = async (req, res) => {
         const user_id = req.user._id;
 
         // Parse coordinates into an array of numbers
-        // const parsedCoordinates = JSON.parse(coordinates).map(Number);
-
-        const report = await Report.create({ source, coordinates, category, description, image, user_id });
+        const parsedCoordinates = JSON.parse(coordinates);
+        const report = await Report.create({ source, coordinates: parsedCoordinates, category, description, image, user_id });
 
         return res.status(200).json(report);
     } catch (error) {

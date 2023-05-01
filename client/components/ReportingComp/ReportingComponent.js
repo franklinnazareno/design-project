@@ -232,15 +232,13 @@ const ReportingComponent = ({ location }) => {
       selectionLimit: 1,
     }
     launchImageLibrary(options, (response) => {
-      console.log('Image response:', response)
       if (response?.didCancel) {
         console.log('Image selection cancelled')
       } else if (response?.error) {
         console.log('Image selection error:', response.error)
         setError(response.error)
       } else {
-        console.log('uri -> ', response.assets[0].uri);
-        console.log('fileSize -> ', response.assets[0].fileSize);
+        console.log('Image set successfully')
         setImage(response.assets[0])
       }
     })
@@ -266,11 +264,9 @@ const ReportingComponent = ({ location }) => {
     try {
       const formData = new FormData()
       formData.append('source', source)
-      formData.append('coordinates', reportCoords)
+      formData.append('coordinates', JSON.stringify(reportCoords))
       formData.append('category', category)
       formData.append('description', description)
-      console.log(formData)
-      console.log(formData._parts[1])
       formData.append('image', {
         name: image.fileName,
         type: image.type,
@@ -286,7 +282,7 @@ const ReportingComponent = ({ location }) => {
         },
         body: formData
       })
-
+      
       const responseData = await response.json()
 
       if (response.ok) {
@@ -321,7 +317,8 @@ const ReportingComponent = ({ location }) => {
         }
       }
       setLoading(false)
-    } catch (error) {
+    } 
+    catch (error) {
       if (error && error.toString().trim() !== "") {
         Toast.show({
           type: 'error',
@@ -379,14 +376,18 @@ const ReportingComponent = ({ location }) => {
             )}
             {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && category && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
             : <CustomButton disabled primary title='Report'/>}
+
+            {/* I put the toast here for now, it needs fixing too */}
+            <Toast ref={(ref) => Toast.setRef(ref)}  /> 
             </View>
             
             {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
-            <Toast ref={(ref) => Toast.setRef(ref)}  />
+            
             {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
             </ImageBackground>
         
         {/* </ScrollView> */}
+        {/* You cant use a scrollview here because of the autocomplete */}
     
         
     </MapContainer>
