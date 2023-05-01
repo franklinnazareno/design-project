@@ -156,6 +156,10 @@ export default ScaledSheet.create ({
      padding: 5, 
      fontSize: 15, 
      alignSelf:'center'
+  },
+  clearButton: {
+    position: 'absolute',
+    top: 18,
+    right: 14
   }
-
 });

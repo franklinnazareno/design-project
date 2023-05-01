@@ -55,7 +55,7 @@ export default ScaledSheet.create({
     },
     clearButton: {
         position: 'absolute',
-        top: 20,
+        top: 18,
         right: 14
     }
 });
