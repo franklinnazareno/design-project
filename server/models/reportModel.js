@@ -7,10 +7,10 @@ const reportSchema = new Schema({
     required: true
   },
   coordinates: {
-    type: [{
+    type: {
       latitude: { type: Number },
       longitude: { type: Number }
-    }],
+    },
     required: true
   },
   category: {
