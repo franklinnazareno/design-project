@@ -53,10 +53,9 @@ export default ScaledSheet.create({
         alignSelf:'center',
         marginBottom: '12@s'
     },
-    Dropdown: {
-        height:55,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor:colors.primary,
-    },
+    clearButton: {
+        position: 'absolute',
+        top: 20,
+        right: 14
+    }
 });
