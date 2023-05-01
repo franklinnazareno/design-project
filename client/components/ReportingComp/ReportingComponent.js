@@ -134,7 +134,7 @@ const ReportingComponent = ({ location }) => {
           }
         }}
         renderRightButton={() => {
-          if (reportCoords){
+          if (reportCoords && !loading){
             return(
           <TouchableOpacity
             style={styles.clearButton}
@@ -146,7 +146,7 @@ const ReportingComponent = ({ location }) => {
           >
             <MaterialIcon
               name="highlight-remove"
-              size={15}
+              size={20}
             />
           </TouchableOpacity>)
           }
