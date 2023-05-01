@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
 import {launchImageLibrary} from 'react-native-image-picker';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -11,6 +13,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 import styles from './styles';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 
 const ReportingComponent = ({ location }) => {
@@ -22,6 +25,22 @@ const ReportingComponent = ({ location }) => {
   const [loading, setLoading] = useState(false)
   const [reportCoords, setReportCoords] = useState(null)
   const [currentLoc, setCurrentLoc] = useState(null)
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Closure',
+     value: 'closure',
+     icon: () => <MaterialIcon name='do-not-disturb-on' size={15}/>},
+    {label: 'Hazard',
+     value: 'hazard',
+     icon: () => <MaterialIcon name='warning' size={15}/>},
+    {label: 'Police', 
+     value: 'police',
+     icon: () => <MaterialIcon name='local-police' size={15}/>},
+    {label: 'Crash',
+     value: 'crash',
+     icon: () => <FontAwesome5 name='car-crash' size={15}/>}
+  ]);
 
   const { user } = useAuthContext()
 
@@ -57,7 +76,23 @@ const ReportingComponent = ({ location }) => {
 
     }
   }, []);
-
+  const CategorySelect = () => {
+    return (
+      <DropDownPicker
+        style={{marginBottom: open ? 175 : 0}}
+        placeholder="Select report category"
+        iconContainerStyle={{
+          marginRight: 10
+        }}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
+    );
+  }
   const GooglePlacesInputSource = () => {
     const ref = useRef(null);
 
@@ -291,6 +326,7 @@ const ReportingComponent = ({ location }) => {
                 /> */}
             <GooglePlacesInputSource/>
             <View>
+            <CategorySelect/>
             <SecondaryInput
             label='Description'
             value={description}
