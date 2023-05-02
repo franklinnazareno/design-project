@@ -9,6 +9,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 import myBoundary from './boundary';
 import Toast from 'react-native-toast-message';
 import colors from '../../assets/themes/colors';
+import Config from 'react-native-config';
 
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
@@ -92,6 +93,25 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     useEffect(() => {
       if ((coordsData && coordsData.length > 1) || (coordsData2 && coordsData2.length > 1)) {
         // Send GET request for report
+        const getReportCoords = async () => {
+          try {
+            const response = await fetch(`${Config.EXPRESS}/getReport`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(coordsData)}
+            )
+            const reportCoords = await response.json();
+            if (response.ok){
+              console.log(reportCoords)
+            }
+
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        getReportCoords()
       }
     }, [coordsData, coordsData2])
 
