@@ -10,11 +10,13 @@ import myBoundary from './boundary';
 import Toast from 'react-native-toast-message';
 import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
     const mapViewRef = useRef(null);
+    const { user } = useAuthContext();
     const aspectRatio = width / height;
     
     const [region, setRegion] = useState({
@@ -95,15 +97,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         // Send GET request for report
         const getReportCoords = async () => {
           try {
-            const response = await fetch(`${Config.EXPRESS}/getReport`, {
+            const response = await fetch(`${Config.EXPRESS}/api/report/filter`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
               },
               body: JSON.stringify(coordsData)}
             )
+            console.log('hello')
             const reportCoords = await response.json();
+            console.log(reportCoords)
             if (response.ok){
+              console.log('response is ok!')
               console.log(reportCoords)
             }
 
