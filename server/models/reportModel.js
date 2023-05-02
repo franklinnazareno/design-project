@@ -36,7 +36,7 @@ const reportSchema = new Schema({
   expiry: {
     type: Date,
     default: function() {
-      return new Date(Date.now() + 3600000);
+      return new Date(Date.now() + 900000);
     }
   }
 }, { timestamps: true });

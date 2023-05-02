@@ -21,6 +21,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { user } = useAuthContext();
     const aspectRatio = width / height;
     const [reportData, setReportData] = useState(null);
+    const [reportData2, setReportData2] = useState(null)
+    const [displayedReports, setDisplayedReports] = useState(null)
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -96,7 +98,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     }, [coordsData])
 
     useEffect(() => {
-      if ((coordsData && coordsData.length > 1) || (coordsData2 && coordsData2.length > 1)) {
+      if (coordsData && coordsData.length > 1) {
         // Send GET request for report
         setReportData(null) // restarts the reportData when a new path is drawn
         const getReportCoords = async () => {
@@ -121,6 +123,41 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         }
         getReportCoords()
       }
+      if (coordsData2 && coordsData2.length > 1) {
+        setReportData2(null)
+        const getReportCoords2 = async () => {
+          try {
+              const response = await fetch(`${Config.EXPRESS}/api/report/filter`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({coordsData: coordsData2})}
+              )
+              const reports = await response.json();
+              if (response.ok){
+                setReportData2(reports)
+                console.log(reports)
+              }
+
+            } catch (error) {
+              console.log(error)
+            }
+        }
+        getReportCoords2()
+      }
+      const reports = [...reportData, ...reportData2];
+      const uniqueReportIds = new Set();
+      const uniqueReports = reports.filter(report => {
+        if (uniqueReportIds.has(report._id)) {
+          return false;
+        } else {
+          uniqueReportIds.add(report._id);
+          return true;
+        }
+      });
+      setDisplayedReports(uniqueReports)
     }, [coordsData, coordsData2])
 
     const {setOptions, toggleDrawer} = useNavigation();
@@ -198,19 +235,17 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
           
-          {reportData && 
-            reportData.map(report => (
-              <Marker
-                key={report._id}
-                coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
-                title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
-                tracksViewChanges={false}
-                // description={report.source}
-                >
-                <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
-              </Marker>
-            ))
-          }
+          {displayedReports.map(report => (
+            <Marker
+              key={report._id}
+              coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
+              title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+              tracksViewChanges={false}
+              // description={report.source}
+              >
+              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+            </Marker>
+          ))}
 
           {userView === 0 && coordsData && (
             <>
