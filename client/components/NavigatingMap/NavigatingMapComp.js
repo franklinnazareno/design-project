@@ -58,10 +58,15 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     useEffect(() => {
       const { x, y, z } = magnetometerData;
       const heading = Math.atan2(y, x) * (180 / Math.PI);
-      setHeading(heading);
+      if (heading - 90 >= 0){
+        setHeading(heading - 90);
+      } else {
+        setHeading(heading + 271);
+      }
     }, [magnetometerData]);
 
     useEffect(() => {
+      console.log(heading)
       if (mapRef.current) {
           const newCamera = {
               center: { latitude: location.latitude, longitude: location.longitude },
