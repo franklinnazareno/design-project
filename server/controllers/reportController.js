@@ -24,7 +24,7 @@ const getReport = async (req, res) => {
     const { coordsData } = req.body;
     const response = []
     const reports = await Report.find()
-
+    console.log(coordsData)
     for (const coordinate of coordsData) {
         for (const a of reports) {
             const aCoords = a.coordinates 
