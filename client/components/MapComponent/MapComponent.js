@@ -89,6 +89,12 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
 
     }, [coordsData])
 
+    useEffect(() => {
+      if ((coordsData && coordsData.length > 1) || (coordsData2 && coordsData2.length > 1)) {
+        // Send GET request for report
+      }
+    }, [coordsData, coordsData2])
+
     const {setOptions, toggleDrawer} = useNavigation();
     
     useEffect(() => {
