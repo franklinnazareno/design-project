@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, memo, useRef} from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, {Polyline, Marker, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles';
@@ -13,11 +14,13 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 
+
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
     const mapViewRef = useRef(null);
     const { user } = useAuthContext();
     const aspectRatio = width / height;
+    const [reportData, setReportData] = useState(null);
     
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -95,6 +98,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     useEffect(() => {
       if ((coordsData && coordsData.length > 1) || (coordsData2 && coordsData2.length > 1)) {
         // Send GET request for report
+        setReportData(null) // restarts the reportData when a new path is drawn
         const getReportCoords = async () => {
           try {
             const response = await fetch(`${Config.EXPRESS}/api/report/filter`, {
@@ -103,14 +107,12 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`,
               },
-              body: JSON.stringify(coordsData)}
+              body: JSON.stringify({coordsData: coordsData})}
             )
-            console.log('hello')
-            const reportCoords = await response.json();
-            console.log(reportCoords)
+            const reports = await response.json();
             if (response.ok){
-              console.log('response is ok!')
-              console.log(reportCoords)
+              setReportData(reports)
+              console.log(reports)
             }
 
           } catch (error) {
@@ -196,6 +198,20 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
           
+          {reportData && 
+            reportData.map(report => (
+              <Marker
+                key={report._id}
+                coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
+                title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+                tracksViewChanges={false}
+                // description={report.source}
+                >
+                <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+              </Marker>
+            ))
+          }
+
           {userView === 0 && coordsData && (
             <>
               <Polyline
