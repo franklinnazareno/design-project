@@ -17,7 +17,30 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
     return R * c
 }
 
-const thresholdDistance = 25
+const thresholdDistance = 50
+
+// display report
+const getReport = async (req, res) => {
+    const { coordsData } = req.body;
+    const response = []
+    const reports = await Report.find()
+
+    for (const coordinate of coordsData) {
+        for (const a of reports) {
+            const aCoords = a.coordinates 
+            const distance = haversineDistance(coordinate.latitude, coordinate.longitude, aCoords.latitude, aCoords.longitude)
+            if (distance <= thresholdDistance) {
+                const { _id, source, coordinates, category } = a
+                const objToAdd = { _id, source, coordinates, category };
+                if (!response.some((obj) => obj._id === objToAdd._id)) {
+                    response.push(objToAdd);
+                }
+            }
+        }
+    }
+
+    res.status(200).json(response)
+}
 
 // create new report
 const createReport = async (req, res) => {
@@ -83,4 +106,4 @@ const updateReportExpiry = async (req, res) => {
 }
 
 
-module.exports = { createReport, updateReportExpiry }
+module.exports = { getReport, createReport, updateReportExpiry }

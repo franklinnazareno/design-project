@@ -1,5 +1,7 @@
 const express = require('express')
-const { createReport, updateReportExpiry } = require('../controllers/reportController')
+const { getReport, 
+    createReport, 
+    updateReportExpiry } = require('../controllers/reportController')
 const requireAuth = require('../middleware/requireAuth')
 
 const multer = require('multer');
@@ -10,6 +12,9 @@ const router = express.Router()
 
 // require auth for the report route
 router.use(requireAuth)
+
+// GET report
+router.get('/', getReport )
 
 // POST a new report
 router.post('/', upload.single('image'), createReport)
