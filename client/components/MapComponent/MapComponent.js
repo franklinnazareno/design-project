@@ -98,10 +98,10 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     }, [coordsData])
 
     useEffect(() => {
+      setReportData(null)
+      setReportData2(null)
       if (coordsData && coordsData.length > 1) {
         // Send GET request for report
-        setReportData(null) // restarts the reportData when a new path is drawn
-        setReportData2(null)
         const getReportCoords = async () => {
           try {
             const response = await fetch(`${Config.EXPRESS}/api/report/filter`, {
@@ -124,7 +124,6 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         getReportCoords()
       }
       if (coordsData2 && coordsData2.length > 1) {
-        setReportData2(null)
         const getReportCoords2 = async () => {
           try {
               const response = await fetch(`${Config.EXPRESS}/api/report/filter`, {
@@ -149,6 +148,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     }, [coordsData, coordsData2])
 
     useEffect(() => {
+      setDisplayedReports(null)
       if (reportData && reportData2) {
         const reports = [...reportData, ...reportData2];
         const uniqueReportIds = new Set();
@@ -161,9 +161,11 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           }
         });
         setDisplayedReports(uniqueReports)
-        console.log(uniqueReports)
-        } else if (reportData && !reportData2) {
+        console.log(displayedReports)
+        } 
+      if (reportData && !reportData2) {
           setDisplayedReports(reportData)
+          console.log(displayedReports)
         }
     }, [reportData, reportData2])
 
