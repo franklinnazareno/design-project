@@ -89,21 +89,76 @@ const createReport = async (req, res) => {
 };
 
 // update report expiry
-const updateReportExpiry = async (req, res) => {
-    const { id } = req.params
+// const updateReportExpiry = async (req, res) => {
+//     const { id } = req.params
+
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//         return res.status(404).json({error: 'No such report'})
+//     }
+
+//     const report = await Report.findOneAndUpdate({_id: id}, { expiry: new Date(req.body.expiry) }, {new: true})
+
+//     if (!report) {
+//         return res.status(404).json({error: 'No such report'})
+//     }
+
+//     res.status(200).json(report)
+// }
+
+// Add Expiry
+const addExpiry = async (req, res) => {
+    const { id } = req.params 
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such report'})
     }
 
-    const report = await Report.findOneAndUpdate({_id: id}, { expiry: new Date(req.body.expiry) }, {new: true})
+    const report = await Report.findById(id)
 
     if (!report) {
         return res.status(404).json({error: 'No such report'})
     }
 
-    res.status(200).json(report)
+    // add 15 minutes to the expiry time
+    const newExpiry = new Date(report.expiry.getTime() + 15 * 60000)
+
+    report.expiry = newExpiry
+
+    const updatedReport = await report.save()
+
+    res.status(200).json(updatedReport)
+}
+
+const subtractExpiry = async (req, res) => {
+    const { id } = req.params 
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such report'})
+    }
+
+    const report = await Report.findById(id)
+
+    if (!report) {
+        return res.status(404).json({error: 'No such report'})
+    }
+
+    // subtract 15 minutes from the expiry time
+    const newExpiry = new Date(report.expiry.getTime() - 15 * 60000)
+
+    report.expiry = newExpiry
+
+    // check if the new expiry time is past the current time
+    if (newExpiry.getTime() < Date.now()) {
+        await Report.findByIdAndDelete(id)
+        return res.status(200).json({message: 'Report deleted'})
+    }
+
+    const updatedReport = await report.save()
+
+    res.status(200).json(updatedReport)
 }
 
 
-module.exports = { getReport, createReport, updateReportExpiry }
+
+
+module.exports = { getReport, createReport, updateReportExpiry, addExpiry, subtractExpiry }
