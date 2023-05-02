@@ -24,14 +24,14 @@ const getReport = async (req, res) => {
     const { coordsData } = req.body;
     const response = []
     const reports = await Report.find()
-    console.log(coordsData)
+
     for (const coordinate of coordsData) {
         for (const a of reports) {
             const aCoords = a.coordinates 
             const distance = haversineDistance(coordinate.latitude, coordinate.longitude, aCoords.latitude, aCoords.longitude)
             if (distance <= thresholdDistance) {
-                const { _id, source, coordinates, category } = a
-                const objToAdd = { _id, source, coordinates, category };
+                const { _id, source, coordinates, category, expiry } = a
+                const objToAdd = { _id, source, coordinates, category, expiry };
                 if (!response.some((obj) => obj._id === objToAdd._id)) {
                     response.push(objToAdd);
                 }
