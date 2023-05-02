@@ -14,7 +14,7 @@ const router = express.Router()
 router.use(requireAuth)
 
 // GET report
-router.get('/', getReport )
+router.post('/filter', getReport )
 
 // POST a new report
 router.post('/', upload.single('image'), createReport)
