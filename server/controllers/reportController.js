@@ -1,6 +1,24 @@
 const Report = require('../models/reportModel')
 const mongoose = require('mongoose')
 
+const toRadians = (degrees) => {
+      return degrees * Math.PI / 180
+    }
+
+const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3
+    const phi1 = toRadians(lat1)
+    const phi2 = toRadians(lat2)
+    const deltaPhi = toRadians(lat2 - lat1)
+    const deltaLambda = toRadians(lon2 - lon1)
+
+    const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return R * c
+}
+
+const thresholdDistance = 25
+
 // create new report
 const createReport = async (req, res) => {
     const { source, coordinates, category, description } = req.body;
@@ -20,8 +38,23 @@ const createReport = async (req, res) => {
     const image = req.file.buffer
 
     try {
+        let found = false
         const user_id = req.user._id;
         const parsedCoordinates = JSON.parse(coordinates);
+        const reports = await Report.find({ category: category })
+        for (const a of reports) {
+            const aCoords = a.coordinates
+            const distance = haversineDistance(parsedCoordinates.latitude, parsedCoordinates.longitude, aCoords.latitude, aCoords.longitude)
+            if (distance <= thresholdDistance) {
+                found = true
+                const expiry = a.expiry 
+                await Report.findOneAndUpdate({_id: a.id}, { expiry: expiry.setMinutes(expiry.getMinutes() + 15) })   
+            }
+        }
+        if (found) {
+            const tempReport = { source, coordinates: parsedCoordinates, category, description, image, user_id };
+            return res.status(200).json(tempReport)
+        }
         const report = await Report.create({ source, coordinates: parsedCoordinates, category, description, image, user_id });
         
         return res.status(200).json(report);
