@@ -68,7 +68,7 @@ reportSchema.pre('findOneAndUpdate', function(next) {
     const originalExpiry = doc._update.$set.expiry || doc.expiry;
     const newExpiry = updatedFields.expiry;
     const timeToExpiry = newExpiry - now;
-    console.log(timeToExpiry, "from pre.updateOne")
+    console.log(timeToExpiry, "from pre.findOneAndUpdate")
 
     // If the new expiry time is earlier than the original expiry time,
     // update the timeout accordingly.
