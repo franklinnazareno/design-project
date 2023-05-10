@@ -42,72 +42,72 @@ const MapScreen = () => {
   }
 
   // Fetch user preferences
-useEffect(() => {
-  let isMounted = true;
+  useEffect(() => {
+    let isMounted = true;
 
-  const fetchUserPreferences = async () => {
-    try {
-      const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
-        headers: {'Authorization': `Bearer ${user.token}`}
+    const fetchUserPreferences = async () => {
+      try {
+        const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
+          headers: {'Authorization': `Bearer ${user.token}`}
+        });
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch({type: 'SET_PREFERENCES', payload: json});
+        } else {
+          logout();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserPreferences()
+      .then(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      const json = await response.json();
-
-      if (response.ok) {
-        dispatch({type: 'SET_PREFERENCES', payload: json});
-      } else {
-        logout();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  fetchUserPreferences()
-    .then(() => {
-      if (isMounted) {
-        setLoading(false);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  return () => {
-    isMounted = false;
-  };
-}, [dispatch, user]);
-
-// Get user location
-useEffect(() => {
-  let isMounted = true;
-
-  if (!modOpen) {
-    const watchId = Geolocation.watchPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      },
-      error => {
-        console.warn(error.code, error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        distanceFilter: 5,
-      }
-    );
 
     return () => {
       isMounted = false;
-      Geolocation.clearWatch(watchId);
     };
-  }
+  }, [dispatch, user]);
 
-  setLoading(false);
+  // Get user location
+  useEffect(() => {
+    let isMounted = true;
 
-  return () => {
-    isMounted = false;
-  };
-}, [modOpen]);
+    if (!modOpen) {
+      const watchId = Geolocation.watchPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+        error => {
+          console.warn(error.code, error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          distanceFilter: 5,
+        }
+      );
+
+      return () => {
+        isMounted = false;
+        Geolocation.clearWatch(watchId);
+      };
+    }
+
+    setLoading(false);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [modOpen]);
 
 
 
