@@ -13,7 +13,7 @@ import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-
+var deviceHeight = Dimensions.get('window').height;
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const { width, height } = Dimensions.get('window')
@@ -195,7 +195,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
-          bottomOffset: 200
+          bottomOffset: deviceHeight * 0.7
         })
       }
     }
