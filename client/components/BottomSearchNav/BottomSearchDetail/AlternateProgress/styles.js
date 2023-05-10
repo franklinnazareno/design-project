@@ -6,14 +6,16 @@ var deviceWidth = Dimensions.get('window').width;
 export default ScaledSheet.create ({
   progressBox:{
     height:'220@s',
-    width:deviceWidth,
+    width:'350@s',
     backgroundColor: colors.white,
     borderRadius: '10@s',
     alignSelf:'center',
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    marginBottom:'4@s'
+    marginBottom:'4@s',
+    justifyContent: 'center',
+
   },
   progressBoxFast:{
     height:'200@s',
@@ -24,6 +26,9 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
+    justifyContent: 'center',
+    
+        
   },
   
   Mainprogress:{
@@ -34,18 +39,20 @@ export default ScaledSheet.create ({
     marginTop: '-15@s',
     flexDirection:'row', 
     alignItems:'center'
+    
   },
   progresspadding:{
-    paddingVertical: '3@s',
+    paddingVertical: '1@s',
     paddingHorizontal: '3@s',
-    marginLeft:'1@s'
+    marginLeft:'1@s',
+    
+    
     
   },
   progresspaddingMAIN:{
-    paddingLeft:'5@s',
+    paddingLeft:'10@s',
     
   },
-
   progressContent:{
     height:'200@s',
     width:deviceWidth,
@@ -55,13 +62,16 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    paddingHorizontal: '9@s'
+    paddingHorizontal: '9@s',
+    marginBottom:'10@s'
+    
+    
   },
   modalContent:{
     backgroundColor: '#fff', 
     borderRadius: '10@s', 
     padding: '20@s', 
-    height: '90@s', 
+    height: '100@s', 
     elevation:'10@s'
   },
   modaltext:{
