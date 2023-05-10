@@ -41,39 +41,28 @@ const MapScreen = () => {
     setModOpen(data)
   }
 
-  useEffect(() => {
+  // Fetch user preferences
+useEffect(() => {
   let isMounted = true;
 
   const fetchUserPreferences = async () => {
-    const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
-      headers: {'Authorization': `Bearer ${user.token}`}
-    })
-    const json = await response.json()
+    try {
+      const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
+        headers: {'Authorization': `Bearer ${user.token}`}
+      });
+      const json = await response.json();
 
-    if (response.ok) {
-      dispatch({type: 'SET_PREFERENCES', payload: json})
+      if (response.ok) {
+        dispatch({type: 'SET_PREFERENCES', payload: json});
+      } else {
+        logout();
+      }
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    if (!response.ok) {
-      logout()
-    }
-  }
-
-  const watchId = !modOpen && Geolocation.watchPosition( // added conditional statement
-    position => {
-      const { latitude, longitude } = position.coords;
-      setLocation({ latitude, longitude });
-    },
-    error => {
-      console.warn(error.code, error.message);
-    },
-    {
-      enableHighAccuracy: true,
-      distanceFilter: 5, // update location every meter inputted
-    }
-  );
-
-  Promise.all([fetchUserPreferences(), watchId])
+  fetchUserPreferences()
     .then(() => {
       if (isMounted) {
         setLoading(false);
@@ -85,9 +74,41 @@ const MapScreen = () => {
 
   return () => {
     isMounted = false;
-    Geolocation.clearWatch(watchId);
   };
-}, [dispatch, user, modOpen]); // added modOpen to the dependency array
+}, [dispatch, user]);
+
+// Get user location
+useEffect(() => {
+  let isMounted = true;
+
+  if (!modOpen) {
+    const watchId = Geolocation.watchPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+      },
+      error => {
+        console.warn(error.code, error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 5,
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      Geolocation.clearWatch(watchId);
+    };
+  }
+
+  setLoading(false);
+
+  return () => {
+    isMounted = false;
+  };
+}, [modOpen]);
+
 
 
   // useEffect(() => {
