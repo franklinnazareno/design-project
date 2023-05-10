@@ -14,7 +14,9 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    marginBottom:'4@s'
+    marginBottom:'4@s',
+    justifyContent: 'center',
+
   },
   progressBoxFast:{
     height:'200@s',
@@ -25,6 +27,7 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
+    justifyContent: 'center',
     
         
   },
@@ -40,13 +43,15 @@ export default ScaledSheet.create ({
     
   },
   progresspadding:{
-    paddingVertical: '3@s',
+    paddingVertical: '1@s',
     paddingHorizontal: '3@s',
-    marginLeft:'1@s'
+    marginLeft:'1@s',
+    
+    
     
   },
   progresspaddingMAIN:{
-    paddingLeft:'5@s',
+    paddingLeft:'10@s',
     
   },
   progressContent:{
@@ -58,7 +63,9 @@ export default ScaledSheet.create ({
     marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    paddingHorizontal: '9@s'
+    paddingHorizontal: '9@s',
+    marginBottom:'10@s'
+    
     
   },
   modalContent:{
