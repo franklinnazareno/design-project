@@ -7,11 +7,15 @@ import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import { magnetometer } from 'react-native-sensors';
 import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
-setUpdateIntervalForType(SensorTypes.magnetometer, 1000)
+import Toast from 'react-native-toast-message';
+setUpdateIntervalForType(SensorTypes.magnetometer, 100)
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
   const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
-  const [heading, setHeading] = useState(null);
+  const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
+  const [heading, setHeading] = useState(0);
+  const [compassEnabled, setCompassEnabled] = useState(true);
+  
   const mapRef = useRef(null);
     const [region, setRegion] = useState({
       latitude: 14.6507,
@@ -41,42 +45,72 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       return R * c
     }
 
+    const MAGNETOMETER_SENSITIVITY = 5;
     useEffect(() => {
       try {
-      const magnetometerSubscription = magnetometer.subscribe(({ x, y, z, timestamp }) => {
-        setMagnetometerData({ x, y, z });
-      });
-  
-      return () => {
+      if (compassEnabled) {
+        setMagnetometerSubscription(magnetometer.subscribe(({ x, y, z, timestamp }) => {
+          const angle = Math.atan2(y, x) * (180 / Math.PI);
+          const newHeading = angle >= 0 ? angle + 90 : 450 + angle;
+          if (compassEnabled && Math.abs(newHeading - heading) > MAGNETOMETER_SENSITIVITY) {
+            setHeading(newHeading)
+            if (mapRef.current) {
+              const newCamera = {
+                  center: { latitude: location.latitude, longitude: location.longitude },
+                  heading: heading
+              }
+              mapRef.current.animateCamera(newCamera, { duration: 500 });
+            }
+        }
+        }))
+      }
+      if (!compassEnabled){
         magnetometerSubscription.unsubscribe();
+        if (!compassEnabled) {
+          setHeading(0)
+          if (mapRef.current) {
+            const newCamera = {
+                center: { latitude: location.latitude, longitude: location.longitude },
+                heading: heading
+            }
+            mapRef.current.animateCamera(newCamera, { duration: 500 });
+          }
+        }
+      }
+      return () => {
+        if (magnetometerSubscription){
+          magnetometerSubscription.unsubscribe();
+        }
       };
       } catch (error) {
         console.log('No magnetometer found')
       }
-    }, []);
+    }, [heading, compassEnabled]);
 
-    useEffect(() => {
-      const { x, y, z } = magnetometerData;
-      const heading = Math.atan2(y, x) * (180 / Math.PI);
-      if (heading - 90 >= 0){
-        setHeading(heading - 90);
+    const toggleCompass = () => {
+      setCompassEnabled(!compassEnabled);
+      if(compassEnabled){
+        Toast.show({
+          type: 'success',
+          text1: 'Following user',
+          text2: 'Double-tap to stop following',
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          bottomOffset: 200
+        })
       } else {
-        setHeading(heading + 271);
+        Toast.show({
+          type: 'success',
+          text1: 'Stopped following user',
+          text2: 'Double-tap to start following again',
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          bottomOffset: 200
+        })
       }
-    }, [magnetometerData]);
-
-    useEffect(() => {
-      console.log(heading)
-      if (mapRef.current) {
-          const newCamera = {
-              center: { latitude: location.latitude, longitude: location.longitude },
-              heading: heading
-          }
-
-          mapRef.current.animateCamera(newCamera, { duration: 2000 });
-
-      }
-  }, [heading]);
+    };
 
     useEffect(() => {
       const latitude = location.latitude
@@ -122,6 +156,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           style={styles.Mapsize}
           zoomEnabled
           rotateEnabled={false}
+          compassEnabled={compassEnabled}
+          onDoublePress={toggleCompass}
           initialCamera={{
             center: { latitude: location.latitude, longitude: location.longitude },
             zoom: 20,
@@ -157,6 +193,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             />}
 
         </MapView.Animated>
+        <Toast ref={(ref) => Toast.setRef(ref)}  />
         </MapContainer>
               
     );
