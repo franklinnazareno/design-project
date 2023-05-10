@@ -8,6 +8,7 @@ import MapContainer from '../commons/mapContainer/Contain';
 import { magnetometer } from 'react-native-sensors';
 import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import Toast from 'react-native-toast-message';
+import { Dimensions } from 'react-native';
 setUpdateIntervalForType(SensorTypes.magnetometer, 100)
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
@@ -89,7 +90,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
 
     const toggleCompass = () => {
       setCompassEnabled(!compassEnabled);
-      if(compassEnabled){
+      var deviceHeight = Dimensions.get('window').height;
+      if(!compassEnabled){
         Toast.show({
           type: 'success',
           text1: 'Following user',
@@ -97,7 +99,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
-          bottomOffset: 200
+          bottomOffset: deviceHeight * 0.7
         })
       } else {
         Toast.show({
@@ -107,7 +109,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
-          bottomOffset: 200
+          bottomOffset: deviceHeight * 0.7
         })
       }
     };
