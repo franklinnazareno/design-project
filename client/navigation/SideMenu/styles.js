@@ -26,7 +26,7 @@ itemsText: {
     paddingHorizontal:'1@s'
 },
 regImage:{
-    height:deviceheight,
+    height:deviceheight * 1.15 ,
     width:'255@s',
     alignSelf:'center',
     
