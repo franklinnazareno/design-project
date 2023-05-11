@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Text, Dimensions } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import MapComponent from '../components/MapComponent/MapComponent'
 import { LocationContext } from '../context/LocationContext'
@@ -8,6 +8,9 @@ import { useLogout } from '../hooks/useLogout'
 import Geolocation from '@react-native-community/geolocation';
 import Config from 'react-native-config'
 import BottomSearchNav from '../components/BottomSearchNav/BottomSearchNav'
+import colors from '../assets/themes/colors'
+
+const windowHeight = Dimensions.get('window').height;
 
 const MapScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -42,81 +45,42 @@ const MapScreen = () => {
   }
 
   // Fetch user preferences
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchUserPreferences = async () => {
-      try {
-        const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
-          headers: {'Authorization': `Bearer ${user.token}`}
-        });
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch({type: 'SET_PREFERENCES', payload: json});
-        } else {
-          logout();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUserPreferences()
-      .then(() => {
-        if (isMounted) {
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
+ useEffect(() => {
+    const fetchPreference = async () => {
+      const response = await fetch(`${Config.EXPRESS}/api/preferences`, {
+        headers: {'Authorization': `Bearer ${user.token}`}
       });
+      const json = await response.json()
 
-    return () => {
-      isMounted = false;
-    };
-  }, [dispatch, user]);
+      if (response.ok) {
+        dispatch({type: 'SET_PREFERENCES', payload: json})
+      }
+      setLoading(false)
+    }
+
+    fetchPreference()
+  }, [dispatch, user])
 
   // Get user location
   useEffect(() => {
-    let isMounted = true;
-
-    if (!modOpen) {
-      const watchId = Geolocation.watchPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
-        },
-        error => {
-          console.warn(error.code, error.message);
-        },
-        {
-          enableHighAccuracy: true,
-          distanceFilter: 5,
-        }
-      );
-
-      return () => {
-        isMounted = false;
-        Geolocation.clearWatch(watchId);
-      };
+  const watchId = !modOpen && Geolocation.watchPosition(
+    position => {
+      const { latitude, longitude } = position.coords;
+      setLocation({ latitude, longitude });
+    },
+    error => {
+      console.warn(error.code, error.message);
+    },
+    {
+      enableHighAccuracy: true,
+      distanceFilter: 5,
     }
+  );
 
-    setLoading(false);
-
-    return () => {
-      isMounted = false;
-    };
-  }, [modOpen]);
-
-
-
-  // useEffect(() => {
-  //   if (location) {
-  //     setLoading(false)
-  //   }
-  // }, [location])
-
+  return () => {
+    Geolocation.clearWatch(watchId);
+  };
+}, [modOpen]);
 
 
   if (!user) {
@@ -128,7 +92,11 @@ const MapScreen = () => {
     <View>
       {console.log(location)}
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <View style={{ alignItems:'center', marginTop: windowHeight * 0.3}}>
+          <ActivityIndicator size="large" color={colors.primary}/>
+          <Text style={{marginTop: 20}}>Loading Map...</Text>
+          <Text style={{ marginTop: 10, fontSize: 12, color: 'gray' }}>Please ensure you have an active internet connection.</Text>
+        </View>
       ) : (
         
           
