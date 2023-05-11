@@ -23,7 +23,7 @@ const FaqScreenComp = () => {
     },
     {
       question: 'What is the Report feature for?',
-      answer: 'You can report safety or risk factors on this screen.\nThis will be delivered to the respective government organization to be checked and validated.'
+      answer: 'You can report safety or risk factors on this screen.\nThis will show on the map to notify other users about your reports!'
     },
     {
       question: 'What is the Map Boundary/green line on the map?',

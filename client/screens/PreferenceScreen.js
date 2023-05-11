@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { usePreferencesContext } from '../hooks/usePreferencesContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 import Login from './LoginScreen';
 import Config from 'react-native-config';
 import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
+import colors from '../assets/themes/colors'
+const windowHeight = Dimensions.get('window').height;
 
 
 const PrefDetail = () => {
@@ -44,7 +46,11 @@ const PrefDetail = () => {
     <SafeAreaView>
         <View>
             {loading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
+                <View style={{ alignItems:'center', marginTop: windowHeight * 0.3}}>
+                    <ActivityIndicator size="large" color={colors.primary}/>
+                    <Text style={{marginTop: 20}}>Loading Preferences...</Text>
+                    <Text style={{ marginTop: 10, fontSize: 12, color: 'gray' }}>Please ensure you have an active internet connection.</Text>
+                </View>
             ) : (
                 <PreferenceDetails preference={preferences} />
                 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from "react";
+import React, { useState, useRef, memo, useEffect } from "react";
 import { 
 StatusBar,
 Text,
@@ -34,6 +34,11 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
   const [currentLoc, setCurrentLoc] = useState(null)
   const scrollview = useRef();
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    handleModal(false);
+  };
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     handleModal(!isModalVisible)
@@ -68,8 +73,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
         propagateSwipe={true}
         backdropOpacity={0}
         transparent={true}
-        onBackdropPress={() => setModalVisible(false)}
-        onBackButtonPress={() => setModalVisible(false)}
+        onBackdropPress={handleCloseModal}
+        onBackButtonPress={handleCloseModal}
         keyboardShouldPersistTaps={true}
         isVisible={isModalVisible}
         swipeDirection="down"
