@@ -147,7 +147,66 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       }
     }, [newCoords])
   
-    
+    mapStyle = [
+      {
+        "featureType": "administrative",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "landscape.man_made",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "landscape.natural",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.line",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      }
+    ]
     return (
       
       <MapContainer>
@@ -166,6 +225,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             heading: 0,
             pitch: 0
           }}
+          customMapStyle={mapStyle}
            >
 
           {location && <Marker 
