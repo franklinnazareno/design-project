@@ -199,7 +199,40 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         })
       }
     }
-    
+    mapStyle = [
+      {
+        "featureType": "landscape.man_made",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "landscape.natural",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.business",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.line",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      }
+    ]
     return (
       
       <MapContainer>
@@ -213,6 +246,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           zoomEnabled
           // minZoomLevel={16}
           rotateEnabled={false}
+          customMapStyle={mapStyle}
            >
           <Geojson
             geojson={myBoundary}
