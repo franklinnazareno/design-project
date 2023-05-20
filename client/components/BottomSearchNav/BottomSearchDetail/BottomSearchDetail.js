@@ -17,7 +17,7 @@ import { ActivityIndicator } from 'react-native';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const BottomSearchDetail = ({ preference, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -326,6 +326,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
           return;
       }
       if (response.ok) {
+        setConditions(json['conditions'])
         if (json['shortest_route'] && Object.keys(json['shortest_route']).length > 0){
           setResults(json['optimized_route']);
           setResults2(json['shortest_route'])
@@ -338,7 +339,8 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             return {
               coordinates: step.coordinates,
               distance: step.distance,
-              instruction: step.instruction
+              instruction: step.instruction,
+              factorsPresent: step.factors_present
             }
           })
           setBestSteps(stepsTemp)
@@ -480,6 +482,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                       preference: preference,
                       source: sourceCoords,
                       destination: destinationCoords,
+                      conditions: conditions,
                       coords: bestCoords,
                       steps: bestSteps,
                       option: 'steps_with_coords_safest'
@@ -539,6 +542,7 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
                       preference: preference,
                       source: sourceCoords,
                       destination: destinationCoords,
+                      conditions: conditions,
                       coords: otherCoords,
                       steps: otherSteps,
                       option: 'steps_with_coords_fastest'

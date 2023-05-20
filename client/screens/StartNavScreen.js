@@ -5,7 +5,7 @@ import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp'
 import NavInstruction from '../components/NavigatingMap/NavInstruction/NavInstruction'
 
 const StartNavScreen = ({ route }) => {
-  const { preference, source, destination, coords, steps, option } = route.params
+  const { preference, source, destination, conditions, coords, steps, option } = route.params
   const [location] = useContext(LocationContext)
 
   const [loading, setLoading] = useState(true)
@@ -30,7 +30,7 @@ const StartNavScreen = ({ route }) => {
           
         </View>
        )}
-       <NavInstruction steps={steps} location={location}></NavInstruction>
+       <NavInstruction steps={steps} location={location} conditions={conditions}></NavInstruction>
     </View> : 
     <View>
       <ActivityIndicator size='large' color={colors.primary}/>
