@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator} from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator, Switch} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -27,24 +27,31 @@ const ReportingComponent = ({ location }) => {
   const [currentLoc, setCurrentLoc] = useState(null)
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(null);
+  const [factorEnabled, setFactorEnabled] = useState(false);
   const [items, setItems] = useState([
-    {label: 'Closure',
+    // {label: 'Landmark',
+    //  value: 'landmark',
+    //  icon: () => <FontAwesome5 name='landmark' size={15}/>},
+    {label: 'Lighting',
+     value: 'lighting',
+     icon: () => <MaterialIcon name='lightbulb' size={15}/>},
+    {label: 'PWD', 
+     value: 'pwd',
+     icon: () => <MaterialIcon name='directions-walk' size={15}/>},
+    {label: 'CCTV',
+     value: 'cctv',
+     icon: () => <MaterialCommunityIcons name='cctv' size={15}/>},
+    {label: 'Flood',
+     value: 'flood',
+     icon: () => <MaterialCommunityIcons name='home-flood' size={15}/>},
+    {label: 'Road Closure',
      value: 'closure',
-     icon: () => <MaterialIcon name='do-not-disturb-on' size={15}/>},
-    {label: 'Hazard',
-     value: 'hazard',
-     icon: () => <MaterialIcon name='warning' size={15}/>},
-    {label: 'Police', 
-     value: 'police',
-     icon: () => <MaterialIcon name='local-police' size={15}/>},
-    {label: 'Crash',
-     value: 'crash',
-     icon: () => <FontAwesome5 name='car-crash' size={15}/>},
-     {label: 'Other',
-     value: 'others'}
+     icon: () => <MaterialIcon name='do-not-disturb-on' size={15}/>}
   ]);
 
-  const { user } = useAuthContext()
+  const toggleSwitch = () => setFactorEnabled(previousState => !previousState);
+
+  const { user } = useAuthContext();
 
 
   // useEffect(() => {
@@ -265,8 +272,13 @@ const ReportingComponent = ({ location }) => {
       const formData = new FormData()
       formData.append('source', source)
       formData.append('coordinates', JSON.stringify(reportCoords))
-      formData.append('category', category)
+      if (factorEnabled){
+        formData.append('category', category)
+      } else {
+        formData.append('category', 'not ' + category)
+      }
       formData.append('description', description)
+      console.log(formData)
       formData.append('image', {
         name: image.fileName,
         type: image.type,
@@ -299,6 +311,7 @@ const ReportingComponent = ({ location }) => {
         setDescription(null)
         setCategory(null)
         setImage(null)
+        setFactorEnabled(false)
       }
       if (!response.ok) {
           const errorLog = responseData.error
@@ -355,6 +368,16 @@ const ReportingComponent = ({ location }) => {
             <GooglePlacesInputSource/>
             <View>
             <CategorySelect/>
+            {category && category != 'closure' ? 
+            <View style ={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+            <Text style={{marginRight: 90}}>
+              Does the safety/risk factor exist?
+            </Text>
+            <Switch
+              onValueChange={toggleSwitch}
+              value={factorEnabled}
+             />
+             </View>: null}
             <SecondaryInput
             label='Description'
             value={description}
