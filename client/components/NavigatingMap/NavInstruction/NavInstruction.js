@@ -10,6 +10,7 @@ const NavInstruction = ({ steps, location }) => {
   const [completedSteps, setCompletedSteps] = useState([])
   const [currentStep, setCurrentStep] = useState(steps[0].instruction)
   const [currentDistance, setCurrentDistance] = useState(steps[0].distance)
+  const [safetyFactors, setSafetyFactors] = useState(steps[0].factorsPresent)
 
   const toRadians = (degrees) => {
     return degrees * Math.PI / 180
@@ -37,6 +38,7 @@ const NavInstruction = ({ steps, location }) => {
         if (distance <= thresholdDistance && !completedSteps.includes(step)) {
           setCurrentStep(step.instruction)
           setCurrentDistance(step.distance)
+          setSafetyFactors(step.factorsPresent)
           setCompletedSteps(prev => [...prev, step]);
           setTimeout(() => {
           // Use setTimeout instead of "await new Promise" in useEffect

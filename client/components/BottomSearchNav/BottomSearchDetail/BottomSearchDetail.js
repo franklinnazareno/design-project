@@ -347,7 +347,8 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             return {
               coordinates: step.coordinates,
               distance: step.distance,
-              instruction: step.instruction
+              instruction: step.instruction,
+              factorsPresent: step.factors_present
             }
           })
           setOtherSteps(stepsTemp2)
@@ -365,7 +366,8 @@ const BottomSearchDetail = ({ preference, location, handleCoordsData, handleCoor
             return {
               coordinates: step.coordinates,
               distance: step.distance,
-              instruction: step.instruction
+              instruction: step.instruction,
+              factorsPresent: step.factors_present
             }
           })
           setBestSteps(stepsTemp)
