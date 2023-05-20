@@ -22,15 +22,15 @@ export default ScaledSheet.create ({
       },
     ReCenter:{
         alignSelf:'center',
-        margin: '3@s',  
+        margin: 3,  
         backgroundColor:colors.primary, 
-        borderRadius:'30@s',
-        height: '40@s', 
-        width: '40@s', 
+        borderRadius:30,
+        height: 50, 
+        width: 50, 
    
       },
     Icon:{
-        margin:'6@s',
+        margin: 8 ,
         alignSelf: 'center'
     }
 })
