@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, Activ
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import { moderateScale } from 'react-native-size-matters';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -374,9 +375,14 @@ const ReportingComponent = ({ location }) => {
             <Text style={{marginRight: 90}}>
               Does the safety/risk factor exist?
             </Text>
-            <Switch
-              onValueChange={toggleSwitch}
-              value={factorEnabled}
+            <Switch 
+            style={{ transform: [{ 
+            scaleX: moderateScale(1, 1.5) }, 
+            { scaleY: moderateScale(1, 1.5) }] }}
+            trackColor={{false: colors.grey, true: colors.primary}}
+            thumbColor={factorEnabled.enabled ? '#f4f3f4' : '#f4f3f4'}
+            onValueChange={toggleSwitch}
+            value={factorEnabled}  
              />
              </View>: null}
             <SecondaryInput
