@@ -6,10 +6,11 @@ import styles from "./styles";
 import colors from "../../../assets/themes/colors";
 
 
-const NavInstruction = ({ steps, location }) => {
+const NavInstruction = ({ steps, location, conditions }) => {
 
   const [newSteps, setNewSteps] = useState(steps)
   const [completedSteps, setCompletedSteps] = useState([])
+  const [currentCondition, setCurrentCondition] = useState(conditions)
   const [currentStep, setCurrentStep] = useState(steps[0].instruction)
   const [currentDistance, setCurrentDistance] = useState(steps[0].distance)
   const [safetyFactors, setSafetyFactors] = useState(steps[0].factorsPresent)

@@ -16,6 +16,7 @@ var deviceWidth = Dimensions.get('window').width;
 const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsData2, handleLoadingData, handleUserView, handleModal }) => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
+  const [conditions, setConditions] = useState(null)
   const [results, setResults] = useState(null);
   const [results2, setResults2] = useState(null);
   const [safestCoverage, setSafestCoverage] = useState(null)
@@ -105,6 +106,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           <BottomSearchDetail 
           preference={preference}
           location={location}
+          conditions={conditions}
+          setConditions={setConditions}
           handleCoordsData={handleCoordsData} 
           handleCoordsData2={handleCoordsData2} 
           handleLoadingData={handleLoadingData} 
