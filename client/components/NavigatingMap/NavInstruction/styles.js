@@ -58,6 +58,14 @@ export default ScaledSheet.create ({
         height: 40, 
         width: 40, 
         },
+      disabledicon: {
+        alignSelf:'center',
+        margin: 3,  
+        backgroundColor: 'gray', 
+        borderRadius:30,
+        height: 40, 
+        width: 40, 
+        },
       Riskfactoricon: {
         alignSelf:'center',
         margin: 3,  
@@ -71,7 +79,6 @@ export default ScaledSheet.create ({
           fontSize: 20,
           paddingVertical: 8,
           color: colors.white
-
         },
       
 })
