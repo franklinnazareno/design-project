@@ -15,6 +15,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
+import Container from '../commons/Container/Contain'
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -349,7 +350,7 @@ const ReportingComponent = ({ location }) => {
   }
 
   return (
-    <MapContainer>
+    <Container>
         {/* <ScrollView keyboardShouldPersistTaps='always'> */}
             <Text style={styles.subText}>Help us Improve Our Maps!</Text>
             <ImageBackground  
@@ -413,7 +414,7 @@ const ReportingComponent = ({ location }) => {
         {/* You cant use a scrollview here because of the autocomplete */}
     
         
-    </MapContainer>
+    </Container>
   )
 }
 

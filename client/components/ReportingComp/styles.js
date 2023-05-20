@@ -1,5 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
+import {Dimensions} from 'react-native';
+var deviceheight = Dimensions.get('window').height;
 
 export default ScaledSheet.create({
    
@@ -9,7 +11,7 @@ export default ScaledSheet.create({
         alignSelf:'center', 
     },
     loginImage:{
-        height: '750@s',
+        height: deviceheight * 1.2,
         width: '350@s',
         flex:1,
         alignSelf:'center',
