@@ -13,6 +13,12 @@ const NavInstruction = ({ steps, location }) => {
   const [currentStep, setCurrentStep] = useState(steps[0].instruction)
   const [currentDistance, setCurrentDistance] = useState(steps[0].distance)
   const [safetyFactors, setSafetyFactors] = useState(steps[0].factorsPresent)
+  const [landmarkEnabled, setLandmarkEnabled] = useState(false)
+  const [lightingEnabled, setLightingEnabled] = useState(false)
+  const [pwdEnabled, setPWDEnabled] = useState(false)
+  const [cctvEnabled, setCctvEnabled] = useState(false)
+  const [majorRoadEnabled, setMajorRoadEnabled] = useState(false)
+  const [floodEnabled, setFloodEnabled] = useState(false)
 
   const toRadians = (degrees) => {
     return degrees * Math.PI / 180
@@ -53,13 +59,32 @@ const NavInstruction = ({ steps, location }) => {
       }
     }
   }, [location])
+  
+  useEffect(() => {
+    console.log(safetyFactors)
+    // Enable or disable landmarkEnabled state based on the presence of 'landmark' key
+    setLandmarkEnabled(safetyFactors.includes('landmark'));
+    
+    // Enable or disable lightingEnabled state based on the presence of 'lighting' key
+    setLightingEnabled(safetyFactors.includes('lighting'));
+
+    // Enable or disable pwdEnabled state based on the presence of 'pwd_friendly' key
+    setPWDEnabled(safetyFactors.includes('pwd_friendly'));
+
+    // Enable or disable cctvEnabled state based on the presence of 'cctv' key
+    setCctvEnabled(safetyFactors.includes('cctv'));
+
+    // Enable or disable majorRoadEnabled state based on the presence of 'not_major_road' key
+    setMajorRoadEnabled(safetyFactors.includes('not_major_road'));
+
+    // Enable or disable floodEnabled state based on the presence of 'not_flood_hazard' key
+    setFloodEnabled(safetyFactors.includes('not_flood_hazard'));
+  }, [safetyFactors])
 
   return (
     <View>
       <StatusBar />
       <View styles={styles.ButtonView}>
-        {console.log(currentDistance)}
-        {console.log(currentStep)}
         <View style={styles.btnContainer}>
             {currentStep.includes('Head') ? <MaterialCommunityIcons name="flag-checkered" style={styles.icon}></MaterialCommunityIcons> : null}
             {currentStep.includes('Cross') ? <MaterialCommunityIcons name="walk" style={styles.icon}></MaterialCommunityIcons> : null}
@@ -78,32 +103,32 @@ const NavInstruction = ({ steps, location }) => {
         <View style={styles.FactorContainer}>
           
           {/* Landmark */}
-          <TouchableOpacity style={styles.factoricon}>
+          <TouchableOpacity style={landmarkEnabled ? styles.factoricon : styles.disabledicon}>
             <FontAwesome5 name="landmark" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* Well-lit */}
-          <TouchableOpacity style={styles.factoricon}>
+          <TouchableOpacity style={lightingEnabled ? styles.factoricon : styles.disabledicon}>
             <FontAwesome5 name="lightbulb" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* PWD */}
-          <TouchableOpacity style={styles.factoricon}>
+          <TouchableOpacity style={pwdEnabled ? styles.factoricon : styles.disabledicon}>
           <FontAwesome5 name="wheelchair" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* CCTV */}
-          <TouchableOpacity style={styles.factoricon}>
+          <TouchableOpacity style={cctvEnabled ? styles.factoricon : styles.disabledicon}>
             <MaterialCommunityIcons name="cctv" style={styles.iconfactors}></MaterialCommunityIcons>
           </TouchableOpacity>
 
           {/* Major Road */}
-          <TouchableOpacity style={styles.Riskfactoricon}>
+          <TouchableOpacity style={!majorRoadEnabled ? styles.Riskfactoricon : styles.disabledicon}>
           <FontAwesome5 name="road" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
           
           {/* Flood */}
-          <TouchableOpacity style={styles.Riskfactoricon}>
+          <TouchableOpacity style={!floodEnabled ? styles.Riskfactoricon : styles.disabledicon}>
           <FontAwesome5 name="water" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
         </View>
