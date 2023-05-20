@@ -158,26 +158,42 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         ]
       },
       {
-        "featureType": "landscape.man_made",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }
-        ]
-      },
-      {
-        "featureType": "landscape.natural",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }
-        ]
-      },
-      {
         "featureType": "poi",
         "stylers": [
           {
             "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.attraction",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.place_of_worship",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.sports_complex",
+        "stylers": [
+          {
+            "visibility": "on"
           }
         ]
       },
@@ -192,14 +208,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       },
       {
         "featureType": "transit",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "transit.line",
         "stylers": [
           {
             "visibility": "off"
