@@ -109,7 +109,7 @@ const NavInstruction = ({ steps, location, conditions }) => {
           </TouchableOpacity>
 
           {/* Well-lit */}
-          <TouchableOpacity style={lightingEnabled ? styles.factoricon : styles.disabledicon}>
+          <TouchableOpacity style={lightingEnabled && conditions.lighting == true ? styles.factoricon : styles.disabledicon}>
             <FontAwesome5 name="lightbulb" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
@@ -129,7 +129,7 @@ const NavInstruction = ({ steps, location, conditions }) => {
           </TouchableOpacity>
           
           {/* Flood */}
-          <TouchableOpacity style={!floodEnabled ? styles.Riskfactoricon : styles.disabledicon}>
+          <TouchableOpacity style={!floodEnabled && conditions.weather == true ? styles.Riskfactoricon : styles.disabledicon}>
           <FontAwesome5 name="water" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
         </View>
