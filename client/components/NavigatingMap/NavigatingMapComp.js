@@ -99,7 +99,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
-          bottomOffset: deviceHeight * 0.7
+          bottomOffset: deviceHeight * 0.6
         })
       } else {
         Toast.show({
@@ -109,7 +109,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           visibilityTime: 3000,
           autoHide: true,
           position: 'bottom',
-          bottomOffset: deviceHeight * 0.7
+          bottomOffset: deviceHeight * 0.6
         })
       }
     };
@@ -147,74 +147,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       }
     }, [newCoords])
   
-    mapStyle = [
-      {
-        "featureType": "administrative",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "poi",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.attraction",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.park",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.place_of_worship",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.sports_complex",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      },
-      {
-        "featureType": "road",
-        "elementType": "labels.icon",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "transit",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      }
-    ]
+    
     return (
       
       <MapContainer>
@@ -233,7 +166,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             heading: 0,
             pitch: 0
           }}
-          customMapStyle={mapStyle}
            >
 
           {location && <Marker 

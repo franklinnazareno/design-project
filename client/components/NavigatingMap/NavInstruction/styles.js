@@ -21,6 +21,17 @@ export default ScaledSheet.create ({
         elevation:'10@s',
         flexDirection: 'row',
       },
+      FactorContainer: {
+        borderRadius:'10@s',
+        alignSelf: "center",
+        height: '50@s',
+        width:'250@s',
+        paddingHorizontal: '13@s',
+        backgroundColor:colors.white,
+        marginTop:'-660@s',
+        elevation:'10@s',
+        flexDirection: 'row',
+      },
       navtext: {
         textAlign:'center',
         alignSelf: "center",
@@ -38,5 +49,29 @@ export default ScaledSheet.create ({
         alignSelf: 'center', 
         fontSize: 50,
         marginRight: 5
-      }
+      },
+      factoricon: {
+        alignSelf:'center',
+        margin: 3,  
+        backgroundColor:colors.primary, 
+        borderRadius:30,
+        height: 40, 
+        width: 40, 
+        },
+      Riskfactoricon: {
+        alignSelf:'center',
+        margin: 3,  
+        backgroundColor:'red', 
+        borderRadius:30,
+        height: 40, 
+        width: 40, 
+        },
+        iconfactors: {
+          alignSelf: 'center', 
+          fontSize: 20,
+          paddingVertical: 8,
+          color: colors.white
+
+        },
+      
 })
