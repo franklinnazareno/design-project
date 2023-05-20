@@ -11,7 +11,7 @@ export default ScaledSheet.create({
         alignSelf:'center', 
     },
     loginImage:{
-        height: deviceheight * 1.2,
+        height: deviceheight,
         width: '350@s',
         flex:1,
         alignSelf:'center',
