@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar, Text, View, Dimensions } from "react-native";
+import { StatusBar, Text, View, Dimensions, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import styles from "./styles";
+import colors from "../../../assets/themes/colors";
 
 
 const NavInstruction = ({ steps, location }) => {
@@ -53,10 +55,8 @@ const NavInstruction = ({ steps, location }) => {
   }, [location])
 
   return (
-    <View style={styles.flexView}>
-      
+    <View>
       <StatusBar />
-      
       <View styles={styles.ButtonView}>
         {console.log(currentDistance)}
         {console.log(currentStep)}
@@ -74,7 +74,40 @@ const NavInstruction = ({ steps, location }) => {
       </View>
 
       
-      
+      <View style={styles.ButtonView}>
+        <View style={styles.FactorContainer}>
+          
+          {/* Landmark */}
+          <TouchableOpacity style={styles.factoricon}>
+            <FontAwesome5 name="landmark" style={styles.iconfactors}></FontAwesome5>
+          </TouchableOpacity>
+
+          {/* Well-lit */}
+          <TouchableOpacity style={styles.factoricon}>
+            <FontAwesome5 name="lightbulb" style={styles.iconfactors}></FontAwesome5>
+          </TouchableOpacity>
+
+          {/* PWD */}
+          <TouchableOpacity style={styles.factoricon}>
+          <FontAwesome5 name="wheelchair" style={styles.iconfactors}></FontAwesome5>
+          </TouchableOpacity>
+
+          {/* CCTV */}
+          <TouchableOpacity style={styles.factoricon}>
+            <MaterialCommunityIcons name="cctv" style={styles.iconfactors}></MaterialCommunityIcons>
+          </TouchableOpacity>
+
+          {/* Major Road */}
+          <TouchableOpacity style={styles.Riskfactoricon}>
+          <FontAwesome5 name="road" style={styles.iconfactors}></FontAwesome5>
+          </TouchableOpacity>
+          
+          {/* Flood */}
+          <TouchableOpacity style={styles.Riskfactoricon}>
+          <FontAwesome5 name="water" style={styles.iconfactors}></FontAwesome5>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
     
     
