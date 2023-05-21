@@ -26,9 +26,21 @@ export default ScaledSheet.create ({
         alignSelf: "center",
         height: '50@s',
         width:'250@s',
-        paddingHorizontal: '13@s',
+        paddingHorizontal: 15,
         backgroundColor:colors.white,
         marginTop:'-660@s',
+        elevation:'10@s',
+        flexDirection: 'row',
+      },
+      ReportContainer: {
+        borderRadius:'10@s',
+        alignSelf: "flex-end",
+        height: '35@s',
+        width:'35@s',
+        paddingHorizontal: 12,
+        backgroundColor:colors.primary,
+        marginRight:'55@s',
+        marginTop:'-955@s',
         elevation:'10@s',
         flexDirection: 'row',
       },
@@ -78,6 +90,12 @@ export default ScaledSheet.create ({
           alignSelf: 'center', 
           fontSize: 20,
           paddingVertical: 8,
+          color: colors.white
+        },
+        iconReport: {
+          alignSelf: 'center', 
+          fontSize: 20,
+          paddingVertical: 5,
           color: colors.white
         },
       
