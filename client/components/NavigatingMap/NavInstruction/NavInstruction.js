@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StatusBar, Text, View, Dimensions, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import styles from "./styles";
 import colors from "../../../assets/themes/colors";
 
@@ -133,6 +134,15 @@ const NavInstruction = ({ steps, location, conditions }) => {
           <FontAwesome5 name="water" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
         </View>
+      </View>
+
+      {/* Report Screen */}
+      <View style={styles.ButtonView}>
+        
+          <TouchableOpacity style={styles.ReportContainer}>
+          <FontAwesome name="warning" style={styles.iconReport}></FontAwesome>
+          </TouchableOpacity>
+        
       </View>
     </View>
     
