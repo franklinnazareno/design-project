@@ -287,14 +287,15 @@ const ReportingComponent = ({ location }) => {
         uri: image.uri
       })
 
-      const locationData = [location.longitude, location.latitude]
+      const coords = [location.longitude, location.latitude]
+      const flaskPost = { coords }
 
       const edgesResponse = await fetch(`${Config.FLASK}/route/get_nearest_edge`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(locationData)
+        body: JSON.stringify(flaskPost)
       })
 
       const edgesJson = await edgesResponse.json()
