@@ -287,36 +287,69 @@ const ReportingComponent = ({ location }) => {
         uri: image.uri
       })
 
-      const response = await fetch(`${Config.EXPRESS}/api/report`, {
+      const locationData = [location.longitude, location.latitude]
+
+      const edgesResponse = await fetch(`${Config.FLASK}/route/get_nearest_edge`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${user.token}`,
-          'Content-Type': 'multipart/form-data',
-          'Accept':'*/*'
+          'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify(locationData)
       })
-      
-      const responseData = await response.json()
 
-      if (response.ok) {
-        Toast.show({
-          type: 'success',
-          text1: 'Report sent successfully.',
-          visibilityTime: 3000,
-          autoHide: true,
-          position: 'bottom',
-          onHide: () => setError(null),
-        });
-        setSuccess(true)
-        setSource('')
-        setDescription(null)
-        setCategory(null)
-        setImage(null)
-        setFactorEnabled(false)
+      const edgesJson = await edgesResponse.json()
+
+      if (edgesResponse.ok) {
+        formData.append('edges', edgesJson['edges'])
+        const response = await fetch(`${Config.EXPRESS}/api/report`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${user.token}`,
+            'Content-Type': 'multipart/form-data',
+            'Accept':'*/*'
+          },
+          body: formData
+        })
+        
+        const responseData = await response.json()
+
+        if (response.ok) {
+          Toast.show({
+            type: 'success',
+            text1: 'Report sent successfully.',
+            visibilityTime: 3000,
+            autoHide: true,
+            position: 'bottom',
+            onHide: () => setError(null),
+          });
+          setSuccess(true)
+          setSource('')
+          setDescription(null)
+          setCategory(null)
+          setImage(null)
+          setFactorEnabled(false)
+        }
+        if (!response.ok) {
+            const errorLog = responseData.error
+            if (errorLog && errorLog.toString().trim() !== "") {
+            Toast.show({
+              type: 'error',
+              text1: 'An error has occurred.',
+              text2: errorLog,
+              visibilityTime: 3000,
+              autoHide: true,
+              onHide: () => setError(null),
+              position: 'bottom',
+              bottomOffset: 200
+            });
+            console.log(errorLog)
+          }
+        }
+        setLoading(false)
       }
-      if (!response.ok) {
-          const errorLog = responseData.error
+
+      if (!edgesResponse.ok) {
+        const errorLog = responseData.error
           if (errorLog && errorLog.toString().trim() !== "") {
           Toast.show({
             type: 'error',
@@ -331,7 +364,7 @@ const ReportingComponent = ({ location }) => {
           console.log(errorLog)
         }
       }
-      setLoading(false)
+
     } 
     catch (error) {
       if (error && error.toString().trim() !== "") {
