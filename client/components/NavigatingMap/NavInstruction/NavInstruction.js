@@ -4,11 +4,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import styles from "./styles";
-import colors from "../../../assets/themes/colors";
+import { useNavigation } from '@react-navigation/native';
+import { REPORT_DETAIL } from "../../../context/initialRoutenNames";
 
 
 const NavInstruction = ({ steps, location, conditions }) => {
 
+  const navigation = useNavigation();
   const [newSteps, setNewSteps] = useState(steps)
   const [completedSteps, setCompletedSteps] = useState([])
   const [currentCondition, setCurrentCondition] = useState(conditions)
@@ -139,7 +141,7 @@ const NavInstruction = ({ steps, location, conditions }) => {
       {/* Report Screen */}
       <View style={styles.ButtonView}>
         
-          <TouchableOpacity style={styles.ReportContainer}>
+          <TouchableOpacity style={styles.ReportContainer} onPress={() => {navigation.navigate(REPORT_DETAIL);}}>
           <FontAwesome name="warning" style={styles.iconReport}></FontAwesome>
           </TouchableOpacity>
         
