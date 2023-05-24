@@ -385,8 +385,8 @@ const ReportingComponent = ({ location }) => {
   }
 
   return (
-    <Container>
-        {/* <ScrollView keyboardShouldPersistTaps='always'> */}
+    <View>
+        <ScrollView keyboardShouldPersistTaps='always'>
             <Text style={styles.subText}>Help us Improve Our Maps!</Text>
             <ImageBackground  
                 source={require('../../assets/images/Reg4.png')}
@@ -450,11 +450,11 @@ const ReportingComponent = ({ location }) => {
             {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
             </ImageBackground>
         
-        {/* </ScrollView> */}
+        </ScrollView>
         {/* You cant use a scrollview here because of the autocomplete */}
     
         
-    </Container>
+    </View>
   )
 }
 
