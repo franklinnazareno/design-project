@@ -131,24 +131,8 @@ const ReportingComponent = ({ location }) => {
       <GooglePlacesAutocomplete
         ref={ref}
         placeholder="Source"
-        onPress={ async (data, details = null) => {
+        onPress={(data, details = null) => {
           setReportCoords({latitude: details.geometry.location.lat, longitude: details.geometry.location.lng}); 
-          const coords = [details.geometry.location.lng, details.geometry.location.lat]
-          const flaskPost = { coords }
-
-          const edgesResponse = await fetch(`${Config.FLASK}/route/get_nearest_edge`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(flaskPost)
-          })
-
-          const edgesJson = await edgesResponse.json()
-
-          if (edgesResponse.ok) {
-            setEdges(edgesJson['edges'])
-          }
           console.log("Source:", [details.geometry.location.lng, details.geometry.location.lat])
           setSource(details.name)
           console.log(details.name)
@@ -167,7 +151,6 @@ const ReportingComponent = ({ location }) => {
             onPress={() => {
               this.textInput.clear();
               setSource('')
-              setEdges('')
               setReportCoords(null)
             }}
           >
@@ -289,68 +272,84 @@ const ReportingComponent = ({ location }) => {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      const formData = new FormData()
-      formData.append('source', source)
-      formData.append('coordinates', JSON.stringify(reportCoords))
-      formData.append('edges', edges)
-      if (factorEnabled){
-        formData.append('category', category)
-      } else {
-        formData.append('category', 'not ' + category)
-      }
-      formData.append('description', description)
-      console.log(formData)
-      formData.append('image', {
-        name: image.fileName,
-        type: image.type,
-        uri: image.uri
+      const coords = [reportCoords.longitude, reportCoords.latitude]
+      const flaskPost = { coords }
+
+      const edgesResponse = await fetch(`${Config.FLASK}/route/get_nearest_edge`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(flaskPost)
       })
 
-      const response = await fetch(`${Config.EXPRESS}/api/report`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${user.token}`,
-            'Content-Type': 'multipart/form-data',
-            'Accept':'*/*'
-          },
-          body: formData
-        })
-        
-        const responseData = await response.json()
+      const edgesJson = await edgesResponse.json()
 
-        if (response.ok) {
-          Toast.show({
-            type: 'success',
-            text1: 'Report sent successfully.',
-            visibilityTime: 3000,
-            autoHide: true,
-            position: 'bottom',
-            onHide: () => setError(null),
-          });
-          setSuccess(true)
-          setSource('')
-          setDescription(null)
-          setCategory(null)
-          setImage(null)
-          setFactorEnabled(false)
+      if (edgesResponse.ok) {
+        setEdges(edgesJson['edges'])
+        const formData = new FormData()
+        formData.append('source', source)
+        formData.append('coordinates', JSON.stringify(reportCoords))
+        formData.append('edges', edges)
+        if (factorEnabled){
+          formData.append('category', category)
+        } else {
+          formData.append('category', 'not ' + category)
         }
-        if (!response.ok) {
-            const errorLog = responseData.error
-            if (errorLog && errorLog.toString().trim() !== "") {
+        formData.append('description', description)
+        console.log(formData)
+        formData.append('image', {
+          name: image.fileName,
+          type: image.type,
+          uri: image.uri
+        })
+
+        const response = await fetch(`${Config.EXPRESS}/api/report`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${user.token}`,
+              'Content-Type': 'multipart/form-data',
+              'Accept':'*/*'
+            },
+            body: formData
+          })
+          
+          const responseData = await response.json()
+
+          if (response.ok) {
             Toast.show({
-              type: 'error',
-              text1: 'An error has occurred.',
-              text2: errorLog,
+              type: 'success',
+              text1: 'Report sent successfully.',
               visibilityTime: 3000,
               autoHide: true,
-              onHide: () => setError(null),
               position: 'bottom',
-              bottomOffset: 200
+              onHide: () => setError(null),
             });
-            console.log(errorLog)
+            setSuccess(true)
+            setSource('')
+            setDescription(null)
+            setCategory(null)
+            setImage(null)
+            setFactorEnabled(false)
           }
-        }
-        setLoading(false)
+          if (!response.ok) {
+              const errorLog = responseData.error
+              if (errorLog && errorLog.toString().trim() !== "") {
+              Toast.show({
+                type: 'error',
+                text1: 'An error has occurred.',
+                text2: errorLog,
+                visibilityTime: 3000,
+                autoHide: true,
+                onHide: () => setError(null),
+                position: 'bottom',
+                bottomOffset: 200
+              });
+              console.log(errorLog)
+            }
+          }
+          setLoading(false)
+      }
 
     } 
     catch (error) {
