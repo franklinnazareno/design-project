@@ -272,11 +272,8 @@ const ReportingComponent = ({ location }) => {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      console.log("Checkpoint 1")
       const coords = [reportCoords.longitude, reportCoords.latitude]
       const flaskPost = { coords }
-
-        console.log(flaskPost)
 
       const edgesResponse = await fetch(`${Config.FLASK}/route/get_nearest_edge/`, {
         method: 'POST',
@@ -288,11 +285,7 @@ const ReportingComponent = ({ location }) => {
 
       const edgesJson = await edgesResponse.json()
 
-      console.log(edgesJson)
-      console.log("Checkpoint 2")
-
       if (edgesResponse.ok) {
-        console.log("Checkpoint 3")
         const formData = new FormData()
         formData.append('source', source)
         formData.append('coordinates', JSON.stringify(reportCoords))
