@@ -102,6 +102,7 @@ const ReportingComponent = ({ location }) => {
         setOpen={setOpen}
         setValue={setCategory}
         setItems={setItems}
+        listMode="SCROLLVIEW"
       />
     );
   }
