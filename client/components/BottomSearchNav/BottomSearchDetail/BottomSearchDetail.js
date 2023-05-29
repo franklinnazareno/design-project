@@ -17,7 +17,7 @@ import { ActivityIndicator } from 'react-native';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -475,9 +475,10 @@ const BottomSearchDetail = ({ preference, location, conditions, setConditions, h
               <BestProgressComp safestCoverage={safestCoverage} />
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
-                
+                {/* <Button title="tite" onPress={() => {handleCloseModal();}}></Button> */}
                 <CustomButton primary title='Start Navigation' 
                   onPress={() => {
+                    handleCloseModal();
                     navigation.navigate(STARTNAV, {
                       preference: preference,
                       source: sourceCoords,
@@ -487,7 +488,7 @@ const BottomSearchDetail = ({ preference, location, conditions, setConditions, h
                       steps: bestSteps,
                       option: 'steps_with_coords_safest'
                     });
-                    handleModal(false);
+                    handleCloseModal();
                   }}
                 /> 
 
@@ -538,6 +539,7 @@ const BottomSearchDetail = ({ preference, location, conditions, setConditions, h
                 
                 <CustomButton primary title='Start Navigation' 
                   onPress={() => {
+                    handleCloseModal();
                     navigation.navigate(STARTNAV, {
                       preference: preference,
                       source: sourceCoords,
@@ -547,7 +549,7 @@ const BottomSearchDetail = ({ preference, location, conditions, setConditions, h
                       steps: otherSteps,
                       option: 'steps_with_coords_fastest'
                     });
-                    handleModal(false);
+                    // handleCloseModal();
                   }}
                 />
 

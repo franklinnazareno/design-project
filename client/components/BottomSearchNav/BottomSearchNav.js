@@ -5,7 +5,8 @@ Text,
 View,
 TouchableOpacity,
 ScrollView,
-Dimensions} from "react-native";
+Dimensions,
+Button} from "react-native";
 import Modal from "react-native-modal";
 import styles from "./styles";
 import BottomSearchDetail from "./BottomSearchDetail/BottomSearchDetail";
@@ -143,7 +144,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           setOtherSteps={setOtherSteps}
           currentLoc={currentLoc}
           setCurrentLoc={setCurrentLoc}
-          handleModal={handleModal}>
+          handleModal={handleModal}
+          handleCloseModal={handleCloseModal}>
           </BottomSearchDetail>
           </TouchableOpacity>
           </ScrollView>
