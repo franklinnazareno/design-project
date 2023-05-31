@@ -65,8 +65,8 @@ const MapScreen = () => {
   useEffect(() => {
   const watchId = !modOpen && Geolocation.watchPosition(
     position => {
-      const { latitude, longitude } = position.coords;
-      setLocation({ latitude, longitude });
+      const { latitude, longitude, heading } = position.coords;
+      setLocation({ latitude, longitude, heading });
     },
     error => {
       console.warn(error.code, error.message);
