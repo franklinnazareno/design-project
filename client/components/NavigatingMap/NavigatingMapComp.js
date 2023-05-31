@@ -11,11 +11,12 @@ import MapContainer from '../commons/mapContainer/Contain';
 import Toast from 'react-native-toast-message';
 // import { Dimensions } from 'react-native';
 // setUpdateIntervalForType(SensorTypes.magnetometer, 100)
+import CompassHeading from 'react-native-compass-heading'
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
-  // const [heading, setHeading] = useState(0);
+  const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   
   const mapRef = useRef(null);
@@ -88,6 +89,18 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         console.log('No magnetometer found')
       }
     }, [location]);
+
+    useEffect(() => {
+      const degree_update_rate = 10;
+
+      CompassHeading.start(degree_update_rate, ({heading, accuracy}) => {
+        setHeading(heading)
+      });
+
+      return () => {
+        CompassHeading.stop();
+      };
+    },[]);
 
     // const toggleCompass = () => {
     //   setCompassEnabled(!compassEnabled);
@@ -244,17 +257,14 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             ref={marker => {this.marker = marker}}
             flat
             style={{ transform: [{
-              rotate: location.heading === undefined? '0deg' : `${location.heading}deg`
+              rotate: heading === undefined? '0deg' : `${heading}deg`
             }]}}
             tracksViewChanges={true}>
-              <View style={{}}>
+              <View style={{backgroundColor: 'white', borderRadius: 20 }}>
                     {/* <Icon name="circle" size={20} color="#1E75E8" /> */}
                     <FontAwesome5Icon name="location-arrow" 
                                       size={20}
-                                      style={{margin: 5,
-                                              backgroundColor: 'white',
-                                              borderRadius: 10, 
-                                              transform:[{rotate: '-45deg'}]}}
+                                      style={{ transform:[{rotate: '-45deg'}]}}
                                       color="#1E75E8"/>
                 </View>
             </Marker.Animated>}
