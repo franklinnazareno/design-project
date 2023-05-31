@@ -2,25 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Tts from 'react-native-tts';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
-import { magnetometer } from 'react-native-sensors';
-import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
+// import { magnetometer } from 'react-native-sensors';
+// import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import Toast from 'react-native-toast-message';
-import { Dimensions } from 'react-native';
-setUpdateIntervalForType(SensorTypes.magnetometer, 100)
+// import { Dimensions } from 'react-native';
+// setUpdateIntervalForType(SensorTypes.magnetometer, 100)
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
-  const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
-  const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
-  const [heading, setHeading] = useState(0);
-  const [compassEnabled, setCompassEnabled] = useState(true);
+  // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
+  // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
+  // const [heading, setHeading] = useState(0);
+  // const [compassEnabled, setCompassEnabled] = useState(true);
   
   const mapRef = useRef(null);
     const [region, setRegion] = useState({
-      latitude: 14.6507,
-      longitude: 121.1029,
+      latitude: location.latitude,
+      longitude: location.longitude,
       latitudeDelta: 0.001, 
       longitudeDelta: 0.001
     })
@@ -46,73 +47,73 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       return R * c
     }
 
-    const MAGNETOMETER_SENSITIVITY = 5;
+    // const MAGNETOMETER_SENSITIVITY = 5;
     useEffect(() => {
       try {
-      if (compassEnabled) {
-        setMagnetometerSubscription(magnetometer.subscribe(({ x, y, z, timestamp }) => {
-          const angle = Math.atan2(y, x) * (180 / Math.PI);
-          const newHeading = angle >= 0 ? angle + 90 : 450 + angle;
-          if (compassEnabled && Math.abs(newHeading - heading) > MAGNETOMETER_SENSITIVITY) {
-            setHeading(newHeading)
+      // if (compassEnabled) {
+        // setMagnetometerSubscription(magnetometer.subscribe(({ x, y, z, timestamp }) => {
+          // const angle = Math.atan2(y, x) * (180 / Math.PI);
+          // const newHeading = angle >= 0 ? angle + 90 : 450 + angle;
+          // if (compassEnabled && Math.abs(newHeading - heading) > MAGNETOMETER_SENSITIVITY) {
+          //   setHeading(newHeading)
             if (mapRef.current) {
               const newCamera = {
-                  center: { latitude: location.latitude, longitude: location.longitude },
-                  heading: heading
+                  center: { latitude: location.latitude, longitude: location.longitude }
               }
               mapRef.current.animateCamera(newCamera, { duration: 500 });
             }
-        }
-        }))
-      }
-      if (!compassEnabled){
-        magnetometerSubscription.unsubscribe();
-        if (!compassEnabled) {
-          setHeading(0)
-          if (mapRef.current) {
-            const newCamera = {
-                center: { latitude: location.latitude, longitude: location.longitude },
-                heading: heading
-            }
-            mapRef.current.animateCamera(newCamera, { duration: 500 });
-          }
-        }
-      }
-      return () => {
-        if (magnetometerSubscription){
-          magnetometerSubscription.unsubscribe();
-        }
-      };
+        // }
+        // }
+        // ))
+      // }
+      // if (!compassEnabled){
+      //   magnetometerSubscription.unsubscribe();
+      //   if (!compassEnabled) {
+      //     setHeading(0)
+      //     if (mapRef.current) {
+      //       const newCamera = {
+      //           center: { latitude: location.latitude, longitude: location.longitude },
+      //           heading: heading
+      //       }
+      //       mapRef.current.animateCamera(newCamera, { duration: 500 });
+      //     }
+      //   }
+      // }
+      // return () => {
+      //   if (magnetometerSubscription){
+      //     magnetometerSubscription.unsubscribe();
+      //   }
+      // };
       } catch (error) {
         console.log('No magnetometer found')
       }
-    }, [heading, compassEnabled]);
+    }, [location]);
 
-    const toggleCompass = () => {
-      setCompassEnabled(!compassEnabled);
-      var deviceHeight = Dimensions.get('window').height;
-      if(!compassEnabled){
-        Toast.show({
-          type: 'success',
-          text1: 'Following user',
-          text2: 'Double-tap to stop following',
-          visibilityTime: 3000,
-          autoHide: true,
-          position: 'bottom',
-          bottomOffset: deviceHeight * 0.6
-        })
-      } else {
-        Toast.show({
-          type: 'success',
-          text1: 'Stopped following user',
-          text2: 'Double-tap to start following again',
-          visibilityTime: 3000,
-          autoHide: true,
-          position: 'bottom',
-          bottomOffset: deviceHeight * 0.6
-        })
-      }
-    };
+    // const toggleCompass = () => {
+    //   setCompassEnabled(!compassEnabled);
+    //   var deviceHeight = Dimensions.get('window').height;
+    //   if(!compassEnabled){
+    //     Toast.show({
+    //       type: 'success',
+    //       text1: 'Following user',
+    //       text2: 'Double-tap to stop following',
+    //       visibilityTime: 3000,
+    //       autoHide: true,
+    //       position: 'bottom',
+    //       bottomOffset: deviceHeight * 0.6
+    //     })
+    //   } else {
+    //     Toast.show({
+    //       type: 'success',
+    //       text1: 'Stopped following user',
+    //       text2: 'Double-tap to start following again',
+    //       visibilityTime: 3000,
+    //       autoHide: true,
+    //       position: 'bottom',
+    //       bottomOffset: deviceHeight * 0.6
+    //     })
+    //   }
+    // };
 
     useEffect(() => {
       const latitude = location.latitude
@@ -226,8 +227,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           style={styles.Mapsize}
           zoomEnabled
           rotateEnabled={false}
-          compassEnabled={compassEnabled}
-          onDoublePress={toggleCompass}
+          // compassEnabled={compassEnabled}
+          // onDoublePress={toggleCompass}
           initialCamera={{
             center: { latitude: location.latitude, longitude: location.longitude },
             zoom: 20,
@@ -237,14 +238,26 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           customMapStyle={mapStyle}
            >
 
-          {location && <Marker 
+          {location && <Marker.Animated 
             title={"Current Location"}
             coordinate={{latitude: location.latitude, longitude: location.longitude}}
+            ref={marker => {this.marker = marker}}
+            flat
+            style={{ transform: [{
+              rotate: location.heading === undefined? '0deg' : `${location.heading}deg`
+            }]}}
             tracksViewChanges={true}>
-              <View style={{ borderRadius: 40, backgroundColor: 'white' }}>
-                    <Icon name="circle" size={20} color="#1E75E8" />
+              <View style={{}}>
+                    {/* <Icon name="circle" size={20} color="#1E75E8" /> */}
+                    <FontAwesome5Icon name="location-arrow" 
+                                      size={20}
+                                      style={{margin: 5,
+                                              backgroundColor: 'white',
+                                              borderRadius: 10, 
+                                              transform:[{rotate: '-45deg'}]}}
+                                      color="#1E75E8"/>
                 </View>
-            </Marker>}
+            </Marker.Animated>}
           
           {coords && <Marker 
             title={"Destination"}
