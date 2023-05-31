@@ -107,32 +107,32 @@ const NavInstruction = ({ steps, location, conditions }) => {
         <View style={styles.FactorContainer}>
           
           {/* Landmark */}
-          <TouchableOpacity style={landmarkEnabled ? styles.factoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={landmarkEnabled ? styles.factoricon : styles.disabledicon}>
             <FontAwesome5 name="landmark" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* Well-lit */}
-          <TouchableOpacity style={lightingEnabled && conditions.lighting == true ? styles.factoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={lightingEnabled && conditions.lighting == true ? styles.factoricon : styles.disabledicon}>
             <FontAwesome5 name="lightbulb" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* PWD */}
-          <TouchableOpacity style={pwdEnabled ? styles.factoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={pwdEnabled ? styles.factoricon : styles.disabledicon}>
           <FontAwesome5 name="wheelchair" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
 
           {/* CCTV */}
-          <TouchableOpacity style={cctvEnabled ? styles.factoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={cctvEnabled ? styles.factoricon : styles.disabledicon}>
             <MaterialCommunityIcons name="cctv" style={styles.iconfactors}></MaterialCommunityIcons>
           </TouchableOpacity>
 
           {/* Major Road */}
-          <TouchableOpacity style={!majorRoadEnabled ? styles.Riskfactoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={!majorRoadEnabled ? styles.Riskfactoricon : styles.disabledicon}>
           <FontAwesome5 name="road" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
           
           {/* Flood */}
-          <TouchableOpacity style={!floodEnabled && conditions.weather == true ? styles.Riskfactoricon : styles.disabledicon}>
+          <TouchableOpacity disabled style={!floodEnabled && conditions.weather == true ? styles.Riskfactoricon : styles.disabledicon}>
           <FontAwesome5 name="water" style={styles.iconfactors}></FontAwesome5>
           </TouchableOpacity>
         </View>
