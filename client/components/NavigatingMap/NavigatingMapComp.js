@@ -32,6 +32,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     const [newCoords, setCoords] = useState(coords)
     const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
+    const [reportData, setReportData] = useState(null);
+    const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
 
     const toRadians = (degrees) => {
@@ -152,6 +154,33 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     }, [location])
 
     useEffect(() => {
+      setReportData(null)
+      if (coords && coords.length > 1) {
+        // Send GET request for report
+        const getReportCoords = async () => {
+          try {
+            const response = await fetch(`${Config.EXPRESS}/api/report/filterwithimage`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+              },
+              body: JSON.stringify({coordsData: coords})}
+            )
+            const reports = await response.json();
+            if (response.ok){
+              setReportData(reports)
+            }
+
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        getReportCoords()
+      }
+    }, [coords])
+
+    useEffect(() => {
       const thresholdDistance = 10
 
       for (const step of newSteps) {
@@ -160,6 +189,29 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         if (distance <= thresholdDistance && !completedSteps.includes(step)) {
           Tts.speak(step.instruction)
           setCompletedSteps(prev => [...prev, step]);
+          setTimeout(() => {
+            // Use setTimeout instead of "await new Promise" in useEffect
+            // as async/await is not directly supported in useEffect callback
+            // and setTimeout achieves the desired delay effect
+            // Note: setTimeout is not blocking, so other code outside of useEffect
+            // will continue to execute immediately
+          }, 2000);
+        }
+      }
+    }, [location])
+
+    useEffect(() => {
+      const thresholdDistance = 100
+
+      if (reportData && reportData.length > 1) {
+        for (const report of reportData) {
+          const { coordinates } = report
+          const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
+
+          if (distance <= thresholdDistance && !completedReport.includes(report)) {
+            console.log(report)
+            setCompletedReport(prev => [...prev, report])
+          }
         }
       }
     }, [location])

@@ -53,12 +53,12 @@ const NavInstruction = ({ steps, location, conditions }) => {
           setSafetyFactors(step.factorsPresent)
           setCompletedSteps(prev => [...prev, step]);
           setTimeout(() => {
-          // Use setTimeout instead of "await new Promise" in useEffect
-          // as async/await is not directly supported in useEffect callback
-          // and setTimeout achieves the desired delay effect
-          // Note: setTimeout is not blocking, so other code outside of useEffect
-          // will continue to execute immediately
-        }, 2000);
+            // Use setTimeout instead of "await new Promise" in useEffect
+            // as async/await is not directly supported in useEffect callback
+            // and setTimeout achieves the desired delay effect
+            // Note: setTimeout is not blocking, so other code outside of useEffect
+            // will continue to execute immediately
+          }, 2000);
         }
       }
     }
