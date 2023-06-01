@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import MapView, { Polyline, Marker } from 'react-native-maps';
+import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -37,6 +37,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     const [newCoords, setCoords] = useState(coords)
     const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
+    const [reportData, setReportData] = useState(null);
+    const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
 
     const toRadians = (degrees) => {
@@ -134,6 +136,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     //     })
     //   }
     // };
+    useEffect(() => {
+      setDisplayedReports(null)
+      if (reportData) {
+          setDisplayedReports(reportData)
+          console.log(displayedReports)
+        }
+    }, [reportData])
 
     useEffect(() => {
       const latitude = location.latitude
@@ -150,6 +159,33 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     }, [location])
 
     useEffect(() => {
+      setReportData(null)
+      if (coords && coords.length > 1) {
+        // Send GET request for report
+        const getReportCoords = async () => {
+          try {
+            const response = await fetch(`${Config.EXPRESS}/api/report/filterwithimage`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+              },
+              body: JSON.stringify({coordsData: coords})}
+            )
+            const reports = await response.json();
+            if (response.ok){
+              setReportData(reports)
+            }
+
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        getReportCoords()
+      }
+    }, [coords])
+
+    useEffect(() => {
       const thresholdDistance = 10
 
       for (const step of newSteps) {
@@ -158,6 +194,29 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         if (distance <= thresholdDistance && !completedSteps.includes(step)) {
           Tts.speak(step.instruction)
           setCompletedSteps(prev => [...prev, step]);
+          setTimeout(() => {
+            // Use setTimeout instead of "await new Promise" in useEffect
+            // as async/await is not directly supported in useEffect callback
+            // and setTimeout achieves the desired delay effect
+            // Note: setTimeout is not blocking, so other code outside of useEffect
+            // will continue to execute immediately
+          }, 2000);
+        }
+      }
+    }, [location])
+
+    useEffect(() => {
+      const thresholdDistance = 100
+
+      if (reportData && reportData.length > 1) {
+        for (const report of reportData) {
+          const { coordinates } = report
+          const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
+
+          if (distance <= thresholdDistance && !completedReport.includes(report)) {
+            console.log(report)
+            setCompletedReport(prev => [...prev, report])
+          }
         }
       }
     }, [location])
@@ -236,7 +295,26 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         ]
       }
     ]
-
+    const CustomCallout = ({key, source, category, description, image}) => {
+      return (
+        <Callout>
+          <View style={styles.calloutContainer}>
+            <View style={styles.container}>
+              <Image style={styles.image} source={{ uri: image }} />
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
+                    {source}
+                  </Text>
+                  <Text style={styles.category}>{category}</Text>
+                  <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+                    {description}
+                  </Text>
+                </View>
+            </View>
+          </View>
+      </Callout>
+      )
+    }
     return (
       
       <MapContainer>
@@ -294,6 +372,27 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
               }
               tappable
             />}
+
+          {displayedReports && displayedReports.map(report => (
+            <Marker
+              key={report._id}
+              coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
+              title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+              tracksViewChanges={false}
+              tracksInfoWindowChanges={true}
+              // description={report.source}
+              onPress={() => setClickedMarkerRef(index)}
+              >
+                <CustomCallout
+                  key={report._id}
+                  source={report.source}
+                  category={report.category}
+                  description={report.description}
+                  image={report.image}
+                />
+              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+            </Marker>
+          ))}
 
         </MapView.Animated>
         <Toast ref={(ref) => Toast.setRef(ref)}  />
