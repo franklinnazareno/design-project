@@ -407,24 +407,11 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         
             <View style={styles.modalContent}>
               {/* <ScrollView> */}
-              <Text style={styles.modaltext}>title</Text>
-              <Text style={styles.modaltext}>Descriptiob tite number 2
-              tite number 2tite number 2
-              tite number 2
-              tite number 2
-              tite number 2tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
-              tite number 2
+              <Text style={styles.modaltext}>Placeholder Title</Text>
+              <Text style={styles.modaltext}>Placeholder description
+              Word 2 Word 3 Word 4 Word 5
+              This modal is planned to display for the report voting feature.
+              The buttons below will act as the functions to vote
 
               </Text>
               
