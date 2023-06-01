@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { Image, View, Text, TouchableOpacity } from 'react-native';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
@@ -12,15 +12,19 @@ import Toast from 'react-native-toast-message';
 // import { Dimensions } from 'react-native';
 // setUpdateIntervalForType(SensorTypes.magnetometer, 100)
 import CompassHeading from 'react-native-compass-heading'
+import Config from 'react-native-config';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import colors from '../../assets/themes/colors';
+import {decode as atob, encode as btoa} from 'base-64'
 
 const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
-  const [displayedReports, setDisplayedReports] = useState(null)
-  const [clickedMarkerRef, setClickedMarkerRef] = useState(null)
-  
+  const { user } = useAuthContext();
+
   const mapRef = useRef(null);
     const [region, setRegion] = useState({
       latitude: location.latitude,
@@ -132,14 +136,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     //   }
     // };
     useEffect(() => {
-      setDisplayedReports(null)
-      if (reportData) {
-          setDisplayedReports(reportData)
-          console.log(displayedReports)
-        }
-    }, [reportData])
-
-    useEffect(() => {
       const latitude = location.latitude
       const longitude = location.longitude 
 
@@ -155,6 +151,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
 
     useEffect(() => {
       setReportData(null)
+      console.log('hi')
       if (coords && coords.length > 1) {
         // Send GET request for report
         const getReportCoords = async () => {
@@ -200,21 +197,21 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       }
     }, [location])
 
-    useEffect(() => {
-      const thresholdDistance = 100
+    // useEffect(() => {
+    //   const thresholdDistance = 100
 
-      if (reportData && reportData.length > 1) {
-        for (const report of reportData) {
-          const { coordinates } = report
-          const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
+    //   if (reportData && reportData.length > 1) {
+    //     for (const report of reportData) {
+    //       const { coordinates } = report
+    //       const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
 
-          if (distance <= thresholdDistance && !completedReport.includes(report)) {
-            console.log(report)
-            setCompletedReport(prev => [...prev, report])
-          }
-        }
-      }
-    }, [location])
+    //       if (distance <= thresholdDistance && !completedReport.includes(report)) {
+    //         console.log(report)
+    //         setCompletedReport(prev => [...prev, report])
+    //       }
+    //     }
+    //   }
+    // }, [location])
 
     useEffect(() => {
       if (newCoords) {
@@ -290,24 +287,23 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         ]
       }
     ]
-    const CustomCallout = ({key, source, category, description, image}) => {
+    const CustomCallout = ({key, source, category, description, imageBufferData}) => {
+      const base64String = btoa(String.fromCharCode(...new Uint8Array(imageBufferData.data)));
       return (
-        <Callout>
           <View style={styles.calloutContainer}>
             <View style={styles.container}>
-              <Image style={styles.image} source={{ uri: image }} />
+              <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="tite" />
                 <View style={styles.detailsContainer}>
                   <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
                     {source}
                   </Text>
                   <Text style={styles.category}>{category}</Text>
-                  <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+                  {/* <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
                     {description}
-                  </Text>
+                  </Text> */}
                 </View>
             </View>
           </View>
-      </Callout>
       )
     }
     return (
@@ -357,35 +353,37 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
 
-          {newCoords && <Polyline
-              coordinates={newCoords}
-              strokeWidth={4}
-              strokeColor={
-                option === 'steps_with_coords_safest' ? "#D93029" : "#1E75E8"
-              }
-              tappable
-            />}
-
-          {displayedReports && displayedReports.map(report => (
-            <Marker
-              key={report._id}
-              coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
-              title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
-              tracksViewChanges={false}
-              tracksInfoWindowChanges={true}
-              // description={report.source}
-              onPress={() => setClickedMarkerRef(index)}
-              >
+          {reportData && reportData.map(report => (
+          <Marker
+            key={report._id}
+            coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
+            title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+            tracksViewChanges={false}
+            tracksInfoWindowChanges={true}
+            // description={report.source}
+            // onPress={() => setClickedMarkerRef(index)}
+            >
+              <Callout tooltip>
                 <CustomCallout
                   key={report._id}
                   source={report.source}
                   category={report.category}
                   description={report.description}
-                  image={report.image}
+                  imageBufferData={report.image}
                 />
-              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
-            </Marker>
+              </Callout>
+            {/* <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/> */}
+          </Marker>
           ))}
+
+          {newCoords && <Polyline
+              coordinates={newCoords}
+              strokeWidth={4}
+              strokeColor={
+                option === 'steps_with_coords_safest' ? `${colors.primary}` : "#1E75E8"
+              }
+              tappable
+            />}
 
         </MapView.Animated>
         <Toast ref={(ref) => Toast.setRef(ref)}  />
