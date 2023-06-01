@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
-import MapView, { Polyline, Marker } from 'react-native-maps';
+import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Tts from 'react-native-tts';
@@ -18,6 +18,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
+  const [displayedReports, setDisplayedReports] = useState(null)
+  const [clickedMarkerRef, setClickedMarkerRef] = useState(null)
   
   const mapRef = useRef(null);
     const [region, setRegion] = useState({
@@ -127,6 +129,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     //     })
     //   }
     // };
+    useEffect(() => {
+      setDisplayedReports(null)
+      if (reportData) {
+          setDisplayedReports(reportData)
+          console.log(displayedReports)
+        }
+    }, [reportData])
 
     useEffect(() => {
       const latitude = location.latitude
@@ -229,7 +238,26 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         ]
       }
     ]
-
+    const CustomCallout = ({key, source, category, description, image}) => {
+      return (
+        <Callout>
+          <View style={styles.calloutContainer}>
+            <View style={styles.container}>
+              <Image style={styles.image} source={{ uri: image }} />
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
+                    {source}
+                  </Text>
+                  <Text style={styles.category}>{category}</Text>
+                  <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+                    {description}
+                  </Text>
+                </View>
+            </View>
+          </View>
+      </Callout>
+      )
+    }
     return (
       
       <MapContainer>
@@ -285,6 +313,27 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
               }
               tappable
             />}
+
+          {displayedReports && displayedReports.map(report => (
+            <Marker
+              key={report._id}
+              coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
+              title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+              tracksViewChanges={false}
+              tracksInfoWindowChanges={true}
+              // description={report.source}
+              onPress={() => setClickedMarkerRef(index)}
+              >
+                <CustomCallout
+                  key={report._id}
+                  source={report.source}
+                  category={report.category}
+                  description={report.description}
+                  image={report.image}
+                />
+              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+            </Marker>
+          ))}
 
         </MapView.Animated>
         <Toast ref={(ref) => Toast.setRef(ref)}  />
