@@ -115,6 +115,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             const reports = await response.json();
             if (response.ok){
               setReportData(reports)
+              console.log(reportData)
             }
 
           } catch (error) {
@@ -295,7 +296,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Polyline
                 coordinates={coordsData}
                 strokeWidth={4}
-                strokeColor="#D93029"
+                strokeColor={colors.primary}
                 tappable
               />
             </>
@@ -314,7 +315,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             <Polyline
               coordinates={coordsData}
               strokeWidth={4}
-              strokeColor="#D93029"
+              strokeColor={colors.primary}
               tappable
             />
           )}

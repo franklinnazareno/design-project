@@ -10,5 +10,35 @@ export default ScaledSheet.create ({
     },
     map:{
         height: '100%'
-    }
+    },
+    calloutContainer: {
+        width: 250,
+      },
+      container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'white',
+        borderRadius: 5,
+      },
+      image: {
+        width: 80,
+        height: 80,
+        resizeMode: 'cover',
+        borderRadius: 5,
+      },
+      detailsContainer: {
+        marginLeft: 10,
+      },
+      source: {
+        fontWeight: 'bold',
+        marginBottom: 5,
+      },
+      category: {
+        marginBottom: 5,
+      },
+      description: {
+        fontSize: 12,
+        marginBottom: 10,
+      },
 })
