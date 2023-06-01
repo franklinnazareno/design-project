@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import Entypo from 'react-native-vector-icons/Entypo'
 import Tts from 'react-native-tts';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
+import Modal from "react-native-modal";
 // import { magnetometer } from 'react-native-sensors';
 // import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import Toast from 'react-native-toast-message';
@@ -23,6 +25,12 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const MapModal = () => {
+    setIsModalVisible(true);
+  }; 
+  
   const { user } = useAuthContext();
 
   const mapRef = useRef(null);
@@ -335,7 +343,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             style={{ transform: [{
               rotate: heading === undefined? '0deg' : `${heading}deg`
             }]}}
-            tracksViewChanges={true}>
+            tracksViewChanges={true}
+            onPress={MapModal}>
               <View style={{backgroundColor: 'white', borderRadius: 20 }}>
                     {/* <Icon name="circle" size={20} color="#1E75E8" /> */}
                     <FontAwesome5Icon name="location-arrow" 
@@ -344,6 +353,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
                                       color="#1E75E8"/>
                 </View>
             </Marker.Animated>}
+
           
           {coords && <Marker 
             title={"Destination"}
@@ -387,6 +397,49 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
 
         </MapView.Animated>
         <Toast ref={(ref) => Toast.setRef(ref)}  />
+
+        <View>
+            <Modal
+              visible={isModalVisible} 
+              transparent={true}
+              animationType="fade"
+              onBackdropPress={() => setIsModalVisible(false)}>
+        
+            <View style={styles.modalContent}>
+              {/* <ScrollView> */}
+              <Text style={styles.modaltext}>title</Text>
+              <Text style={styles.modaltext}>Descriptiob tite number 2
+              tite number 2tite number 2
+              tite number 2
+              tite number 2
+              tite number 2tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+              tite number 2
+
+              </Text>
+              
+              <View style={{flexDirection:'row', alignSelf:'center', marginTop: 15}}>
+              <TouchableOpacity style={{backgroundColor:'white', height:30, width:30,alignItems:'center', borderRadius: 10, marginHorizontal: 10}}>
+              <Entypo name="thumbs-up" size={30} color="green" />
+              </TouchableOpacity>
+              <TouchableOpacity style={{backgroundColor:'white', height:30, width:30,alignItems:'center',borderRadius: 10}}>
+              <Entypo name="thumbs-down" size={30} color="red" />
+              </TouchableOpacity>
+              </View>
+              {/* </ScrollView>     */}
+            </View>
+            </Modal>
+            </View>
         </MapContainer>
               
     );
