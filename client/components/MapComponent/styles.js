@@ -32,5 +32,6 @@ export default ScaledSheet.create ({
     Icon:{
         margin: 8 ,
         alignSelf: 'center'
-    }
+    },
+
 })
