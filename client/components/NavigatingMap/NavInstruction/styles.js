@@ -9,6 +9,11 @@ export default ScaledSheet.create ({
         height:deviceHeight,
         backgroundColor: 'red',
       },
+      FactorView: {
+        height:deviceHeight,
+        backgroundColor: 'red',
+        alignItems:'center'
+      },
       btnContainer: {
         borderRadius:'10@s',
         alignSelf: "center",
@@ -25,18 +30,20 @@ export default ScaledSheet.create ({
         borderRadius:'10@s',
         alignSelf: "center",
         height: '50@s',
-        width:'250@s',
+        width:'270@s',
         paddingHorizontal: 15,
         backgroundColor:colors.white,
         marginTop:'-700@s',
         elevation:'10@s',
         flexDirection: 'row',
+        alignItems:'center',
+        
       },
       ReportContainer: {
         borderRadius:'10@s',
         alignSelf: "flex-end",
-        height: '35@s',
-        width:'35@s',
+        height: '40@s',
+        width:'40@s',
         paddingHorizontal: 12,
         backgroundColor:colors.primary,
         marginRight:'10@s',
@@ -60,7 +67,8 @@ export default ScaledSheet.create ({
       icon: {
         alignSelf: 'center', 
         fontSize: 50,
-        marginRight: 5
+        marginRight: 5,
+        
       },
       factoricon: {
         alignSelf:'center',
@@ -68,7 +76,7 @@ export default ScaledSheet.create ({
         backgroundColor:colors.primary, 
         borderRadius:30,
         height: 40, 
-        width: 40, 
+        width: 40,
         },
       disabledicon: {
         alignSelf:'center',
@@ -95,7 +103,7 @@ export default ScaledSheet.create ({
         iconReport: {
           alignSelf: 'center', 
           fontSize: 20,
-          paddingVertical: 5,
+          paddingVertical: 4,
           color: colors.white
         },
       

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, memo, useRef} from 'react';
-import { View, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Dimensions, ScrollView, Text } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, {Polyline, Marker, Geojson} from 'react-native-maps';
@@ -13,6 +13,8 @@ import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
+
+
 var deviceHeight = Dimensions.get('window').height;
 
 const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
@@ -23,7 +25,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     const [reportData, setReportData] = useState(null);
     const [reportData2, setReportData2] = useState(null)
     const [displayedReports, setDisplayedReports] = useState(null)
-    
+
+
     const [region, setRegion] = useState({
       latitude: 14.6507,
       longitude: 121.1029,
@@ -253,7 +256,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             geojson={myBoundary}
             strokeColor={colors.primary}
             strokeWidth={2}/>
-
+            
+            
             {location && <Marker 
             title={"Current Location"}
             coordinate={{latitude: location?.latitude, longitude: location?.longitude}}
@@ -271,6 +275,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
               <Icon name="location-pin" size={30} color="blue" />
             </Marker>}
             
+            
           {coordsData && <Marker 
             title={"Destination"}
             coordinate={{latitude: coordsData[coordsData.length - 1].latitude, longitude: coordsData[coordsData.length - 1].longitude}}
@@ -278,17 +283,20 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             >
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
+
+            
           
           {displayedReports && displayedReports.map(report => (
             <Marker
               key={report._id}
               coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
               title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
-              tracksViewChanges={false}
-              // description={report.source}
-              >
+              tracksViewChanges={false}>
               <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
             </Marker>
+            
+            
+
           ))}
 
           {userView === 0 && coordsData && (
