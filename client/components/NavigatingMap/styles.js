@@ -10,5 +10,12 @@ export default ScaledSheet.create ({
     },
     map:{
         height: '100%'
-    }
+    },
+    modalContent:{
+        backgroundColor: '#fff', 
+        borderRadius: '10@s', 
+        padding: '20@s', 
+        height: '200@s', 
+        elevation:'10@s'
+      },
 })

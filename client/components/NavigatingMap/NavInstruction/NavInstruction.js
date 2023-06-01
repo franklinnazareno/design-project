@@ -103,7 +103,7 @@ const NavInstruction = ({ steps, location, conditions }) => {
       </View>
 
       
-      <View style={styles.ButtonView}>
+      <View style={styles.FactorView}>
         <View style={styles.FactorContainer}>
           
           {/* Landmark */}
