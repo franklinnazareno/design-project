@@ -93,7 +93,7 @@ export default ScaledSheet.create ({
         fontWeight: 'bold',
         fontSize:15,
       },
-      logoImage:{
+      image:{
         flex:1 ,
         width: '100%',
         height: undefined,

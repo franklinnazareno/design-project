@@ -497,13 +497,16 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               {/* <ScrollView> */}
               {modalLoading ? (
                 // Display ActivityIndicator while loading
-                <ActivityIndicator size="large" color="black" />
+                <View style={{ flex:1, alignItems:'center', justifyContent:'center' }}>
+                    <ActivityIndicator size="large" color={colors.primary}/>
+                    <Text style={{marginTop: 20}}>Submitting Vote</Text>
+                </View>
               ) : (
                 // Display JSX code when not loading
                 <>
 
                   <View style={{flex: 1}}>
-                  <TouchableOpacity style={{ height:190, width:180, backgroundColor:'red' }}>
+                  <TouchableOpacity style={{ flex:1, backgroundColor:'red' }}>
                   <ReportImage
                     imageData = {imageBuffer}
                     />
