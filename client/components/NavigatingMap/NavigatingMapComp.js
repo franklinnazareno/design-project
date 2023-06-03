@@ -504,16 +504,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               ) : (
                 // Display JSX code when not loading
                 <>
-
                   <View style={{flex: 1}}>
                   <TouchableOpacity style={{ flex:1, backgroundColor:'red' }}>
                   <ReportImage
                     imageData = {imageBuffer}
                     />
                   </TouchableOpacity>
-                  
                   </View>
-
 
                 <View style={styles.modalContent2}>
                   <View>
