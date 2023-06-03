@@ -28,6 +28,7 @@ export default ScaledSheet.create ({
         padding: '10@s', 
         height: '100@s',
         width: 150, 
+        elevation: 10,
 
       },
     calloutContainer: {
@@ -63,13 +64,12 @@ export default ScaledSheet.create ({
       VoteView:{ 
         flexDirection: 'row', 
         alignSelf: 'center', 
-        marginTop: 25,
+        marginTop: '40@s',
         alignItems:'center'
-        // alignSelf:'flex-end',
       },
       thumbpress:{ 
         backgroundColor: colors.white, 
-        height: '60@s', 
+        height: '50@s', 
         width: '60@s', 
         alignItems: 'center', 
         borderRadius: 10, 
@@ -97,8 +97,6 @@ export default ScaledSheet.create ({
         flex:1 ,
         width: '100%',
         height: undefined,
-        resizeMode: 'stretch',
-        
-        
+        resizeMode: 'stretch',  
     },  
 })
