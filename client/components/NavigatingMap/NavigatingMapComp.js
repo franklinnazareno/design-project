@@ -93,6 +93,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
           setSuccessful(true)
           setModalLoading(false)
           setIsModalVisible(false)
+          setCompletedReport(prevCompletedReport => [...prevCompletedReport, reportId]);
         } else {
           setModalLoading(false)
           setError("Error occured. Please try again.")
@@ -118,6 +119,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
           setSuccessful(true)
           setModalLoading(false)
           setIsModalVisible(false)
+          setCompletedReport(prevCompletedReport => [...prevCompletedReport, reportId]);
         } else {
           setModalLoading(false)
           setError("Error occured. Please try again.")
@@ -437,28 +439,33 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
 
-          {reportData && reportData.map(report => (
-          <Marker
-            key={report._id}
-            coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
-            title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
-            tracksViewChanges={false}
-            tracksInfoWindowChanges={true}
-            // description={report.source}
-            onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
-            >
-              {/* <Callout tooltip>
-                <CustomCallout
+          {reportData && reportData.map(report => {
+            if (!completedReport.includes(report._id)) {
+              return (
+                <Marker
                   key={report._id}
-                  source={report.source}
-                  category={report.category}
-                  description={report.description}
-                  imageBufferData={report.image}
-                />
-              </Callout> */}
-            <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
-          </Marker>
-          ))}
+                  coordinate={{ latitude: report.coordinates.latitude, longitude: report.coordinates.longitude }}
+                  title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
+                  tracksViewChanges={false}
+                  tracksInfoWindowChanges={true}
+                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
+                >
+                  {/* <Callout tooltip>
+                    <CustomCallout
+                      key={report._id}
+                      source={report.source}
+                      category={report.category}
+                      description={report.description}
+                      imageBufferData={report.image}
+                    />
+                  </Callout> */}
+                  <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple" />
+                </Marker>
+              );
+            } else {
+              return null; // Exclude the report if it's in completedReport
+            }
+          })}
 
           {newCoords && <Polyline
               coordinates={newCoords}
