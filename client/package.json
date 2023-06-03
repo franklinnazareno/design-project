@@ -52,6 +52,7 @@
     "react-native-tts": "^4.1.0",
     "react-native-vector-icons": "^9.2.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "rn-fetch-blob": "^0.12.0",
     "tailwindcss": "^1.9.6",
     "tw-tailwind": "^1.0.21"
   },

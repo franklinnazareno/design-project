@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Image, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,9 +18,8 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
-import {decode as atob, encode as btoa} from 'base-64'
 
-const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
+const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
@@ -47,6 +46,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
     const [reportData, setReportData] = useState(null);
     const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
+    const [successful, setSuccessful] = useState(null)
+
+    const [reportId, setReportId] = useState(null)
+    const [source, setSource] = useState(null)
+    const [category, setCategory] = useState(null)
+    const [imageBuffer, setImageBuffer] = useState(null)
+    const [modalLoading, setModalLoading] = useState(false)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -62,6 +68,64 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
       const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       return R * c
+    }
+
+    const handleMarkerPress = (rid, src, cat, img) => {
+      setReportId(rid)
+      setSource(src)
+      setCategory(cat)
+      setImageBuffer(img)
+      setIsModalVisible(!isModalVisible)
+    }
+
+    const thumbsUp = async () => {
+      setModalLoading(true)
+      try {
+        const response = await fetch(`${Config.EXPRESS}/api/report/add/${reportId}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+              },
+              })
+        if (response.ok) {
+          console.log("it worked. nice.")
+          setSuccessful(true)
+          setModalLoading(false)
+          setIsModalVisible(false)
+        } else {
+          setModalLoading(false)
+          setError("Error occured. Please try again.")
+        }
+      } catch (err) {
+        setModalLoading(false)
+        setError("Error occured. Please try again.")
+      }
+    }
+
+    const thumbsDown = async () => {
+      setModalLoading(true)
+      try {
+        const response = await fetch(`${Config.EXPRESS}/api/report/subtract/${reportId}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+              },
+              })
+        if (response.ok) {
+          console.log("it worked. nice.")
+          setSuccessful(true)
+          setModalLoading(false)
+          setIsModalVisible(false)
+        } else {
+          setModalLoading(false)
+          setError("Error occured. Please try again.")
+        }
+      } catch (err) {
+        setModalLoading(false)
+        setError("Error occured. Please try again.")
+      }
     }
 
     // const MAGNETOMETER_SENSITIVITY = 5;
@@ -354,8 +418,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             style={{ transform: [{
               rotate: heading === undefined? '0deg' : `${heading}deg`
             }]}}
-            tracksViewChanges={true}
-            onPress={MapModal}>
+            tracksViewChanges={true}>
               <View style={{backgroundColor: 'white', borderRadius: 20 }}>
                     {/* <Icon name="circle" size={20} color="#1E75E8" /> */}
                     <FontAwesome5Icon name="location-arrow" 
@@ -382,7 +445,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
             tracksViewChanges={false}
             tracksInfoWindowChanges={true}
             // description={report.source}
-            // onPress={() => setClickedMarkerRef(index)}
+            onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
             >
               {/* <Callout tooltip>
                 <CustomCallout
@@ -418,22 +481,30 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         
             <View style={styles.modalContent}>
               {/* <ScrollView> */}
-              <Text style={styles.modaltext}>Placeholder Title</Text>
-              <Text style={styles.modaltext}>Placeholder description
-              Word 2 Word 3 Word 4 Word 5
-              This modal is planned to display for the report voting feature.
-              The buttons below will act as the functions to vote
+              {modalLoading ? (
+                // Display ActivityIndicator while loading
+                <ActivityIndicator size="large" color="black" />
+              ) : (
+                // Display JSX code when not loading
+                <>
+                  <Text style={styles.modaltext}>{source}</Text>
+                  <Text style={styles.modaltext}>{category}</Text>
 
-              </Text>
-              
-              <View style={{flexDirection:'row', alignSelf:'center', marginTop: 15}}>
-              <TouchableOpacity style={{backgroundColor:'white', height:30, width:30,alignItems:'center', borderRadius: 10, marginHorizontal: 10}}>
-              <Entypo name="thumbs-up" size={30} color="green" />
-              </TouchableOpacity>
-              <TouchableOpacity style={{backgroundColor:'white', height:30, width:30,alignItems:'center',borderRadius: 10}}>
-              <Entypo name="thumbs-down" size={30} color="red" />
-              </TouchableOpacity>
-              </View>
+                  {/* <Image
+                    source={{ uri: imageURL }}
+                    // style={styles.image}
+                  /> */}
+                  
+                  <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 15 }}>
+                    <TouchableOpacity style={{ backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', borderRadius: 10, marginHorizontal: 10 }} onPress={thumbsUp}>
+                      <Entypo name="thumbs-up" size={30} color="green" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', borderRadius: 10 }} onPress={thumbsDown}>
+                      <Entypo name="thumbs-down" size={30} color="red" />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
               {/* </ScrollView>     */}
             </View>
             </Modal>
@@ -442,5 +513,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
               
     );
 };
+
 
 export default NavigatingMapComp;
