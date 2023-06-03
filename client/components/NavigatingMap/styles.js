@@ -1,7 +1,9 @@
 import { ScaledSheet } from 'react-native-size-matters';
 import colors from '../../assets/themes/colors';
+import { Dimensions } from 'react-native';
 
-
+var imageWidth = Dimensions.width;
+var imageHeight = Dimensions.height;
 
 export default ScaledSheet.create ({
     Mapsize:{
@@ -13,24 +15,20 @@ export default ScaledSheet.create ({
     },
     modalContent:{
         // flex:1,
-        backgroundColor: 'green', 
+        backgroundColor: 'white', 
         borderRadius: '10@s', 
         padding: '20@s', 
         height: '200@s', 
         elevation:'10@s',
         flexDirection: 'row',
-
-
       },
       modalContent2:{
-        // flex:1,
         backgroundColor: 'white', 
         borderRadius: '10@s', 
         padding: '10@s', 
         height: '100@s',
         width: 150, 
-        elevation:'10@s',
-        // alignSelf:'flex-end'
+
       },
     calloutContainer: {
         width: 250,
@@ -67,7 +65,6 @@ export default ScaledSheet.create ({
         alignSelf: 'center', 
         marginTop: 25,
         alignItems:'center'
-        // textAlign
         // alignSelf:'flex-end',
       },
       thumbpress:{ 
@@ -95,5 +92,13 @@ export default ScaledSheet.create ({
         textAlign:'center',
         fontWeight: 'bold',
         fontSize:15,
-      }  
+      },
+      logoImage:{
+        flex:1 ,
+        width: '100%',
+        height: undefined,
+        resizeMode: 'stretch',
+        
+        
+    },  
 })
