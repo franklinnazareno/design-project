@@ -494,18 +494,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               ) : (
                 // Display JSX code when not loading
                 <>
-
                   <View style={{flex: 1}}>
                   <TouchableOpacity style={{ height:190, width:180, backgroundColor:'red' }}>
                   <Image 
-                    
                     source={require('../../assets/images/frank2.jpg')}
                     style={[styles.logoImage]}/>
-                    
                   </TouchableOpacity>
-                  
                   </View>
-
 
                 <View style={styles.modalContent2}>
                   <View>
