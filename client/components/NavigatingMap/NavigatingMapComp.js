@@ -18,6 +18,7 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
+import {decode as atob, encode as btoa} from 'base-64'
 
 const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
@@ -366,7 +367,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     //   return (
     //       <View style={styles.calloutContainer}>
     //         <View style={styles.container}>
-    //           <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="tite" />
+    //           <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt=""/>
     //             <View style={styles.detailsContainer}>
     //               <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
     //                 {source}
@@ -380,6 +381,12 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     //       </View>
     //   )
     // }
+    const ReportImage = ({imageData}) => {
+      const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
+      return(
+      <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="image" />
+      )
+    }
     const categoryMapping = {
       lighting: 'Lighting',
       'not lighting': 'No Lighting',
@@ -448,7 +455,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                   title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
                   tracksViewChanges={false}
                   tracksInfoWindowChanges={true}
-                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
+                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image.data)}
                 >
                   {/* <Callout tooltip>
                     <CustomCallout
@@ -496,9 +503,9 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                 <>
                   <View style={{flex: 1}}>
                   <TouchableOpacity style={{ height:190, width:180, backgroundColor:'red' }}>
-                  <Image 
-                    source={require('../../assets/images/frank2.jpg')}
-                    style={[styles.logoImage]}/>
+                  <ReportImage
+                    imageData = {imageBuffer}
+                    />
                   </TouchableOpacity>
                   </View>
 
