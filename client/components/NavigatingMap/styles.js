@@ -14,7 +14,6 @@ export default ScaledSheet.create ({
         height: '100%'
     },
     modalContent:{
-        // flex:1,
         backgroundColor: 'white', 
         borderRadius: '10@s', 
         padding: '20@s', 
@@ -28,8 +27,6 @@ export default ScaledSheet.create ({
         padding: '10@s', 
         height: '100@s',
         width: 150, 
-        elevation: 10,
-
       },
     calloutContainer: {
         width: 250,
