@@ -497,11 +497,11 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
 
                   <View style={{flex: 1}}>
                   <TouchableOpacity style={{ height:190, width:180, backgroundColor:'red' }}>
-                  {/* <Image 
-                    height={20} 
-                    width={20} 
-                    source={require('../../assets/images/pd-logo3.png')}
-                    style={[styles.logoImage]}/> */}
+                  <Image 
+                    
+                    source={require('../../assets/images/frank2.jpg')}
+                    style={[styles.logoImage]}/>
+                    
                   </TouchableOpacity>
                   
                   </View>
