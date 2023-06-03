@@ -478,7 +478,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               transparent={true}
               animationType="fade"
               onBackdropPress={() => setIsModalVisible(false)}>
-        
+                
             <View style={styles.modalContent}>
               {/* <ScrollView> */}
               {modalLoading ? (
@@ -487,22 +487,39 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               ) : (
                 // Display JSX code when not loading
                 <>
+
+                  <View style={{flex: 1}}>
+                  <TouchableOpacity style={{ height:190, width:180, backgroundColor:'red' }}>
+                  {/* <Image 
+                    height={20} 
+                    width={20} 
+                    source={require('../../assets/images/pd-logo3.png')}
+                    style={[styles.logoImage]}/> */}
+                  </TouchableOpacity>
+                  
+                  </View>
+
+
+                <View style={styles.modalContent2}>
+                  <View>
                   <Text style={styles.modaltext}>{source}</Text>
-                  <Text style={styles.modaltext}>{category}</Text>
+                  <Text style={styles.modaltext2}>{category}</Text>
+                  </View>
+                  <View style={styles.VoteView}>
+                    <TouchableOpacity style={styles.thumbpress} onPress={thumbsUp}>
+                      <FontAwesome5Icon name="thumbs-up" size={50} color={colors.primary}  />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.thumbpress} onPress={thumbsDown}>
+                      <FontAwesome5Icon name="thumbs-down" size={50} color="red" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
                   {/* <Image
                     source={{ uri: imageURL }}
                     // style={styles.image}
                   /> */}
-                  
-                  <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 15 }}>
-                    <TouchableOpacity style={{ backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', borderRadius: 10, marginHorizontal: 10 }} onPress={thumbsUp}>
-                      <Entypo name="thumbs-up" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', borderRadius: 10 }} onPress={thumbsDown}>
-                      <Entypo name="thumbs-down" size={30} color="red" />
-                    </TouchableOpacity>
-                  </View>
+                
                 </>
               )}
               {/* </ScrollView>     */}

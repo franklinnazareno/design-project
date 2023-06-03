@@ -12,7 +12,7 @@ export default ScaledSheet.create ({
       FactorView: {
         height:deviceHeight,
         backgroundColor: 'red',
-        alignItems:'center'
+        alignSelf:'center'
       },
       btnContainer: {
         borderRadius:'10@s',
@@ -27,16 +27,18 @@ export default ScaledSheet.create ({
         flexDirection: 'row',
       },
       FactorContainer: {
+
         borderRadius:'10@s',
         alignSelf: "center",
         height: '50@s',
         width:'270@s',
-        paddingHorizontal: 15,
+        alignContent:'center',
         backgroundColor:colors.white,
         marginTop:'-700@s',
         elevation:'10@s',
         flexDirection: 'row',
         alignItems:'center',
+        justifyContent:'center'
         
       },
       ReportContainer: {
@@ -44,12 +46,12 @@ export default ScaledSheet.create ({
         alignSelf: "flex-end",
         height: '40@s',
         width:'40@s',
-        paddingHorizontal: 12,
         backgroundColor:colors.primary,
         marginRight:'10@s',
         marginTop:'-600@s',
         elevation:'10@s',
         flexDirection: 'row',
+        justifyContent:'center'
       },
       navtext: {
         textAlign:'center',
@@ -71,7 +73,7 @@ export default ScaledSheet.create ({
         
       },
       factoricon: {
-        alignSelf:'center',
+        // alignSelf:'center',
         margin: 3,  
         backgroundColor:colors.primary, 
         borderRadius:30,
@@ -79,7 +81,7 @@ export default ScaledSheet.create ({
         width: 40,
         },
       disabledicon: {
-        alignSelf:'center',
+        // alignSelf:'center',
         margin: 3,  
         backgroundColor: 'gray', 
         borderRadius:30,
@@ -87,7 +89,7 @@ export default ScaledSheet.create ({
         width: 40, 
         },
       Riskfactoricon: {
-        alignSelf:'center',
+        // alignSelf:'center',
         margin: 3,  
         backgroundColor:'red', 
         borderRadius:30,
