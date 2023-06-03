@@ -295,25 +295,36 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
         ]
       }
     ]
-    const CustomCallout = ({key, source, category, description, imageBufferData}) => {
-      const base64String = btoa(String.fromCharCode(...new Uint8Array(imageBufferData.data)));
-      return (
-          <View style={styles.calloutContainer}>
-            <View style={styles.container}>
-              <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="tite" />
-                <View style={styles.detailsContainer}>
-                  <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
-                    {source}
-                  </Text>
-                  <Text style={styles.category}>{category}</Text>
-                  {/* <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
-                    {description}
-                  </Text> */}
-                </View>
-            </View>
-          </View>
-      )
-    }
+    // const CustomCallout = ({key, source, category, description, imageBufferData}) => {
+    //   const base64String = btoa(String.fromCharCode(...new Uint8Array(imageBufferData.data)));
+    //   return (
+    //       <View style={styles.calloutContainer}>
+    //         <View style={styles.container}>
+    //           <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="tite" />
+    //             <View style={styles.detailsContainer}>
+    //               <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
+    //                 {source}
+    //               </Text>
+    //               <Text style={styles.category}>{category}</Text>
+    //               {/* <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+    //                 {description}
+    //               </Text> */}
+    //             </View>
+    //         </View>
+    //       </View>
+    //   )
+    // }
+    const categoryMapping = {
+      lighting: 'Lighting',
+      'not lighting': 'No Lighting',
+      pwd: 'PWD-Friendly',
+      'not pwd': 'Not PWD-Friendly',
+      cctv: 'CCTV',
+      'not cctv': 'No CCTV',
+      flood: 'Flood Hazard',
+      'not flood': 'No Flood Hazard',
+      closure: 'Road Closure',
+    };
     return (
       
       <MapContainer>
@@ -367,13 +378,13 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
           <Marker
             key={report._id}
             coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
-            title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+            title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
             tracksViewChanges={false}
             tracksInfoWindowChanges={true}
             // description={report.source}
             // onPress={() => setClickedMarkerRef(index)}
             >
-              <Callout tooltip>
+              {/* <Callout tooltip>
                 <CustomCallout
                   key={report._id}
                   source={report.source}
@@ -381,8 +392,8 @@ const NavigatingMapComp = ({ location, coords, steps, option, setLoading }) => {
                   description={report.description}
                   imageBufferData={report.image}
                 />
-              </Callout>
-            {/* <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/> */}
+              </Callout> */}
+            <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
           </Marker>
           ))}
 

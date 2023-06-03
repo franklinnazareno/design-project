@@ -237,6 +237,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
         ]
       }
     ]
+
+    const categoryMapping = {
+      lighting: 'Lighting',
+      'not lighting': 'No Lighting',
+      pwd: 'PWD-Friendly',
+      'not pwd': 'Not PWD-Friendly',
+      cctv: 'CCTV',
+      'not cctv': 'No CCTV',
+      flood: 'Flood Hazard',
+      'not flood': 'No Flood Hazard',
+      closure: 'Road Closure',
+    };
+
     return (
       
       <MapContainer>
@@ -290,13 +303,10 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
             <Marker
               key={report._id}
               coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
-              title={`${report.category.charAt(0).toUpperCase()}${report.category.slice(1)} reported`}
+              title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
               tracksViewChanges={false}>
               <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
             </Marker>
-            
-            
-
           ))}
 
           {userView === 0 && coordsData && (
