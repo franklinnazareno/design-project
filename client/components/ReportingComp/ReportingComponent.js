@@ -17,7 +17,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 import Container from '../commons/Container/Contain'
-import { launchCamera } from 'react-native-image-picker';
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
