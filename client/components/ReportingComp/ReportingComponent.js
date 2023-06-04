@@ -5,7 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { moderateScale } from 'react-native-size-matters';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Input from '../commons/inputs'
 import SecondaryInput from '../commons/secondaryInput'
@@ -240,20 +240,28 @@ const ReportingComponent = ({ location }) => {
   const handleImageUpload = () => {
     const options = {
       mediaType: 'photo',
-      selectionLimit: 1,
-    }
-    launchImageLibrary(options, (response) => {
+      quality: 0.5,
+    };
+
+    launchCamera(options, (response) => {
       if (response?.didCancel) {
-        console.log('Image selection cancelled')
-      } else if (response?.error) {
-        console.log('Image selection error:', response.error)
-        setError(response.error)
+        console.log('Image capture cancelled');
+      } else if (response?.errorCode) {
+        console.log('Image capture error:', response.errorMessage);
+        setError(response.errorMessage);
       } else {
-        console.log('Image set successfully')
-        setImage(response.assets[0])
+        // Convert the image to JPG format
+        const convertedImage = {
+          ...response.assets[0],
+          uri: response.assets[0].uri.replace(/\.[^.]+$/, '.jpg'),
+          type: 'image/jpeg',
+        };
+
+        console.log('Image captured successfully');
+        setImage(convertedImage);
       }
-    })
-  }
+    });
+  };
 
   // const handleLocation = async () => {
   //   if (location) {
