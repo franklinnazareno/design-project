@@ -263,8 +263,6 @@ const ReportingComponent = ({ location }) => {
       }
     });
   };
-    });
-  };
 
   // const handleLocation = async () => {
   //   if (location) {
