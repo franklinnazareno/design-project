@@ -11,7 +11,7 @@ import Modal from "react-native-modal";
 // import { magnetometer } from 'react-native-sensors';
 // import { setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import Toast from 'react-native-toast-message';
-// import { Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 // setUpdateIntervalForType(SensorTypes.magnetometer, 100)
 import CompassHeading from 'react-native-compass-heading'
 import Config from 'react-native-config';
@@ -19,6 +19,10 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
 import {decode as atob, encode as btoa} from 'base-64'
+
+
+var deviceHeight = Dimensions.get('window').height;
+
 
 const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
@@ -111,7 +115,15 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               },
               })
         if (response.ok) {
-          console.log("it worked. nice.")
+            Toast.show({
+                type: 'success',
+                text1: 'Vote successfully submitted.',
+                text2: 'Thank you for contribution.',
+                visibilityTime: 3000,
+                autoHide: true,
+                position: 'bottom',
+                bottomOffset: deviceHeight * 0.7
+              })
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -141,7 +153,15 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               },
               })
         if (response.ok) {
-          console.log("it worked. nice.")
+            Toast.show({
+                type: 'success',
+                text1: 'Vote successfully submitted.',
+                text2: 'Thank you for contribution.',
+                visibilityTime: 3000,
+                autoHide: true,
+                position: 'bottom',
+                bottomOffset: deviceHeight * 0.7
+              })
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -546,7 +566,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                   <View>
                     <Text style={styles.modaltext}>{source}</Text>
                     <Text style={styles.modaltext2}>{category}</Text>
-                    <Text style={styles.modaltext2}>5</Text>
+                    <Text style={styles.modaltext2}>User Reports: {counter}</Text>
                   </View>
                   <View style={styles.VoteView}>
                     <TouchableOpacity style={styles.thumbpress} onPress={thumbsUp}>
@@ -569,6 +589,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
             </View>
             </Modal>
             </View>
+            <Toast ref={(ref) => Toast.setRef(ref)}  />
         </MapContainer>
               
     );
