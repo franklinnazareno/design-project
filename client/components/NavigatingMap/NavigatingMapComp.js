@@ -54,6 +54,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     const [category, setCategory] = useState(null)
     const [imageBuffer, setImageBuffer] = useState(null)
     const [modalLoading, setModalLoading] = useState(false)
+    const [voteLoading, setVoteLoading] = useState(false)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -72,15 +73,32 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     }
 
     const handleMarkerPress = (rid, src, cat, img) => {
+      setIsModalVisible(!isModalVisible)
+      setModalLoading(true)
       setReportId(rid)
       setSource(src)
       setCategory(cat)
       setImageBuffer(img)
-      setIsModalVisible(!isModalVisible)
     }
+
+    useEffect(() => {
+      if (!isModalVisible) {
+        setReportId(null)
+        setSource(null)
+        setCategory(null)
+        setImageBuffer(null)
+      }
+    }, [isModalVisible])
+
+    useEffect(() => {
+      if (imageBuffer) {
+        setModalLoading(false)
+      }
+    }, [imageBuffer])
 
     const thumbsUp = async () => {
       setModalLoading(true)
+      setVoteLoading(true)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/add/${reportId}`, {
               method: 'PATCH',
@@ -93,20 +111,24 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
           console.log("it worked. nice.")
           setSuccessful(true)
           setModalLoading(false)
+          setVoteLoading(false)
           setIsModalVisible(false)
           setCompletedReport(prevCompletedReport => [...prevCompletedReport, reportId]);
         } else {
           setModalLoading(false)
+          setVoteLoading(false)
           setError("Error occured. Please try again.")
         }
       } catch (err) {
         setModalLoading(false)
+        setVoteLoading(false)
         setError("Error occured. Please try again.")
       }
     }
 
     const thumbsDown = async () => {
       setModalLoading(true)
+      setVoteLoading(true)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/subtract/${reportId}`, {
               method: 'PATCH',
@@ -119,6 +141,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
           console.log("it worked. nice.")
           setSuccessful(true)
           setModalLoading(false)
+          setVoteLoading(false)
           setIsModalVisible(false)
           setCompletedReport(prevCompletedReport => [...prevCompletedReport, reportId]);
         } else {
@@ -127,6 +150,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
         }
       } catch (err) {
         setModalLoading(false)
+        setVoteLoading(false)
         setError("Error occured. Please try again.")
       }
     }
@@ -452,7 +476,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                 <Marker
                   key={report._id}
                   coordinate={{ latitude: report.coordinates.latitude, longitude: report.coordinates.longitude }}
-                  title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
+                  // title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
                   tracksViewChanges={false}
                   tracksInfoWindowChanges={true}
                   onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image.data)}
@@ -491,7 +515,11 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               visible={isModalVisible} 
               transparent={true}
               animationType="fade"
-              onBackdropPress={() => setIsModalVisible(false)}>
+              onBackdropPress={() => {
+              if (!modalLoading) {
+                setIsModalVisible(false);
+              }
+            }}>
                 
             <View style={styles.modalContent}>
               {/* <ScrollView> */}
@@ -499,7 +527,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                 // Display ActivityIndicator while loading
                 <View style={{ flex:1, alignItems:'center', justifyContent:'center' }}>
                     <ActivityIndicator size="large" color={colors.primary}/>
-                    <Text style={{marginTop: 20}}>Submitting Vote</Text>
+                    {voteLoading ? (<Text style={{marginTop: 20}}>Submitting Vote</Text>) : null}
                 </View>
               ) : (
                 // Display JSX code when not loading
