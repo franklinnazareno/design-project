@@ -226,7 +226,6 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
 
     useEffect(() => {
       setReportData(null)
-      console.log('hi')
       if (coords && coords.length > 1) {
         // Send GET request for report
         const getReportCoords = async () => {
@@ -382,9 +381,9 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     //   )
     // }
     const ReportImage = ({imageData}) => {
-      const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
-      return(
-      <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="image" />
+        const base64String = btoa(new Uint8Array(imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+        return(
+            <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt="image" />
       )
     }
     const categoryMapping = {
@@ -396,7 +395,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       'not cctv': 'No CCTV',
       flood: 'Flood Hazard',
       'not flood': 'No Flood Hazard',
-      closure: 'Road Closure',
+      'not closure': 'Road Closure',
     };
     return (
       
@@ -455,7 +454,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                   title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
                   tracksViewChanges={false}
                   tracksInfoWindowChanges={true}
-                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image.data)}
+                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
                 >
                   {/* <Callout tooltip>
                     <CustomCallout
