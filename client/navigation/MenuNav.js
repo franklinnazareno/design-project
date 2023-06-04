@@ -56,6 +56,7 @@ const MenuNav =() => {
                 headerTitleStyle: {
                 fontWeight: 'bold',
                 },
+                headerLeft: null
                 }}>
                 </HomeStack.Screen>
                 <HomeStack.Screen name={FAQ_DETAIL} component={NewFaqScreen}
