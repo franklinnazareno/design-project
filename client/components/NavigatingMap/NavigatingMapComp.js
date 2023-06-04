@@ -53,6 +53,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     const [source, setSource] = useState(null)
     const [category, setCategory] = useState(null)
     const [imageBuffer, setImageBuffer] = useState(null)
+    const [counter, setCounter] = useState(null)
     const [modalLoading, setModalLoading] = useState(false)
     const [voteLoading, setVoteLoading] = useState(false)
 
@@ -72,13 +73,14 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       return R * c
     }
 
-    const handleMarkerPress = (rid, src, cat, img) => {
+    const handleMarkerPress = (rid, src, cat, img, ctr) => {
       setIsModalVisible(!isModalVisible)
       setModalLoading(true)
       setReportId(rid)
       setSource(src)
       setCategory(cat)
       setImageBuffer(img)
+      setCounter(ctr)
     }
 
     useEffect(() => {
@@ -87,6 +89,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
         setSource(null)
         setCategory(null)
         setImageBuffer(null)
+        setCounter(null)
       }
     }, [isModalVisible])
 
@@ -478,7 +481,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                   // title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
                   tracksViewChanges={false}
                   tracksInfoWindowChanges={true}
-                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image)}
+                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image, report.counter)}
                 >
                   {/* <Callout tooltip>
                     <CustomCallout
