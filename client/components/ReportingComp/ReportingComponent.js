@@ -5,7 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { moderateScale } from 'react-native-size-matters';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Input from '../commons/inputs'
 import SecondaryInput from '../commons/secondaryInput'
@@ -247,6 +247,10 @@ const ReportingComponent = ({ location }) => {
       } else if (response?.errorCode) {
         console.log('Image capture error:', response.errorMessage);
         setError(response.errorMessage);
+        console.log('Image capture cancelled');
+      } else if (response?.errorCode) {
+        console.log('Image capture error:', response.errorMessage);
+        setError(response.errorMessage);
       } else {
         // Convert the image to JPG format
         const convertedImage = {
@@ -257,6 +261,8 @@ const ReportingComponent = ({ location }) => {
 
         setImage(convertedImage);
       }
+    });
+  };
     });
   };
 

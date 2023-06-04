@@ -84,7 +84,7 @@ const MapScreen = () => {
 
 
   if (!user) {
-    return <Login />
+    logout()
   }
 
   return (
