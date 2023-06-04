@@ -531,18 +531,19 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               ) : (
                 // Display JSX code when not loading
                 <>
-                  <View style={{flex: 1}}>
-                  <TouchableOpacity style={{ flex:1, backgroundColor:'red' }}>
-                  <ReportImage
-                    imageData = {imageBuffer}
-                    />
-                  </TouchableOpacity>
-                  </View>
+                <View style={{flex: 1}}>
+                    <View style={{ flex:1 }}>
+                        <ReportImage
+                            imageData = {imageBuffer}
+                            />
+                    </View>
+                </View>
 
                 <View style={styles.modalContent2}>
                   <View>
-                  <Text style={styles.modaltext}>{source}</Text>
-                  <Text style={styles.modaltext2}>{category}</Text>
+                    <Text style={styles.modaltext}>{source}</Text>
+                    <Text style={styles.modaltext2}>{category}</Text>
+                    <Text style={styles.modaltext2}>5</Text>
                   </View>
                   <View style={styles.VoteView}>
                     <TouchableOpacity style={styles.thumbpress} onPress={thumbsUp}>

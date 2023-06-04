@@ -21,12 +21,12 @@ export default ScaledSheet.create ({
         elevation:'10@s',
         flexDirection: 'row',
       },
-      modalContent2:{
-        backgroundColor: 'white', 
-        borderRadius: '10@s', 
-        padding: '10@s', 
-        height: '100@s',
-        width: 150, 
+    modalContent2:{
+        flex: 1,
+        flexDirection: 'column',
+        paddingLeft: '10@s',
+        flexGrow: 1,
+        justifyContent: 'space-around',
       },
     calloutContainer: {
         width: 250,
@@ -36,12 +36,6 @@ export default ScaledSheet.create ({
         alignItems: 'center',
         padding: 10,
         backgroundColor: 'white',
-        borderRadius: 5,
-      },
-      image: {
-        width: 80,
-        height: 80,
-        resizeMode: 'cover',
         borderRadius: 5,
       },
       detailsContainer: {
@@ -58,42 +52,29 @@ export default ScaledSheet.create ({
         fontSize: 12,
         marginBottom: 10,
       },
-      VoteView:{ 
+      VoteView:{
         flexDirection: 'row', 
-        alignSelf: 'center', 
-        marginTop: '40@s',
+        alignSelf: 'center',
         alignItems:'center'
       },
-      thumbpress:{ 
-        backgroundColor: colors.white, 
-        height: '50@s', 
-        width: '60@s', 
+      thumbpress:{
+        flex: 1,
         alignItems: 'center', 
-        borderRadius: 10, 
-        marginHorizontal: 1 
-      },
-      thumbpress2:{ 
-        backgroundColor: colors.primary, 
-        height: '60@s', 
-        width: '60@s', 
-        alignItems: 'center', 
-        borderRadius: 10, 
-        marginHorizontal: 1 
       },
       modaltext:{
         textAlign:'center',
         fontWeight: 'bold',
-        fontSize:10,
+        fontSize: 12,
       },
       modaltext2:{
+        marginTop: '5@s',
         textAlign:'center',
         fontWeight: 'bold',
-        fontSize:15,
+        fontSize: 20,
       },
       image:{
-        flex:1 ,
+        flex: 1,
         width: '100%',
-        height: undefined,
         resizeMode: 'stretch',  
     },  
 })
