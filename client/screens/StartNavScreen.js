@@ -3,24 +3,27 @@ import React, { useState, useContext, useEffect } from 'react';
 import { LocationContext } from '../context/LocationContext';
 import NavigatingMapComp from '../components/NavigatingMap/NavigatingMapComp';
 import NavInstruction from '../components/NavigatingMap/NavInstruction/NavInstruction';
+import { useFocusEffect } from '@react-navigation/native';
 
 const StartNavScreen = ({ route, navigation }) => {
   const { preference, source, destination, conditions, coords, steps, option } = route.params;
   const [location] = useContext(LocationContext);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+  useFocusEffect(
+    React.useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
-    return () => {
-      backHandler.remove();
-    };
-  }, []);
+      return () => {
+        backHandler.remove();
+      };
+    }, [])
+  );
 
   const handleBackPress = () => {
     Alert.alert(
       'Confirmation',
-      'Are you sure you want to leave the navigation?',
+      'Are you sure you want to leave navigation mode? You will need to enter your route again.',
       [
         { text: 'No', style: 'cancel' },
         { text: 'Yes', onPress: () => exitScreen() },

@@ -17,6 +17,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 import Container from '../commons/Container/Contain'
+import { launchCamera } from 'react-native-image-picker';
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -32,9 +33,6 @@ const ReportingComponent = ({ location }) => {
   const [category, setCategory] = useState(null);
   const [factorEnabled, setFactorEnabled] = useState(false);
   const [items, setItems] = useState([
-    // {label: 'Landmark',
-    //  value: 'landmark',
-    //  icon: () => <FontAwesome5 name='landmark' size={15}/>},
     {label: 'Lighting',
      value: 'lighting',
      icon: () => <MaterialIcon name='lightbulb' size={15}/>},
@@ -240,20 +238,27 @@ const ReportingComponent = ({ location }) => {
   const handleImageUpload = () => {
     const options = {
       mediaType: 'photo',
-      selectionLimit: 1,
-    }
-    launchImageLibrary(options, (response) => {
+      quality: 0.1,
+    };
+
+    launchCamera(options, (response) => {
       if (response?.didCancel) {
-        console.log('Image selection cancelled')
-      } else if (response?.error) {
-        console.log('Image selection error:', response.error)
-        setError(response.error)
+        console.log('Image capture cancelled');
+      } else if (response?.errorCode) {
+        console.log('Image capture error:', response.errorMessage);
+        setError(response.errorMessage);
       } else {
-        console.log('Image set successfully')
-        setImage(response.assets[0])
+        // Convert the image to JPG format
+        const convertedImage = {
+          ...response.assets[0],
+          uri: response.assets[0].uri.replace(/\.[^.]+$/, '.jpg'),
+          type: 'image/jpeg',
+        };
+
+        setImage(convertedImage);
       }
-    })
-  }
+    });
+  };
 
   // const handleLocation = async () => {
   //   if (location) {
@@ -413,7 +418,7 @@ const ReportingComponent = ({ location }) => {
             </View>
             <View style={styles.Imageupload}>
             <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
-            <Text style={styles.saveButtonText}>Upload Image</Text>
+            <Text style={styles.saveButtonText}>Capture Image</Text>
             </TouchableOpacity>
             </View>
             {image && (
