@@ -17,7 +17,7 @@ import { ActivityIndicator } from 'react-native';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc }) => {
+const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -379,6 +379,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
         }
         handleLoadingData(false)
         setLoading(false);
+        handlePress(1)
         setError(null);
         return;
       }
@@ -461,18 +462,14 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 {/* Label */}
                 <View style={styles.labelbox}>
-                <Text style={styles.labeltext}>Best Path</Text>
+                    <Text style={styles.labeltext}>Best Path</Text>
                 </View> 
 
                 {/* Label Distance */}
-                <View 
-                //style={styles.labelbox}
-                >
-                <Text style={styles.labelDistance}>{results.length / 1000} km</Text>
+                <View style={styles.labelbox}>
+                    <Text style={styles.labelDistance}>{results.length / 1000} km</Text>
                 </View> 
-
-              {/* Safest Progress Detail */}
-              <BestProgressComp safestCoverage={safestCoverage} />
+              
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
                 {/* <Button title="tite" onPress={() => {handleCloseModal();}}></Button> */}
@@ -493,9 +490,12 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                 /> 
 
                 </View>}
-                
+                {/* Safest Progress Detail */}
+                <BestProgressComp safestCoverage={safestCoverage} />
+
                 <View style={styles.secondView}>
-                  
+                
+
                   {results.steps && (
                     <View>
                       {results.steps.map((step, index) => (
@@ -513,7 +513,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
 
 
-          {/* Optimal Path Instruction */}
+          {/* Fastest Path Instruction */}
           {results2 && (
             
             <ScrollView >
@@ -521,18 +521,15 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 {/* Label */}
                 <View style={styles.labelbox}>
-                <Text style={styles.labeltext}>Alternative Path</Text>
+                    <Text style={styles.labeltext}>Alternative Path</Text>
                 </View>
 
                 {/* Label Distance */}
-                <View 
-                //style={styles.labelbox}
-                >
-                <Text style={styles.labelDistance}>{results2.length / 1000} km</Text>
+                <View style={styles.labelbox}>
+                    <Text style={styles.labelDistance}>{results2.length / 1000} km</Text>
                 </View> 
 
-                {/* Alternate Progress Detail */}
-                <AlternateProgressComp fastestCoverage={fastestCoverage} />
+                
 
                 {/* Start your FAST nav here */}
                 {begin && <View style={styles.beginNav}>
@@ -555,7 +552,10 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 </View>}
 
-                <View style={styles.thirdView}>
+                {/* Alternate Progress Detail */}
+                <AlternateProgressComp fastestCoverage={fastestCoverage} />
+
+                <View style={styles.secondView}>
                   {results2.steps && (
                     <View >
                       {results2.steps.map((step, index) => (
@@ -567,7 +567,6 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                     </View>
                   )}
                 </View>
-                <View style={styles.marginbox}></View>
               </TouchableOpacity>
             </ScrollView>
             
