@@ -61,6 +61,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     const [counter, setCounter] = useState(null)
     const [modalLoading, setModalLoading] = useState(false)
     const [voteLoading, setVoteLoading] = useState(false)
+    const [showTitle, setShowTitle] = useState(false)
 
     const toRadians = (degrees) => {
       return degrees * Math.PI / 180
@@ -78,14 +79,20 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       return R * c
     }
 
-    const handleMarkerPress = (rid, src, cat, img, ctr) => {
-      setIsModalVisible(!isModalVisible)
-      setModalLoading(true)
-      setReportId(rid)
-      setSource(src)
-      setCategory(cat)
-      setImageBuffer(img)
-      setCounter(ctr)
+    const handleMarkerPress = (rid, src, cat, img, ctr, coords) => {
+      const thresholdDistance = 50
+      const distance = haversineDistance(location.latitude, location.longitude, coords.latitude, coords.longitude)
+      if (distance <= thresholdDistance) {
+        setIsModalVisible(!isModalVisible)
+        setModalLoading(true)
+        setReportId(rid)
+        setSource(src)
+        setCategory(cat)
+        setImageBuffer(img)
+        setCounter(ctr)
+      } else {
+        setShowTitle(true)
+      }
     }
 
     useEffect(() => {
@@ -580,10 +587,10 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
                 <Marker
                   key={report._id}
                   coordinate={{ latitude: report.coordinates.latitude, longitude: report.coordinates.longitude }}
-                  // title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
+                  title={showTitle ? `${categoryMapping[report.category.toLowerCase()]} Reported` : null}
                   tracksViewChanges={false}
                   tracksInfoWindowChanges={true}
-                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image, report.counter)}
+                  onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image, report.counter, report.coordinates)}
                 >
                   {/* <Callout tooltip>
                     <CustomCallout
