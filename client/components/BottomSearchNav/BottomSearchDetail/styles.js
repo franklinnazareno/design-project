@@ -28,9 +28,7 @@ export default ScaledSheet.create ({
     height:'100%',
     width:deviceWidth,
     backgroundColor: colors.white,
-    borderRadius: '10@s',
     alignSelf:'center',
-    marginTop: '1@s',
     flexGrow: 1,
   },
   thirdView: {
@@ -134,9 +132,7 @@ export default ScaledSheet.create ({
     fontWeight: 'bold',
     alignSelf:'center'
   },
-  labelbox:{
-    height:'40@s',
-    borderRadius:'10@s', 
+  labelbox:{ 
     backgroundColor:colors.white, 
     marginTop:'1@s', 
     alignItems:'center'

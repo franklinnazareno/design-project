@@ -11,7 +11,7 @@ export default ScaledSheet.create ({
         alignItems:'center',
         justifyContent:'space-evenly',
         alignSelf:'center',
-        marginTop:-1,
+        marginTop:-2,
     },
 
     textInput:{

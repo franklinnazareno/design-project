@@ -37,8 +37,10 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
   const scrollview = useRef();
 
   const handleCloseModal = () => {
-    setModalVisible(false);
-    handleModal(false);
+    if (!loading) {
+        setModalVisible(false);
+        handleModal(false);
+    }
   };
 
   const toggleModal = () => {
@@ -145,7 +147,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           currentLoc={currentLoc}
           setCurrentLoc={setCurrentLoc}
           handleModal={handleModal}
-          handleCloseModal={handleCloseModal}>
+          handleCloseModal={handleCloseModal}
+          handlePress={handlePress}>
           </BottomSearchDetail>
           </TouchableOpacity>
           </ScrollView>
