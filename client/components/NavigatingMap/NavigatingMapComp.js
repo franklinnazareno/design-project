@@ -384,9 +384,10 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
         );
 
         if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-          Tts.speak(step.instruction);
-          setCompletedSteps((prev) => [...prev, step]);
-          setTimeout(() => {}, 2000);
+            setTimeout(() => {}, 2000);
+            Tts.speak(step.instruction);
+            setCompletedSteps((prev) => [...prev, step]);
+            setTimeout(() => {}, 2000);
         }
       }
 
