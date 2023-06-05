@@ -322,15 +322,14 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     };
 
     const options = {
-      taskName: 'Example',
-      taskTitle: 'ExampleTask title',
-      taskDesc: 'ExampleTask description',
+      taskName: 'Pathfinder',
+      taskTitle: 'Currently Navigating',
+      taskDesc: 'Instruction',
       taskIcon: {
         name: 'ic_launcher',
         type: 'mipmap',
       },
-      color: '#ff00ff',
-      linkingURI: 'yourSchemeHere://chat/jane',
+      color: '#ffffff',
       parameters: {
         delay: 1000,
       },
