@@ -8,7 +8,6 @@ export default ScaledSheet.create ({
     height:'220@s',
     width:'350@s',
     backgroundColor: colors.white,
-    borderRadius: '10@s',
     alignSelf:'center',
     marginTop: '1@s',
     alignItems:'center',
