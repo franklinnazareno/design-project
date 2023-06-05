@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Image, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Image, Text, View, TouchableOpacity, ActivityIndicator, AppState } from 'react-native';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,6 +18,7 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
+import BackgroundService from 'react-native-background-actions';
 import {decode as atob, encode as btoa} from 'base-64'
 
 
@@ -298,25 +299,105 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       }
     }, [coords])
 
-    useEffect(() => {
-      const thresholdDistance = 10
+    const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+
+    const veryIntensiveTask = async (taskDataArguments) => {
+      // Your code from the useEffect can go here
+      const thresholdDistance = 10;
 
       for (const step of newSteps) {
-        const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
+        const distance = haversineDistance(
+          location.latitude,
+          location.longitude,
+          step.coordinates[0],
+          step.coordinates[1]
+        );
 
         if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-          Tts.speak(step.instruction)
-          setCompletedSteps(prev => [...prev, step]);
-          setTimeout(() => {
-            // Use setTimeout instead of "await new Promise" in useEffect
-            // as async/await is not directly supported in useEffect callback
-            // and setTimeout achieves the desired delay effect
-            // Note: setTimeout is not blocking, so other code outside of useEffect
-            // will continue to execute immediately
-          }, 2000);
+          Tts.speak(step.instruction);
+          setCompletedSteps((prev) => [...prev, step]);
+          await sleep(2000);
         }
       }
-    }, [location])
+    };
+
+    const options = {
+      taskName: 'Pathfinder',
+      taskTitle: 'Currently Navigating',
+      taskDesc: 'Instruction',
+      taskIcon: {
+        name: 'ic_launcher',
+        type: 'mipmap',
+      },
+      color: '#ffffff',
+      parameters: {
+        delay: 1000,
+      },
+    };
+
+    const startBackgroundTask = async () => {
+      await BackgroundService.start(veryIntensiveTask, options);
+    };
+
+    const stopBackgroundTask = async () => {
+      await BackgroundService.stop();
+    };
+
+    // useEffect(() => {
+    //   const thresholdDistance = 10;
+
+    //   for (const step of newSteps) {
+    //     const distance = haversineDistance(
+    //       location.latitude,
+    //       location.longitude,
+    //       step.coordinates[0],
+    //       step.coordinates[1]
+    //     );
+
+    //     if (distance <= thresholdDistance && !completedSteps.includes(step)) {
+    //       Tts.speak(step.instruction);
+    //       setCompletedSteps(prev => [...prev, step]);
+    //       setTimeout(() => {}, 2000);
+    //     }
+    //   }
+    // }, [location]);
+
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'active') {
+        // Screen is on and active
+        stopBackgroundTask();
+      } else if (nextAppState === 'background') {
+        // Screen is off or locked
+        startBackgroundTask();
+      }
+    };
+
+    useEffect(() => {
+      const thresholdDistance = 10;
+
+      for (const step of newSteps) {
+        const distance = haversineDistance(
+          location.latitude,
+          location.longitude,
+          step.coordinates[0],
+          step.coordinates[1]
+        );
+
+        if (distance <= thresholdDistance && !completedSteps.includes(step)) {
+          Tts.speak(step.instruction);
+          setCompletedSteps((prev) => [...prev, step]);
+          setTimeout(() => {}, 2000);
+        }
+      }
+
+      const appStateListener = AppState.addEventListener('change', handleAppStateChange);
+
+      // Cleanup function
+      return () => {
+        appStateListener.remove();
+        stopBackgroundTask();
+      };
+    }, [location]);
 
     // useEffect(() => {
     //   const thresholdDistance = 100
