@@ -3,20 +3,17 @@ import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { moderateScale } from 'react-native-size-matters';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Config from 'react-native-config';
 import { launchCamera } from 'react-native-image-picker';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import Input from '../commons/inputs'
 import SecondaryInput from '../commons/secondaryInput'
 import CustomButton from '../commons/CustomButton'
-import MapContainer from '../commons/mapContainer/Contain';
 import styles from './styles';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
-import Container from '../commons/Container/Contain'
+import SwitchSelector from "react-native-switch-selector";
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -30,6 +27,7 @@ const ReportingComponent = ({ location }) => {
   const [currentLoc, setCurrentLoc] = useState(null)
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(null);
+  const [finalCategory, setFinalCategory] = useState('');
   const [factorEnabled, setFactorEnabled] = useState(false);
   const [items, setItems] = useState([
     {label: 'Lighting',
@@ -48,6 +46,33 @@ const ReportingComponent = ({ location }) => {
      value: 'closure',
      icon: () => <MaterialIcon name='do-not-disturb-on' size={15}/>}
   ]);
+
+  const getCategoryOptions = (category) => {
+    switch (category) {
+      case 'lighting':
+        return [
+          { label: 'Not Well-lit', value: 'not lighting' },
+          { label: 'Well-lit', value: 'lighting' },
+        ];
+      case 'pwd':
+        return [
+          { label: 'Not PWD Friendly', value: 'not pwd' },
+          { label: 'PWD Friendly', value: 'pwd' },
+        ];
+      case 'cctv':
+        return [
+          { label: 'No CCTV', value: 'not cctv' },
+          { label: 'CCTV', value: 'cctv' },
+        ];
+      case 'flood':
+        return [
+          { label: 'No Flood Hazard', value: 'not flood' },
+          { label: 'Flood Hazard', value: 'flood' },
+        ];
+      default:
+        return [];
+        }
+    }
 
   const toggleSwitch = () => setFactorEnabled(previousState => !previousState);
 
@@ -97,7 +122,7 @@ const ReportingComponent = ({ location }) => {
         value={category}
         items={items}
         setOpen={setOpen}
-        setValue={setCategory}
+        setValue={(value) => {setCategory(value); setFinalCategory('')}}
         setItems={setItems}
         listMode="SCROLLVIEW"
       />
@@ -299,11 +324,12 @@ const ReportingComponent = ({ location }) => {
         formData.append('source', source)
         formData.append('coordinates', JSON.stringify(reportCoords))
         formData.append('edges', edgesJson.edges)
-        if (factorEnabled){
-          console.log(formData)
-          formData.append('category', category)
-        } else {
-          formData.append('category', 'not ' + category)
+        if (category == 'closure'){
+            console.log(formData)
+            formData.append('category', category)
+        }
+        else {
+            formData.append('category', finalCategory)
         }
         formData.append('description', description)
         console.log(formData)
@@ -340,6 +366,7 @@ const ReportingComponent = ({ location }) => {
             setCategory(null)
             setImage(null)
             setFactorEnabled(false)
+            setFinalCategory('')
           }
           if (!response.ok) {
               const errorLog = responseData.error
@@ -400,10 +427,10 @@ const ReportingComponent = ({ location }) => {
             <CategorySelect/>
             {category && category != 'closure' ? 
             <View style ={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-            <Text style={{marginRight: 90}}>
+            {/* <Text style={{marginRight: 90}}>
               Does the safety/risk factor exist?
-            </Text>
-            <Switch 
+            </Text> */}
+            {/* <Switch 
             style={{ transform: [{ 
             scaleX: moderateScale(1, 1.5) }, 
             { scaleY: moderateScale(1, 1.5) }] }}
@@ -411,13 +438,18 @@ const ReportingComponent = ({ location }) => {
             thumbColor={factorEnabled.enabled ? '#f4f3f4' : '#f4f3f4'}
             onValueChange={toggleSwitch}
             value={factorEnabled}  
-             />
-             </View>: null}
-            <SecondaryInput
-            label='Description'
-            value={description}
-            onChangeText={setDescription}
+             /> */}
+            <SwitchSelector
+                options={getCategoryOptions(category)}
+                onPress={(value) => {setFinalCategory(value); }}
+                buttonColor={colors.primary}
             />
+            </View>: null}
+                <SecondaryInput
+                label='Description'
+                value={description}
+                onChangeText={setDescription}
+                />
             </View>
             <View style={styles.Imageupload}>
             <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
@@ -432,7 +464,7 @@ const ReportingComponent = ({ location }) => {
                 <Text style={styles.imageName}>Image uploaded successfully</Text>
             </View>
             )}
-            {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && category && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
+            {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && (finalCategory || category == 'closure') && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
             : <CustomButton disabled primary title='Report'/>}
 
             {/* I put the toast here for now, it needs fixing too */}
