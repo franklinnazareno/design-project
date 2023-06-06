@@ -40,30 +40,39 @@ const NavInstruction = ({ steps, location, conditions }) => {
     return R * c
   }
 
+  const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+
   useEffect(() => {
-    if (location) {
-      const thresholdDistance = 10
-
-      for (const step of newSteps) {
-        const distance = haversineDistance(location.latitude, location.longitude, step.coordinates[0], step.coordinates[1])
-
-        if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-            setTimeout(() => {}, 2000);
-            setCurrentStep(step.instruction)
-            setCurrentDistance(step.distance)
-            setSafetyFactors(step.factorsPresent)
-            setCompletedSteps(prev => [...prev, step]);
-            setTimeout(() => {
-                // Use setTimeout instead of "await new Promise" in useEffect
-                // as async/await is not directly supported in useEffect callback
-                // and setTimeout achieves the desired delay effect
-                // Note: setTimeout is not blocking, so other code outside of useEffect
-            // will continue to execute immediately
-          }, 2000);
-        }
+    const thresholdDistance = 10;
+  
+    const processStep = async (step) => {
+      const distance = haversineDistance(
+        location.latitude,
+        location.longitude,
+        step.coordinates[0],
+        step.coordinates[1]
+      );
+  
+      if (distance <= thresholdDistance && !completedSteps.includes(step)) {
+        await sleep(2000); // Pause execution for 2 seconds
+        setCurrentStep(step.instruction);
+        setCurrentDistance(step.distance);
+        setSafetyFactors(step.factorsPresent);
+        setCompletedSteps((prev) => [...prev, step]);
+        await sleep(2000); // Pause execution for another 2 seconds
       }
+    };
+  
+    if (location) {
+      const processSteps = async () => {
+        for (const step of newSteps) {
+          await processStep(step);
+        }
+      };
+  
+      processSteps();
     }
-  }, [location])
+  }, [location]);
   
   useEffect(() => {
     console.log(safetyFactors)
