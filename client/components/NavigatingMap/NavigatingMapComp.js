@@ -407,6 +407,14 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       };
     }, [location]);
 
+    useEffect(() => {
+      if (newSteps.length > 0) {
+        setTimeout(() => {
+          Tts.speak(newSteps[0].instruction);
+        }, 2000);
+      }
+    }, [])
+
     // useEffect(() => {
     //   const thresholdDistance = 100
 
