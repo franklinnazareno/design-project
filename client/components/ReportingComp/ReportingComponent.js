@@ -66,8 +66,8 @@ const ReportingComponent = ({ location }) => {
         ];
       case 'flood':
         return [
-          { label: 'No Flood Hazard', value: 'not flood' },
-          { label: 'Flood Hazard', value: 'flood' },
+          { label: 'No Flood Hazard', value: 'flood' },
+          { label: 'Flood Hazard', value: 'not flood' },
         ];
       default:
         return [];
