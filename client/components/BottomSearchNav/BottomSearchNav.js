@@ -46,7 +46,7 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     handleModal(!isModalVisible)
-  };
+  };  
 
   const handleSafestCoverage = (data) => {
     setSafestCoverage(data)
@@ -59,6 +59,10 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
   const handlePress =(viewIndex) => {
     handleUserView(viewIndex)
     scrollview.current.scrollTo({ x: deviceWidth * viewIndex })
+  }
+
+  const handleConditions = (data) => {
+    setConditions(data)
   }
 
   return (
@@ -148,7 +152,8 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           setCurrentLoc={setCurrentLoc}
           handleModal={handleModal}
           handleCloseModal={handleCloseModal}
-          handlePress={handlePress}>
+          handlePress={handlePress}
+          handleConditions={handleConditions}>
           </BottomSearchDetail>
           </TouchableOpacity>
           </ScrollView>
