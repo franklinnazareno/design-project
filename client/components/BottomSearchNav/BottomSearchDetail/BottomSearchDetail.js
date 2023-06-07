@@ -17,7 +17,7 @@ import { ActivityIndicator } from 'react-native';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, setConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
+const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, handleConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -326,7 +326,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
           return;
       }
       if (response.ok) {
-        setConditions(json['conditions'])
+        handleConditions(json['conditions'])
         if (json['shortest_route'] && Object.keys(json['shortest_route']).length > 0){
           setResults(json['optimized_route']);
           setResults2(json['shortest_route'])
@@ -491,7 +491,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 </View>}
                 {/* Safest Progress Detail */}
-                <BestProgressComp safestCoverage={safestCoverage} />
+                <BestProgressComp safestCoverage={safestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                 
@@ -553,7 +553,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                 </View>}
 
                 {/* Alternate Progress Detail */}
-                <AlternateProgressComp fastestCoverage={fastestCoverage} />
+                <AlternateProgressComp fastestCoverage={fastestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                   {results2.steps && (

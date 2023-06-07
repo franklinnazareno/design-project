@@ -6,7 +6,7 @@ import CustomCircularProgress from '../../../commons/CustomCircle/CustomCirclePr
 import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
-const AlternateProgressComp = ({ fastestCoverage }) => {
+const AlternateProgressComp = ({ fastestCoverage, conditions }) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisible2, setIsModalVisible2] = useState(false);
@@ -90,6 +90,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.landmark}
               progressValueColor={colors.primary} 
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -119,6 +120,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.lighting}
               progressValueColor={colors.primary}  
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -150,6 +152,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.pwd_friendly} 
               progressValueColor={colors.primary}
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -179,6 +182,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.cctv}
               progressValueColor={colors.primary} 
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -208,6 +212,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.not_major_road  === 0 ? 0 : 100 - fastestCoverage.not_major_road}
               progressValueColor={'red'}
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
             <Modal
@@ -238,6 +243,7 @@ const AlternateProgressComp = ({ fastestCoverage }) => {
               value={fastestCoverage.not_flood_hazard  === 0 ? 0 : 100 - fastestCoverage.not_flood_hazard}
               progressValueColor={'red'}  
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
             <Modal

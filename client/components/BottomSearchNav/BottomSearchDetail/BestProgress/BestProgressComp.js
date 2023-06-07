@@ -7,8 +7,7 @@ import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
 
 
-const BestProgressComp = ({ safestCoverage }) => {
-
+const BestProgressComp = ({ safestCoverage, conditions }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisible2, setIsModalVisible2] = useState(false);
     const [isModalVisible3, setIsModalVisible3] = useState(false);
@@ -92,6 +91,7 @@ const BestProgressComp = ({ safestCoverage }) => {
               value={safestCoverage.landmark} 
               progressValueColor={colors.primary} 
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -121,6 +121,7 @@ const BestProgressComp = ({ safestCoverage }) => {
               value={safestCoverage.lighting}
               progressValueColor={colors.primary}  
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -152,6 +153,7 @@ const BestProgressComp = ({ safestCoverage }) => {
               value={safestCoverage.pwd_friendly} 
               progressValueColor={colors.primary}
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -181,6 +183,7 @@ const BestProgressComp = ({ safestCoverage }) => {
               value={safestCoverage.cctv}
               progressValueColor={colors.primary} 
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
 
@@ -210,6 +213,7 @@ const BestProgressComp = ({ safestCoverage }) => {
               value={safestCoverage.not_major_road === 0 ? 0 : 100 - safestCoverage.not_major_road } 
               progressValueColor={'red'}
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
             <Modal
@@ -237,9 +241,10 @@ const BestProgressComp = ({ safestCoverage }) => {
             <SmallCustomCircularProgress
               title='Flood' 
               percentageTextColor={'red'}
-              value={safestCoverage.not_flood_hazard === 0 ? 0 : 100 - safestCoverage.not_flood_hazard}
+              value={conditions.weather ? (safestCoverage.not_flood_hazard === 0 ? 0 : 100 - safestCoverage.not_flood_hazard) : 0}
               progressValueColor={'red'}
               radius={35}
+              conditions={conditions}
             />
             </TouchableOpacity>
             <Modal
