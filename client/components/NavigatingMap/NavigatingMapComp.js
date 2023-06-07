@@ -662,7 +662,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
 
                 <View style={styles.modalContent2}>
                   <View>
-                    <Text style={styles.modaltext}>{source}</Text>
+                    <Text style={styles.modaltext} numberOfLines={3}>{source}</Text>
                     <Text style={styles.modaltext2}>{category}</Text>
                     <Text style={styles.modaltext2}>User Reports: {counter}</Text>
                   </View>
