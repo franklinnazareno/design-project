@@ -247,7 +247,8 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
       'not cctv': 'No CCTV',
       flood: 'No Flood Hazard',
       'not flood': 'Flood Hazard',
-      'not closure': 'Road Closure',
+      closure: 'Road Closure',
+      'not  closure': 'Road Closure'
     };
 
     return (
