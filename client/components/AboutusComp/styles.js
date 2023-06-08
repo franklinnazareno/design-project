@@ -13,7 +13,8 @@ export default styles = ScaledSheet.create({
         height:'70%',
         marginTop: '20@s', 
         flexWrap: 'wrap',
-        alignSelf:'center' ,  
+        alignSelf:'center' ,
+        alignItems:'center'
     },
     memberimage:{
         height:'160@s', 
@@ -41,4 +42,10 @@ export default styles = ScaledSheet.create({
         fontSize: 10,
         fontWeight:'bold' 
     },
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems:'center',
+    }
 })
