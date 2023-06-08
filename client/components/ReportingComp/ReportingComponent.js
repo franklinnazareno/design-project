@@ -462,7 +462,7 @@ const ReportingComponent = ({ location }) => {
                 onChangeText={setDescription}
                 />
             <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
+            <TouchableOpacity disabled={loading} style={styles.saveButton} onPress={handleImageUpload}>
               <View style={{flexDirection:'row', alignContent: 'center', justifyContent:'center'}}>
               {image ? 
               <MaterialCommunityIcons name='file-image' size={20} style={{marginRight: 5, color: 'white'}}/> 
@@ -470,7 +470,7 @@ const ReportingComponent = ({ location }) => {
               <Text style={styles.saveButtonText}>{image ? 'Image saved' : 'Capture Image'}</Text>
               </View>
             </TouchableOpacity>
-              {image ? 
+              {(image && !loading) ? 
               <View style={{justifyContent:'center'}}>
               <TouchableOpacity
                 style={{marginLeft: 10}}
