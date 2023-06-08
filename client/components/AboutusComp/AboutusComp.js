@@ -5,6 +5,30 @@ import MapContainer from '../commons/mapContainer/Contain'
 import Container from '../commons/Container/Contain'
 
 const AboutusComp = () => {
+
+  const members = [
+    {
+      image: require('../../assets/images/bats.png'),
+      name: 'Kristian John Q. Baturiano',
+      specialization: 'Data Science',
+    },
+    {
+      image: require('../../assets/images/trystan.jpg'),
+      name: 'Mickel Trystan Dones',
+      specialization: 'Intelligent Systems',
+    },
+    {
+      image: require('../../assets/images/Julongbayan.jpg'),
+      name: 'Dan Angelo A. Julongbayan',
+      specialization: 'Data Science',
+    },
+    {
+      image: require('../../assets/images/frank2.jpg'),
+      name: 'Franklin T. Nazareno Jr',
+      specialization: 'Technopreneurship',
+    },
+  ];
+  
   return (
     <Container>
         <ImageBackground 
@@ -12,41 +36,24 @@ const AboutusComp = () => {
           style={[styles.loginImage]}>
           
           <View style={styles.aboutWrapper}>
-
-          <View style={styles.memberimage}>
-          <Image 
-          source={require('../../assets/images/bats.png')}
-          style={styles.imagesize}/>
-          <Text style={styles.namefont}>Kristian John Q. Baturiano </Text>
-          <Text style={styles.namefont2}>Data Science</Text>
+            <View>
+              <Text style={{fontSize:20}}>Pathfinder Developers</Text>
+            </View>
+            <View style={styles.row}>
+              {members.map((member, index) => (
+                <View key={index} style={styles.memberimage}>
+                <Image 
+                source={member.image}
+                style={styles.imagesize}/>
+                <Text style={styles.namefont}>{member.name}</Text>
+                <Text style={styles.namefont2}>{member.specialization}</Text>
+                </View>
+              ))}
+            </View>
           </View>
-
-          <View style={styles.memberimage}>
-          <Image 
-          source={require('../../assets/images/trystan.jpg')}
-          style={styles.imagesize}/>
-          <Text style={styles.namefont}>Mickel Trystan Dones</Text>
-          <Text style={styles.namefont2}>Intelligent Systems</Text>
+          <View style={{alignItems:'center',justifyContent:'flex-end'}}>
+                <Text>App Version: 1.3.3</Text>
           </View>
-
-          <View style={styles.memberimage}>
-          <Image 
-          source={require('../../assets/images/Julongbayan.jpg')}
-          style={styles.imagesize}/>
-          <Text style={styles.namefont}>Dan Angelo A. Julongbayan </Text>
-          <Text style={styles.namefont2}>Data Science</Text>
-          </View>
-
-          <View style={styles.memberimage}>
-          <Image 
-          source={require('../../assets/images/frank2.jpg')}
-          style={styles.imagesize}/>
-          <Text style={styles.namefont}>Franklin T. Nazareno Jr</Text>
-          <Text style={styles.namefont2}>Technopreneurship</Text>
-          </View>
-
-          </View>
-
         </ImageBackground>
     </Container>
   )
