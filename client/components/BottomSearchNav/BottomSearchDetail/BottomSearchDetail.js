@@ -13,6 +13,7 @@ import BestProgressComp from './BestProgress/BestProgressComp';
 import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 import { ActivityIndicator } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -273,6 +274,21 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
       />
     );
   };
+  const [isConnected, setIsConnected] = useState(false);
+
+    useEffect(() => {
+        const handleConnectivityChange = (connectionInfo) => {
+        setIsConnected(connectionInfo.isConnected);
+        };
+
+        // Subscribe to network connection changes
+        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+
+        // Cleanup subscription on component unmount
+        return () => {
+        unsubscribe();
+        };
+    }, []);
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -283,7 +299,6 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
     }
     handleLoadingData(true);
     setLoading(true);
-
     try {
 
       const thresholdDistance = 50
@@ -410,6 +425,21 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
 
   const handleSubmit = async () => {
+      if (isConnected == false) {
+        setError('No internet connection found')
+        Toast.show({
+          type: 'error',
+          text1: 'No internet connection found',
+          text2: 'Try turning on mobile data',
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          onHide: () => setError(null),
+        });
+        handleLoadingData(false)
+        setLoading(false)
+        return;
+      }
       handleSubmitWithRetry(25);
       handleModal(false)
   };

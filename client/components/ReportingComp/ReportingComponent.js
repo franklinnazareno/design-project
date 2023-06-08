@@ -14,6 +14,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 import SwitchSelector from "react-native-switch-selector";
+import NetInfo from "@react-native-community/netinfo"
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -79,7 +80,21 @@ const ReportingComponent = ({ location }) => {
   const toggleSwitch = () => setFactorEnabled(previousState => !previousState);
 
   const { user } = useAuthContext();
+  const [isConnected, setIsConnected] = useState(false);
 
+    useEffect(() => {
+        const handleConnectivityChange = (connectionInfo) => {
+        setIsConnected(connectionInfo.isConnected);
+        };
+
+        // Subscribe to network connection changes
+        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+
+        // Cleanup subscription on component unmount
+        return () => {
+        unsubscribe();
+        };
+    }, []);
 
   // useEffect(() => {
   //   async function getLocation() {
@@ -335,6 +350,22 @@ const ReportingComponent = ({ location }) => {
 
   const handleSubmit = async () => {
     setLoading(true)
+    
+    if (isConnected == false) {
+      setError('No internet connection found')
+      Toast.show({
+        type: 'error',
+        text1: 'No internet connection found',
+        text2: 'Try turning on mobile data',
+        visibilityTime: 3000,
+        autoHide: true,
+        position: 'bottom',
+        onHide: () => setError(null),
+      });
+      setLoading(false)
+      return;
+    }
+
     try {
       const coords = [reportCoords.longitude, reportCoords.latitude]
       const flaskPost = { coords }

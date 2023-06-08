@@ -8,6 +8,7 @@ import Config from 'react-native-config';
 import PreferenceDetails from '../components/PrefDetails/PreferenceDetails';
 import colors from '../assets/themes/colors'
 const windowHeight = Dimensions.get('window').height;
+import NetInfo from '@react-native-community/netinfo'
 
 
 const PrefDetail = () => {
@@ -17,7 +18,22 @@ const PrefDetail = () => {
     const { user } = useAuthContext()
 
     const { logout } = useLogout()
+    const [isConnected, setIsConnected] = useState(false);
 
+    useEffect(() => {
+        const handleConnectivityChange = (connectionInfo) => {
+        setIsConnected(connectionInfo.isConnected);
+        };
+
+        // Subscribe to network connection changes
+        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+
+        // Cleanup subscription on component unmount
+        return () => {
+        unsubscribe();
+        };
+    }, []);
+    
     useEffect(() => {
         const fetchPreference = async () => {
             const response = await fetch (`${Config.EXPRESS}/api/preferences`, {
@@ -34,9 +50,8 @@ const PrefDetail = () => {
             }
             setLoading(false)
         }
-
         fetchPreference()
-    }, [dispatch, user])
+    }, [dispatch, user, isConnected])
 
     if (!user) {
         <Login />
@@ -52,7 +67,7 @@ const PrefDetail = () => {
                     <Text style={{ marginTop: 10, fontSize: 12, color: 'gray' }}>Please ensure you have an active internet connection.</Text>
                 </View>
             ) : (
-                <PreferenceDetails preference={preferences} />
+                <PreferenceDetails preference={preferences} isConnected={isConnected}/>
                 
             )}
         </View>

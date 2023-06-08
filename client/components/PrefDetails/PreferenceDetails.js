@@ -9,9 +9,7 @@ import colors from '../../assets/themes/colors';
 import Config from 'react-native-config';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-
-
-const PreferenceDetails = ({ preference }) => {
+const PreferenceDetails = ({ preference, isConnected }) => {
   const { dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
 
@@ -41,6 +39,21 @@ const PreferenceDetails = ({ preference }) => {
 
   const handleSavePreferences = async () => {
     setLoading(true)
+
+    if (isConnected == false) {
+      setError('No internet connection found')
+      Toast.show({
+        type: 'error',
+        text1: 'No internet connection found',
+        text2: 'Try turning on mobile data',
+        visibilityTime: 3000,
+        autoHide: true,
+        position: 'bottom',
+        onHide: () => setError(null),
+      });
+      setLoading(false)
+      return;
+    }
 
     const updatedPreferences = { preferences }
 

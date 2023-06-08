@@ -9,6 +9,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Config from 'react-native-config'
 import BottomSearchNav from '../components/BottomSearchNav/BottomSearchNav'
 import colors from '../assets/themes/colors'
+import NetInfo from "@react-native-community/netinfo"
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -23,6 +24,21 @@ const MapScreen = () => {
   const { preferences, dispatch } = usePreferencesContext()
   const { user } = useAuthContext()
   const { logout } = useLogout()
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    const handleConnectivityChange = (connectionInfo) => {
+      setIsConnected(connectionInfo.isConnected);
+    };
+
+    // Subscribe to network connection changes
+    const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+
+    // Cleanup subscription on component unmount
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const handleCoordsData = (data) => {
     setCoords(data)
@@ -57,9 +73,8 @@ const MapScreen = () => {
       }
       setLoading(false)
     }
-
     fetchPreference()
-  }, [dispatch, user])
+  }, [dispatch, user, isConnected])
 
   // Get user location
   useEffect(() => {

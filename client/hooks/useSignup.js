@@ -1,17 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuthContext } from './useAuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
+import NetInfo from '@react-native-community/netinfo'
 
 export const useSignup = () => {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
+    const [isConnected, setIsConnected] = useState(false);
+
+    useEffect(() => {
+        const handleConnectivityChange = (connectionInfo) => {
+        setIsConnected(connectionInfo.isConnected);
+        };
+
+        // Subscribe to network connection changes
+        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+
+        // Cleanup subscription on component unmount
+        return () => {
+        unsubscribe();
+        };
+    }, []);
 
     const signup = async (email, password) => {
         setIsLoading(true)
         setError(null)
 
+        if(isConnected == false){
+            setError('No internet connection')
+            setIsLoading(false)
+            return error
+        }
         const response = await fetch(`${Config.EXPRESS}/api/user/signup`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
