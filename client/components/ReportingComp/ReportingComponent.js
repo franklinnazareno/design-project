@@ -369,15 +369,15 @@ const ReportingComponent = ({ location }) => {
           uri: image.uri
         })
 
-        // const response = await fetch(`${Config.EXPRESS}/api/report`, {
-        //     method: 'POST',
-        //     headers: {
-        //       'Authorization': `Bearer ${user.token}`,
-        //       'Content-Type': 'multipart/form-data',
-        //       'Accept':'*/*'
-        //     },
-        //     body: formData
-        //   })
+        const response = await fetch(`${Config.EXPRESS}/api/report`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${user.token}`,
+              'Content-Type': 'multipart/form-data',
+              'Accept':'*/*'
+            },
+            body: formData
+          })
           
           const responseData = await response.json()
 
