@@ -382,6 +382,7 @@ const ReportingComponent = ({ location }) => {
           const responseData = await response.json()
 
           if (response.ok) {
+            setSuccess(true)
             Toast.show({
               type: 'success',
               text1: 'Report sent successfully.',
@@ -389,9 +390,8 @@ const ReportingComponent = ({ location }) => {
               visibilityTime: 5000,
               autoHide: true,
               position: 'bottom',
-              onHide: () => setError(null),
+              onHide: () => setSuccess(null),
             });
-            setSuccess(true)
             setSource('')
             setDescription(null)
             setCategory(null)
