@@ -18,7 +18,7 @@ export default ScaledSheet.create({
     },
     subText:{
         marginTop: '50@s',
-        marginBottom:'1@s',
+        marginBottom:'20@s',
         fontSize:'17@s',
         textAlign:'center',
         paddingVertical: '1@s',
@@ -29,14 +29,16 @@ export default ScaledSheet.create({
         fontSize: '10@s',
         fontWeight: 'bold',
         alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
     },
     saveButton: {
         backgroundColor: colors.primary,
         borderRadius: '5@s',
-        width:'90@s',
+        width:'100@s',
         padding: '10@s',
-        margin: '5@s',
         alignSelf: 'center',
+        justifyContent: 'center',
     },
     error: {
         color: 'red',
@@ -53,7 +55,7 @@ export default ScaledSheet.create({
     },
     imageName: {
         alignSelf:'center',
-        marginBottom: '12@s'
+        marginTop: '5@s'
     },
     clearButton: {
         position: 'absolute',

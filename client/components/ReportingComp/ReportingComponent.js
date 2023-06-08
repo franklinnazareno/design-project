@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Image, ActivityIndicator, Switch} from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, Image, ActivityIndicator, Dimensions} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -14,6 +14,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 import SwitchSelector from "react-native-switch-selector";
+
+const windowHeight = Dimensions.get('window').height;
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -113,7 +115,7 @@ const ReportingComponent = ({ location }) => {
   const CategorySelect = () => {
     return (
       <DropDownPicker
-        style={{marginBottom: open ? 190 : 0}}
+        style={{marginTop: 5,marginBottom: open ? 190 : 0}}
         placeholder="Select report category"
         iconContainerStyle={{
           marginRight: 10
@@ -258,7 +260,9 @@ const ReportingComponent = ({ location }) => {
       />
     );
   };
-
+  const handleImageDelete = () => {
+    setImage(null)
+  }
   const handleImageUpload = () => {
     const options = {
       mediaType: 'photo',
@@ -267,11 +271,28 @@ const ReportingComponent = ({ location }) => {
 
     launchCamera(options, (response) => {
       if (response?.didCancel) {
+        setSuccess(true)
         console.log('Image capture cancelled');
+        Toast.show({
+          type: 'info',
+          text1: 'Image capture cancelled',
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          onHide: () => setSuccess(null),
+        });
       } else if (response?.errorCode) {
         console.log('Image capture error:', response.errorMessage);
         setError(response.errorMessage);
-        console.log('Image capture cancelled');
+        Toast.show({
+          type: 'error',
+          text1: 'Image capture error',
+          text2: response.errorMessage,
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          onHide: () => setError(null),
+        });
       } else if (response?.errorCode) {
         console.log('Image capture error:', response.errorMessage);
         setError(response.errorMessage);
@@ -284,6 +305,15 @@ const ReportingComponent = ({ location }) => {
         };
 
         setImage(convertedImage);
+        setSuccess(true)
+        Toast.show({
+          type: 'success',
+          text1: 'Image uploaded successfully',
+          visibilityTime: 3000,
+          autoHide: true,
+          position: 'bottom',
+          onHide: () => setSuccess(null),
+        });
       }
     });
   };
@@ -339,15 +369,15 @@ const ReportingComponent = ({ location }) => {
           uri: image.uri
         })
 
-        const response = await fetch(`${Config.EXPRESS}/api/report`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${user.token}`,
-              'Content-Type': 'multipart/form-data',
-              'Accept':'*/*'
-            },
-            body: formData
-          })
+        // const response = await fetch(`${Config.EXPRESS}/api/report`, {
+        //     method: 'POST',
+        //     headers: {
+        //       'Authorization': `Bearer ${user.token}`,
+        //       'Content-Type': 'multipart/form-data',
+        //       'Accept':'*/*'
+        //     },
+        //     body: formData
+        //   })
           
           const responseData = await response.json()
 
@@ -355,7 +385,8 @@ const ReportingComponent = ({ location }) => {
             Toast.show({
               type: 'success',
               text1: 'Report sent successfully.',
-              visibilityTime: 3000,
+              text2: 'Thank you for contributing!',
+              visibilityTime: 5000,
               autoHide: true,
               position: 'bottom',
               onHide: () => setError(null),
@@ -369,17 +400,17 @@ const ReportingComponent = ({ location }) => {
             setFinalCategory('')
           }
           if (!response.ok) {
+              setError(true)
               const errorLog = responseData.error
               if (errorLog && errorLog.toString().trim() !== "") {
               Toast.show({
                 type: 'error',
                 text1: 'An error has occurred.',
                 text2: errorLog,
-                visibilityTime: 3000,
+                visibilityTime: 5000,
                 autoHide: true,
                 onHide: () => setError(null),
                 position: 'bottom',
-                bottomOffset: 200
               });
               console.log(errorLog)
             }
@@ -389,16 +420,18 @@ const ReportingComponent = ({ location }) => {
 
     } 
     catch (error) {
+      setError(true)
       if (error && error.toString().trim() !== "") {
         Toast.show({
           type: 'error',
           text1: 'An error has occurred.',
           text2: error,
-          visibilityTime: 3000,
+          visibilityTime: 5000,
           autoHide: true,
           onHide: () => setError(null),
-          position: 'bottom'
+          position: 'bottom',
         });
+        
       }
 
       setLoading(false)
@@ -406,80 +439,64 @@ const ReportingComponent = ({ location }) => {
   }
 
   return (
-    <View>
-        <ScrollView keyboardShouldPersistTaps='always'>
-            <Text style={styles.subText}>Help us Improve Our Maps!</Text>
-            <ImageBackground  
+    <View style={{height: windowHeight}}>
+        <ImageBackground  
                 source={require('../../assets/images/Reg4.png')}
                 style={[styles.loginImage]}> 
-            <View style={styles.Text}>
-            {/* <Input
-                label='Location'
-                value={source}
-                onChangeText={setSource}
-                icon={<TouchableOpacity onPress={handleLocation} >
-                <MaterialCommunityIcons name = 'map-marker-account' size={40}></MaterialCommunityIcons>
-                </TouchableOpacity>}
-                iconPosition='right'
-                /> */}
+        {/* <ScrollView keyboardShouldPersistTaps='always'> */}
+        <View style={{flex:1, paddingLeft: 30, paddingRight: 30}}>
+            <Text style={styles.subText}>Help us Improve Our Maps!</Text>
             <GooglePlacesInputSource/>
-            <View>
             <CategorySelect/>
             {category && category != 'closure' ? 
-            <View style ={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-            {/* <Text style={{marginRight: 90}}>
-              Does the safety/risk factor exist?
-            </Text> */}
-            {/* <Switch 
-            style={{ transform: [{ 
-            scaleX: moderateScale(1, 1.5) }, 
-            { scaleY: moderateScale(1, 1.5) }] }}
-            trackColor={{false: colors.grey, true: colors.primary}}
-            thumbColor={factorEnabled.enabled ? '#f4f3f4' : '#f4f3f4'}
-            onValueChange={toggleSwitch}
-            value={factorEnabled}  
-             /> */}
             <SwitchSelector
                 options={getCategoryOptions(category)}
                 onPress={(value) => {setFinalCategory(value); }}
                 buttonColor={colors.primary}
+                style={{marginTop: 10}}
             />
-            </View>: null}
+            : null}
                 <SecondaryInput
                 label='Description'
                 value={description}
                 onChangeText={setDescription}
                 />
-            </View>
-            <View style={styles.Imageupload}>
+            <View style={{flexDirection:'row', justifyContent:'center'}}>
             <TouchableOpacity style={styles.saveButton} onPress={handleImageUpload}>
-            <Text style={styles.saveButtonText}>Capture Image</Text>
+              <View style={{flexDirection:'row', alignContent: 'center', justifyContent:'center'}}>
+              {image ? 
+              <MaterialCommunityIcons name='file-image' size={20} style={{marginRight: 5, color: 'white'}}/> 
+              : null}
+              <Text style={styles.saveButtonText}>{image ? 'Image saved' : 'Capture Image'}</Text>
+              </View>
             </TouchableOpacity>
+              {image ? 
+              <View style={{justifyContent:'center'}}>
+              <TouchableOpacity
+                style={{marginLeft: 10}}
+                onPress={handleImageDelete}
+                  >
+                <MaterialCommunityIcons name='close-circle' size={20}/>
+              </TouchableOpacity>
+              </View> : null}
             </View>
-            {image && (
-            <View style={styles.imagePreview}>
-                {image.uri && (
-                <Image source={{ uri: image.uri }} style={styles.image} />
-                )}
-                <Text style={styles.imageName}>Image uploaded successfully</Text>
-            </View>
-            )}
+            <View style={{marginTop: 10}}>
             {loading ? <ActivityIndicator size="large" color={colors.primary}/> : source && (finalCategory || category == 'closure') && description && image ? <CustomButton disabled={loading} primary title='Report' onPress={handleSubmit}/> 
             : <CustomButton disabled primary title='Report'/>}
-
-            {/* I put the toast here for now, it needs fixing too */}
-            <Toast ref={(ref) => Toast.setRef(ref)}  /> 
             </View>
+            <View style={{flex:1, justifyContent:'flex-end'}}>
+              {(success || error) ? <Toast ref={(ref) => Toast.setRef(ref)}/> : null}
+            </View>
+            {/* I put the toast here for now, it needs fixing too */}
+        </View>
             
             {/* {error && <Text style={styles.error}>Error: {error.message}</Text>} */}
             
             {/* {success && <Text style={styles.success}>Report sent successfully!</Text>} */}
             </ImageBackground>
-        
-        </ScrollView>
+          
+        {/* </ScrollView> */}
         {/* You cant use a scrollview here because of the autocomplete */}
-    
-        
     </View>
   )
 }
