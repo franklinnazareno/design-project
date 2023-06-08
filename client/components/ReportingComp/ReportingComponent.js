@@ -16,7 +16,7 @@ import colors from '../../assets/themes/colors';
 import SwitchSelector from "react-native-switch-selector";
 import NetInfo from "@react-native-community/netinfo"
 
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').height * 0.9;
 
 const ReportingComponent = ({ location }) => {
   const [source, setSource] = useState('')
@@ -475,7 +475,7 @@ const ReportingComponent = ({ location }) => {
                 source={require('../../assets/images/Reg4.png')}
                 style={[styles.loginImage]}> 
         {/* <ScrollView keyboardShouldPersistTaps='always'> */}
-        <View style={{flex:1, paddingLeft: 30, paddingRight: 30}}>
+        <View style={{flex:1, paddingLeft: 30, paddingRight: 30 }}>
             <Text style={styles.subText}>Help us Improve Our Maps!</Text>
             <GooglePlacesInputSource/>
             <CategorySelect/>
