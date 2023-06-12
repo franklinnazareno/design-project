@@ -5,268 +5,136 @@ import styles from './styles';
 import CustomCircularProgress from '../../../commons/CustomCircle/CustomCircleProgress';
 import colors from '../../../../assets/themes/colors';
 import SmallCustomCircularProgress from '../../../commons/SmallCustomCircle/SmallCustomCircularProgress';
+  
+const data = [
+  { title: 'Landmark', key: 'landmark' },
+  { title: 'Well-lit Areas', key: 'lighting' },
+  { title: 'PWD', key: 'pwd_friendly' },
+  { title: 'CCTV', key: 'cctv' },
+  { title: 'Major Road', key: 'not_major_road' },
+  { title: 'Flood', key: 'not_flood_hazard' },
+];
 
-const AlternateProgressComp = ({ fastestCoverage, conditions }) => {
 
+
+const AlternateProgress = ({ coverage, conditions }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isModalVisible2, setIsModalVisible2] = useState(false);
-    const [isModalVisible3, setIsModalVisible3] = useState(false);
-    const [isModalVisible4, setIsModalVisible4] = useState(false);
-    const [isModalVisible5, setIsModalVisible5] = useState(false);
-    const [isModalVisible6, setIsModalVisible6] = useState(false);
-    const [isModalVisible7, setIsModalVisible7] = useState(false);
+  const [activeModalIndex, setActiveModalIndex] = useState(null);
 
-    //Modal 1
-    const showModal = () => {
-      setIsModalVisible(true);
-    };  
-    //Modal 2
-    const showModal2 = () => {
-      setIsModalVisible2(true);
-    };
-    //Modal 3
-    const showModal3 = () => {
-      setIsModalVisible3(true);
-    };
-    //Modal 4
-    const showModal4 = () => {
-      setIsModalVisible4(true);
-    };
-    //Modal 5
-    const showModal5 = () => {
-      setIsModalVisible5(true);
-    };
-    //Modal 6
-    const showModal6 = () => {
-      setIsModalVisible6(true);
-    };
-    //Modal 7
-    const showModal7 = () => {
-      setIsModalVisible7(true);
-    };
+  const showModal = (index) => {
+    setActiveModalIndex(index);
+    setIsModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+    setActiveModalIndex(null);
+  };
+
+  const renderModalContent = () => {
+    if (activeModalIndex !== null) {
+      const item = data[activeModalIndex];
+      return (
+        <View style={styles.modalContent}>
+          <ScrollView>
+            <TouchableOpacity>
+              <Text style={styles.modaltext}>
+                {getModalContent(item.key)}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      );
+    }
+
+    return null;
+  };
+
+  const getModalContent = (key) => {
+    switch (key) {
+      case 'landmark':
+        return 'This value shows how much of the route will pass through a tourist attraction or a notable area.';
+      case 'lighting':
+        return 'This value shows how much of the route is under well-lit street lights during the night.';
+      case 'pwd_friendly':
+        return 'This value shows how much of the route is friendly to motor-impaired individuals. This includes PWD ramps, handrails, and wide sidewalks.';
+      case 'cctv':
+        return 'This value shows how much of the route will be under the view of a government-maintained CCTV camera.';
+      case 'not_major_road':
+        return 'This value shows how much of the route will be in a major road/thoroughfare. A lesser value is desirable for this safety factor.';
+      case 'not_flood_hazard':
+        return 'This value shows how much of the route will be under flood hazard in the event of a major rain event. A lesser value is desirable for this safety factor.';
+      default:
+        return '';
+    }
+  };
+
+  const renderSmallCustomCircularProgress = () => {
+    // const [updatedData, setUpdatedData] = useState(null)
+    // let filteredData = data;
+    // if (!conditions.weather) {
+    //   filteredData = filteredData.filter(item => item.key !== 'not_flood_hazard');
+    // } 
+    // if (!conditions.lighting) {
+    //   filteredData = filteredData.filter(item => item.key !== 'lighting');
+    // }
+    // setUpdatedData(filteredData);
+    return data.map((item, index) => {
+      let progressValueColor = colors.primary;
+      let percentageTextColor = colors.primary;
+      if (item.key === 'not_major_road' || item.key === 'not_flood_hazard') {
+        progressValueColor = 'red';
+        percentageTextColor = 'red';
+      }
+      return (
+        <View key={index}>
+          <TouchableOpacity onPress={() => showModal(index)}>
+            <SmallCustomCircularProgress
+              title={item.title}
+              value={coverage[item.key]}
+              progressValueColor={progressValueColor}
+              percentageTextColor={percentageTextColor}
+              radius={35}
+              conditions={conditions}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    });
+  };
 
   return (
-    fastestCoverage && (
-      <View style={styles.progressBox}>
-        {/*  STARTS SAFETY PERCENTAGE */}
+    coverage && (
+      <View>
+        {/* STARTS SAFETY PERCENTAGE */}
         <View style={styles.progressContent}>
-
-        <View style={styles.progresspaddingMAIN}>
-          <TouchableOpacity onPress={showModal}>
-          <CustomCircularProgress
-            title='Safe'
-            value={fastestCoverage.average}  
-            radius={60}
-            progressValueColor={colors.primary}
-          />
-          </TouchableOpacity>
-          
-          <Modal
-              visible={isModalVisible} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible(false)}>
-        
-          <View style={styles.modalContent}>
-            <ScrollView>
-            <TouchableOpacity>
-            <Text style={styles.modaltext}>This value shows the total average of all safety factors while taking into consideration your preferences on safety factors.</Text>
-            </TouchableOpacity>
-            </ScrollView>    
-          </View>
-        
-      </Modal>
-          </View>
-      {/* ENDS SAFETY PERCENTAGE */}
-
-        
-
-        <View style={styles.Mainprogress}>
-          {/* STARTS LANDMARK ROAD PERCENTAGE */}
-          <View style={styles.progresspadding}>
-            <TouchableOpacity onPress={showModal2}>
-            <SmallCustomCircularProgress
-              title='Landmark'
-              value={fastestCoverage.landmark}
-              progressValueColor={colors.primary} 
-              radius={35}
-              conditions={conditions}
-            />
+          <View>
+            <TouchableOpacity onPress={() => showModal(-1)}>
+              <CustomCircularProgress
+                title="Safe"
+                value={coverage.average}
+                radius={60}
+                progressValueColor={colors.primary}
+              />
             </TouchableOpacity>
 
             <Modal
-              visible={isModalVisible2} 
+              visible={isModalVisible}
               transparent={true}
               animationType="fade"
-              onBackdropPress={() => setIsModalVisible2(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route will pass through a tourist attraction or a notable area.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
-            </Modal>
-
-          </View>
-        {/* ENDS LANDMARK PERCENTAGE */}
-
-          {/* STARTS LIGHTING PERCENTAGE */}
-          <View style={styles.progresspadding}>
-          <TouchableOpacity onPress={showModal3}>
-            <SmallCustomCircularProgress
-              title='Well-lit Areas'
-              value={fastestCoverage.lighting}
-              progressValueColor={colors.primary}  
-              radius={35}
-              conditions={conditions}
-            />
-            </TouchableOpacity>
-
-            <Modal
-              visible={isModalVisible3} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible3(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route is under well-lit street lights during the night.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
-            </Modal>
-
-          </View>
-
-          {/* ENDS LIGHTING PERCENTAGE */}
-
-          {/* STARTS PWD PERCENTAGE */}
-          <View style={styles.progresspadding}>
-            <TouchableOpacity onPress={showModal4}>
-            <SmallCustomCircularProgress
-              title='PWD'
-              
-              value={fastestCoverage.pwd_friendly} 
-              progressValueColor={colors.primary}
-              radius={35}
-              conditions={conditions}
-            />
-            </TouchableOpacity>
-
-            <Modal
-              visible={isModalVisible4} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible4(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route is friendly to motor-impared individuals. This includes PWD ramps, hand rails, and wide sidewalks.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
-            </Modal>
-
-          </View>
-          {/*  ENDS PWD PERCENTAGE */}
-
-          {/* STARTS CCTV PERCENTAGE */}
-          <View style={styles.progresspadding}>
-            <TouchableOpacity onPress={showModal5}>
-            <SmallCustomCircularProgress
-              title='CCTV'
-              value={fastestCoverage.cctv}
-              progressValueColor={colors.primary} 
-              radius={35}
-              conditions={conditions}
-            />
-            </TouchableOpacity>
-
-            <Modal
-              visible={isModalVisible5} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible5(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route will be under the view of a government-maintained CCTV camera.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
+              onBackdropPress={hideModal}
+            >
+              {renderModalContent()}
             </Modal>
           </View>
-          {/* ENDS CCTV PERCENTAGE */}
 
-          {/* STARTS MAJOR ROAD PERCENTAGE */}
-          <View style={styles.progresspadding}>
-          <TouchableOpacity onPress={showModal6}>
-            <SmallCustomCircularProgress 
-              title='Major Road'
-              percentageTextColor={'red'}
-              value={fastestCoverage.not_major_road  === 0 ? 0 : 100 - fastestCoverage.not_major_road}
-              progressValueColor={'red'}
-              radius={35}
-              conditions={conditions}
-            />
-            </TouchableOpacity>
-            <Modal
-              visible={isModalVisible6} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible6(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route will be in a major road/thoroughfare. A lesser value is desirable for this safety factor.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
-            </Modal>
+          <View style={styles.Mainprogress}>
+            {renderSmallCustomCircularProgress()}
           </View>
-          {/* ENDS MAJOR ROAD PERCENTAGE */}
-
-          
-          
-          {/* STARTS FLOOD PERCENTAGE */}
-          <View style={styles.progresspadding}>
-          <TouchableOpacity onPress={showModal7}>
-            <SmallCustomCircularProgress
-              title='Flood' 
-              percentageTextColor={'red'}
-              value={fastestCoverage.not_flood_hazard  === 0 ? 0 : 100 - fastestCoverage.not_flood_hazard}
-              progressValueColor={'red'}  
-              radius={35}
-              conditions={conditions}
-            />
-            </TouchableOpacity>
-            <Modal
-              visible={isModalVisible7} 
-              transparent={true}
-              animationType="fade"
-              onBackdropPress={() => setIsModalVisible7(false)}>
-        
-              <View style={styles.modalContent}>
-                <ScrollView>
-                <TouchableOpacity>
-                <Text style={styles.modaltext}>This value shows how much of the route will be under flood hazard in the event of a major rain event. A lesser value is desirable for this safety factor.</Text>
-                </TouchableOpacity>
-                </ScrollView>    
-              </View>
-            </Modal>
-          </View>
-          {/* ENDS FLOOD PERCENTAGE */}
-        </View>
         </View>
       </View>
     )
-  )
-}
+  );
+};
 
-export default AlternateProgressComp
+export default AlternateProgress;

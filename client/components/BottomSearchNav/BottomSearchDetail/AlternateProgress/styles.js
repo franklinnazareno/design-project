@@ -4,67 +4,40 @@ import colors from '../../../../assets/themes/colors';
 var deviceWidth = Dimensions.get('window').width;
 
 export default ScaledSheet.create ({
-  progressBox:{
-    height:'220@s',
-    width:'350@s',
-    backgroundColor: colors.white,
-    alignSelf:'center',
-    marginTop: '1@s',
-    alignItems:'center',
-    flexDirection:'row',
-    marginBottom:'4@s',
-    justifyContent: 'center',
-
-  },
-  progressBoxFast:{
-    height:'200@s',
-    width:deviceWidth,
-    backgroundColor: colors.white,
-    borderRadius: '10@s',
-    alignSelf:'center',
-    marginTop: '1@s',
-    alignItems:'center',
-    flexDirection:'row',
-    justifyContent: 'center',
-    
-        
-  },
-  
+  // progressBox:{
+  //   flex: 1,
+  //   flexWrap:'wrap',
+  //   backgroundColor: 'red',
+  //   alignSelf:'center',
+  //   alignItems:'center',
+  //   marginBottom:'4@s',
+  //   justifyContent: 'center',
+  // },
   Mainprogress:{
-    height:'150@s',
-    width:'240@s',
+    flex:1,
     flexWrap:'wrap',
-    paddingHorizontal:0,
-    marginTop: '-15@s',
-    flexDirection:'row', 
-    alignItems:'center'
-    
+    flexDirection:'row',
+    justifyContent:'space-evenly'
   },
-  progresspadding:{
-    paddingVertical: '1@s',
-    paddingHorizontal: '3@s',
-    marginLeft:'1@s',
-    
-    
-    
-  },
-  progresspaddingMAIN:{
-    paddingLeft:'10@s',
-    
-  },
+  // progresspadding:{
+  //   paddingVertical: '1@s',
+  //   paddingHorizontal: '3@s',
+  //   marginLeft:'1@s',
+  // },
+  // progresspaddingMAIN:{
+  //   paddingLeft:'10@s',
+  // },
   progressContent:{
-    height:'200@s',
+    flex:1,
+    flexWrap:'wrap',
+    height:'100%',
     width:deviceWidth,
     backgroundColor: colors.white,
-    borderRadius: '10@s',
     alignSelf:'center',
-    marginTop: '1@s',
     alignItems:'center',
     flexDirection:'row',
-    paddingHorizontal: '9@s',
-    marginBottom:'10@s'
-    
-    
+    padding:'10@s',
+    marginBottom:'2@s'
   },
   modalContent:{
     backgroundColor: '#fff', 
