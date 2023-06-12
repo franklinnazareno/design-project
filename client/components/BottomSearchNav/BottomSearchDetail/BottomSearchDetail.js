@@ -521,7 +521,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 </View>}
                 {/* Safest Progress Detail */}
-                <BestProgressComp safestCoverage={safestCoverage} conditions={conditions}/>
+                <AlternateProgressComp coverage={safestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                 
@@ -583,7 +583,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                 </View>}
 
                 {/* Alternate Progress Detail */}
-                <AlternateProgressComp fastestCoverage={fastestCoverage} conditions={conditions}/>
+                <AlternateProgressComp coverage={fastestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                   {results2.steps && (
