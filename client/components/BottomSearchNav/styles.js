@@ -137,10 +137,10 @@ export default ScaledSheet.create ({
 
       },
       safest:{
+        flexDirection:'row',
         borderRadius:'20@s' ,
         height:'40@s',
         padding:'2@s' ,
-        flexDirection:'row',
         backgroundColor: colors.grey,
         alignSelf:'center',
         marginTop:'-100@s',
@@ -157,5 +157,9 @@ export default ScaledSheet.create ({
         height: '40@s', 
         width: '40@s', 
         elevation: '10@s'
+      },
+      scroll:{
+        flexDirection:'row',
+
       }
 })
