@@ -9,11 +9,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../commons/CustomButton';
 import styles from './styles';
-import BestProgressComp from './BestProgress/BestProgressComp';
-import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 import { ActivityIndicator } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import ProgressComp from './ProgressComp/ProgressComp';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -502,7 +501,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
               
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
-                {/* <Button title="tite" onPress={() => {handleCloseModal();}}></Button> */}
+
                 <CustomButton primary title='Start Navigation' 
                   onPress={() => {
                     handleCloseModal();
@@ -521,7 +520,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 </View>}
                 {/* Safest Progress Detail */}
-                <AlternateProgressComp coverage={safestCoverage} conditions={conditions}/>
+                <ProgressComp coverage={safestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                 
@@ -583,7 +582,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                 </View>}
 
                 {/* Alternate Progress Detail */}
-                <AlternateProgressComp coverage={fastestCoverage} conditions={conditions}/>
+                <ProgressComp coverage={fastestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                   {results2.steps && (
