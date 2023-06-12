@@ -159,32 +159,28 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
           </ScrollView>
           
         </View>
-         {results !== null && (
-        <View style={styles.safest}>
-          <TouchableOpacity 
-            onPress={() => handlePress(0)}
-            style={styles.safeBox}
-          >
-          <Text style={styles.safetextBox}>Home</Text>
-          </TouchableOpacity>
+  
+        {results !== null && (
+      <View style={styles.safest}>
+    {[  
+      { text: 'Home', index: 0 },
+      { text: 'Best', index: 1 },
+      results2 !== null && Object.keys(results2).length > 0 && { text: 'Other', index: 2 },
+      { text: 'test 1', index: 4 },
+    ].map((button) => (
+      button && (
+        <TouchableOpacity
+          key={button.index}
+          onPress={() => handlePress(button.index)}
+          style={styles.safeBox}
+        >
+          <Text style={styles.safetextBox}>{button.text}</Text>
+        </TouchableOpacity>
+      )
+    ))}
+    </View>
+)}
 
-          <TouchableOpacity 
-            onPress={() => handlePress(1)}
-            style={styles.safeBox}
-          >
-          <Text style={styles.safetextBox}>Best</Text>
-          </TouchableOpacity>
-
-          {results2 !== null && Object.keys(results2).length > 0 && (
-            <TouchableOpacity 
-              onPress={() => handlePress(2)}
-              style={styles.safeBox}
-            >
-            <Text style={styles.safetextBox}>Other</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
 
       </Modal> 
       
