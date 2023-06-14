@@ -13,7 +13,6 @@ import { STARTNAV } from '../../../context/initialRoutenNames';
 import { ActivityIndicator } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import ProgressComp from './ProgressComp/ProgressComp';
-import io from 'socket.io-client';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -288,18 +287,6 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
     return () => {
     unsubscribe();
     };
-  }, []);
-
-  useEffect(() => {
-    const socket = io(`${Config.EXPRESS}`);
-    
-    socket.on('reportUpdate', (reportData) => {
-      console.log('Received report update:', reportData.source)
-    })
-
-    return () => {
-      socket.disconnect();
-    }
   }, []);
 
   const handleSubmitWithRetry = async (retryCount) => {
