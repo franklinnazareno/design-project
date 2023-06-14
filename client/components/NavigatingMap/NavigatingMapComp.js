@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Tts from 'react-native-tts';
+import { io } from 'socket.io-client';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import Modal from "react-native-modal";
@@ -50,6 +51,7 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
     const [reportData, setReportData] = useState(null);
+    const [newReport, setNewReport] = useState(null)
     const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
     const [successful, setSuccessful] = useState(null)
@@ -305,6 +307,37 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
         getReportCoords()
       }
     }, [coords])
+
+    // useEffect(() => {
+    //   const socket = io(`${Config.EXPRESS}`);
+      
+    //   socket.on('reportUpdate', (repData) => {
+    //     console.log("Test:", repData)
+    //     setNewReport(repData)
+    //   })
+
+    //   return () => {
+    //     socket.disconnect();
+    //   }
+    // }, []);
+
+    useEffect(() => {
+      if (newReport && coords && coords.length > 1) {
+        console.log("second UE:", newReport)
+        const thresholdDistance = 50
+        const newReportCoords = newReport.coordinates 
+        for (const coordinate of coords) {
+          const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
+          if (distance <= thresholdDistance) {
+            if (reportData) {
+              setReportData((prev) => [...prev, newReport]);
+            } else {
+              setReportData(newReport);
+            }
+          }
+        }
+      }
+    }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
 
