@@ -13,6 +13,7 @@ import { STARTNAV } from '../../../context/initialRoutenNames';
 import { ActivityIndicator } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import ProgressComp from './ProgressComp/ProgressComp';
+import io from 'socket.io-client';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -275,19 +276,31 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
   };
   const [isConnected, setIsConnected] = useState(false);
 
-    useEffect(() => {
-        const handleConnectivityChange = (connectionInfo) => {
-        setIsConnected(connectionInfo.isConnected);
-        };
+  useEffect(() => {
+    const handleConnectivityChange = (connectionInfo) => {
+    setIsConnected(connectionInfo.isConnected);
+    };
 
-        // Subscribe to network connection changes
-        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+    // Subscribe to network connection changes
+    const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
 
-        // Cleanup subscription on component unmount
-        return () => {
-        unsubscribe();
-        };
-    }, []);
+    // Cleanup subscription on component unmount
+    return () => {
+    unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const socket = io(`${Config.EXPRESS}`);
+    
+    socket.on('reportUpdate', (reportData) => {
+      console.log('Received report update:', reportData.source)
+    })
+
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
