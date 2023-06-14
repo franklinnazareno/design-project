@@ -125,6 +125,12 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               },
               })
         if (response.ok) {
+          const socket = io(`${Config.EXPRESS}`);
+          try {
+            socket.emit('voteUpReport', reportId)
+          } catch (error) {
+            console.error(error)
+          }
             Toast.show({
                 type: 'success',
                 text1: 'Vote successfully submitted.',
@@ -163,6 +169,12 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               },
               })
         if (response.ok) {
+            const socket = io(`${Config.EXPRESS}`);
+            try {
+              socket.emit('voteDownReport', reportId)
+            } catch (error) {
+              console.error(error)
+            }
             Toast.show({
                 type: 'success',
                 text1: 'Vote successfully submitted.',
@@ -308,18 +320,18 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       }
     }, [coords])
 
-    // useEffect(() => {
-    //   const socket = io(`${Config.EXPRESS}`);
+    useEffect(() => {
+      const socket = io(`${Config.EXPRESS}`);
       
-    //   socket.on('reportUpdate', (repData) => {
-    //     console.log("Test:", repData)
-    //     setNewReport(repData)
-    //   })
+      socket.on('reportUpdate', (repData) => {
+        console.log("Test:", repData.source)
+        setNewReport(repData)
+      })
 
-    //   return () => {
-    //     socket.disconnect();
-    //   }
-    // }, []);
+      return () => {
+        socket.disconnect();
+      }
+    }, []);
 
     useEffect(() => {
       if (newReport && coords && coords.length > 1) {
