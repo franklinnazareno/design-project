@@ -64,17 +64,69 @@ export default ScaledSheet.create ({
       modaltext:{
         textAlign:'center',
         fontWeight: 'bold',
-        fontSize: 12,
+        fontSize: '12@s',
       },
       modaltext2:{
         marginTop: '5@s',
         textAlign:'center',
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: '20@s',
+        
       },
       image:{
         flex: 1,
         width: '100%',
         resizeMode: 'stretch',  
+    }, 
+      NewOptmodalContent:{
+        backgroundColor: 'white', 
+        borderRadius: '10@s',  
+        height: '150@s', 
+        width:'210@s',
+        elevation:'10@s',
+        flexDirection: 'row',
+        alignSelf:'center',
+        padding:'10@s'
+        // backgroundColor:'red'
+    },
+      NewOptmodalContent2:{
+        flex: 1,
+        flexDirection: 'column',
+        flexGrow: 1,
+        justifyContent: 'space-evenly',
+    },
+      NewOptpressAccept:{
+        flex: 1,
+        height:'100%',
+        alignItems: 'center',
+        backgroundColor:colors.primary, 
+        borderRadius:5,
+        justifyContent:'center',
+        marginHorizontal:'5@s'
+    },
+      NewOptpressDecline:{
+        flex: 1,
+        height:'100%',
+        alignItems: 'center',
+        backgroundColor:'red', 
+        borderRadius:5,
+        justifyContent:'center',
+        marginHorizontal:'5@s'
+      
+    },
+      NewOptmodaltext:{
+        textAlign:'center',
+        fontWeight: 'bold',
+        fontSize: '15@s',
+        color:'white',
+        justifyContent:'center'
+    },
+      NewOptVoteView:{
+        flexDirection: 'row',
+        height:'40@s',
+        alignSelf: 'center',
+        alignItems:'center',
+        justifyContent:'space-between',
+        // backgroundColor:'blue'
     },  
 })
