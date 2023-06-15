@@ -26,7 +26,7 @@ import {decode as atob, encode as btoa} from 'base-64'
 var deviceHeight = Dimensions.get('window').height;
 
 
-const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoading }) => {
+const NavigatingMapComp = ({ preference, location, destination, coords, steps, option, loading, setLoading }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
@@ -47,16 +47,18 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       longitudeDelta: 0.001
     })
     const [regionTemp, setRegionTemp] = useState();
+    const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
     const [newCoords, setCoords] = useState(coords)
     const [newSteps, setSteps] = useState(steps)
     const [completedSteps, setCompletedSteps] = useState([])
-    const [reportData, setReportData] = useState(null);
+    const [reportData, setReportData] = useState([]);
     const [newReport, setNewReport] = useState(null)
     const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
     const [successful, setSuccessful] = useState(null)
 
     const [reportId, setReportId] = useState(null)
+    const [listenedReportId, setListenedReportId] = useState(null)
     const [source, setSource] = useState(null)
     const [category, setCategory] = useState(null)
     const [imageBuffer, setImageBuffer] = useState(null)
@@ -79,6 +81,114 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       return R * c
+    }
+
+    const [conditions, setConditions] = useState(null)
+    const [newOptimized, setNewOptimized] = useState(null)
+    const [newShortest, setNewShortest] = useState(null)
+    const [optimizedCoords, setOptimizedCoords] = useState(null)
+    const [shortestCoords, setShortestCoords] = useState(null)
+    const [optimizedSteps, setOptimizedSteps] = useState(null)
+    const [shortestSteps, setShortestSteps] = useState(null)
+    const [optimizedCoverage, setOptimizedCoverage] = useState(null)
+    const [shortestCoverage, setShortestCoverage] = useState(null)
+
+    const reRoute = async () => {
+      const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
+      setSourceCoords([location.longitude, location.latitude])
+      const destCoords = destination
+      const postData = { preferences, sourceCoords, destCoords }
+      console.log(postData)
+
+      try {
+        const response = await fetch(`${Config.FLASK}/route/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        })
+
+        const json = await response.json()
+
+        if (response.ok) {
+          setConditions(json['conditions'])
+          if (json['shortest_route'] && Object.keys(json['shortest_route']).length > 0) {
+            setNewOptimized(json['optimized_route'])
+            setNewShortest(json['shortest_route'])
+            setOptimizedCoords(json['optimized_route']['coordinates'])
+            setShortestCoords(json['shortest_route']['coordinates'])
+            const optimizedStepsJson = json['optimized_route']['steps']
+            const optimizedStepsTemp = optimizedStepsJson.map(step => {
+              return {
+                coordinates: step.coordinates,
+                distance: step.distance,
+                instruction: step.instruction,
+                factorsPresent: step.factors_present
+              }
+            })
+            setOptimizedSteps(optimizedStepsTemp)
+            const shorestStepsJson = json['shortest_route']['steps']
+            const shorestStepsTemp = shorestStepsJson.map(step => {
+              return {
+                coordinates: step.coordinates,
+                distance: step.distance,
+                instruction: step.instruction,
+                factorsPresent: step.factors_present
+              }
+            })
+            setShortestSteps(shorestStepsTemp)
+            setOptimizedCoverage(json['optimized_route']['coverage'])
+            setShortestCoverage(json['shortest_route']['coverage'])
+          } else {
+            setNewOptimized(json['optimized_route'])
+            setNewShortest(json['shortest_route'])
+            setOptimizedCoords(json['optimized_route']['coordinates'])
+            setShortestCoords(json['shortest_route']['coordinates'])
+            const optimizedStepsJson = json['optimized_route']['steps']
+            const optimizedStepsTemp = optimizedStepsJson.map(step => {
+              return {
+                coordinates: step.coordinates,
+                distance: step.distance,
+                instruction: step.instruction,
+                factorsPresent: step.factors_present
+              }
+            })
+            setOptimizedSteps(optimizedStepsTemp)
+            setShortestSteps(null)
+            setOptimizedCoverage(json['optimized_route']['coverage'])
+            setShortestCoverage(json['shortest_route']['coverage'])
+          }
+          console.log("New routes. Nice")
+          return
+        }
+
+      } catch (err) {
+        // ignore
+      }
+    }
+    
+    const getUpdate = async () => {
+      try {
+        const response = await fetch(`${Config.EXPRESS}/api/report/check`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({coordsData: coords})}
+        )
+        const result = await response.json()
+        if (response.ok) {
+          if (result) {
+            reRoute()
+          } else {
+            console.log("nothing happened.")
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
     }
 
     const handleMarkerPress = (rid, src, cat, img, ctr, coords) => {
@@ -324,8 +434,11 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
       const socket = io(`${Config.EXPRESS}`);
       
       socket.on('reportUpdate', (repData) => {
-        console.log("Test:", repData.source)
         setNewReport(repData)
+      })
+
+      socket.on('voteUpReport', (repId) => {
+        setListenedReportId(repId)
       })
 
       return () => {
@@ -334,19 +447,34 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
     }, []);
 
     useEffect(() => {
+      if (reportData && listenedReportId) {
+        for (const report in reportData) {
+          if (report._id == listenedReportId) {
+            if (report.category === 'closure') {
+              getUpdate()
+            }
+          }
+        }
+      }
+    }, [listenedReportId])
+
+    useEffect(() => {
       if (newReport && coords && coords.length > 1) {
-        console.log("second UE:", newReport)
         const thresholdDistance = 50
         const newReportCoords = newReport.coordinates 
         for (const coordinate of coords) {
           const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
           if (distance <= thresholdDistance) {
-            if (reportData) {
-              setReportData((prev) => [...prev, newReport]);
-            } else {
-              setReportData(newReport);
-            }
+            setReportData((prev) => {
+              if (!prev.includes(newReport)) {
+                return [...prev, newReport];
+              }
+              return prev;
+            });
           }
+        }
+        if (newReport.category === 'closure') {
+          getUpdate()
         }
       }
     }, [newReport])
