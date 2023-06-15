@@ -17,7 +17,7 @@ import ProgressComp from './ProgressComp/ProgressComp';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, handleConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
+const BottomSearchDetail = ({ preference, handleCloseModal, location, conditions, handleConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
