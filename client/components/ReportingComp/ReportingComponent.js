@@ -15,6 +15,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../assets/themes/colors';
 import SwitchSelector from "react-native-switch-selector";
 import NetInfo from "@react-native-community/netinfo"
+import io from 'socket.io-client';
 
 const windowHeight = Dimensions.get('window').height * 0.9;
 
@@ -114,6 +115,14 @@ const ReportingComponent = ({ location }) => {
 
   //   getLocation();
   // }, []);
+  useEffect(() => {
+    const socket = io(`${Config.EXPRESS}`);
+
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
+
   useEffect(() => {
     if(location){
       const latitude = location.latitude;
@@ -413,6 +422,13 @@ const ReportingComponent = ({ location }) => {
           const responseData = await response.json()
 
           if (response.ok) {
+            try {
+              const socket = io(`${Config.EXPRESS}`);
+              socket.emit('newReport', responseData);
+              console.log('successful socket emit')
+            } catch (error) {
+              console.error('error handling:', error)
+            }
             setSuccess(true)
             Toast.show({
               type: 'success',

@@ -5,6 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, {Polyline, Marker, Geojson} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { io } from 'socket.io-client';
 import styles from './styles';
 import MapContainer from '../commons/mapContainer/Contain';
 import myBoundary from './boundary';
@@ -17,12 +18,13 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 
 var deviceHeight = Dimensions.get('window').height;
 
-const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
+const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
     const { width, height } = Dimensions.get('window')
     const mapViewRef = useRef(null);
     const { user } = useAuthContext();
     const aspectRatio = width / height;
     const [reportData, setReportData] = useState(null);
+    const [newReport, setNewReport] = useState(null)
     const [reportData2, setReportData2] = useState(null)
     const [displayedReports, setDisplayedReports] = useState(null)
 
@@ -34,6 +36,24 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
       longitudeDelta: 0.005
     })
     const [regionTemp, setRegionTemp] = useState(null)
+
+    const toRadians = (degrees) => {
+      return degrees * Math.PI / 180
+    }
+
+    const haversineDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371e3
+        const phi1 = toRadians(lat1)
+        const phi2 = toRadians(lat2)
+        const deltaPhi = toRadians(lat2 - lat1)
+        const deltaLambda = toRadians(lon2 - lon1)
+
+        const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return R * c
+    }
+
+    const thresholdDistance = 50
 
 
     useEffect(() => {
@@ -154,6 +174,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
     useEffect(() => {
       setDisplayedReports(null)
       if (reportData && reportData2) {
+        console.log(reportData)
         const reports = [...reportData, ...reportData2];
         const uniqueReportIds = new Set();
         const uniqueReports = reports.filter(report => {
@@ -172,6 +193,42 @@ const MapComponent = ({ coordsData, coordsData2, location, userView }) => {
           console.log(displayedReports)
         }
     }, [reportData, reportData2])
+
+    useEffect(() => {
+      const socket = io(`${Config.EXPRESS}`);
+      
+      socket.on('reportUpdate', (reportData) => {
+        setNewReport(reportData)
+      })
+
+      return () => {
+        socket.disconnect();
+      }
+    }, []);
+
+    useEffect(() => {
+      if (newReport && coordsData && coordsData.length > 1) {
+        const newReportCoords = newReport.coordinates 
+        for (const coordinate of coordsData) {
+          const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
+          if (distance <= thresholdDistance) {
+            const { _id, source, coordinates, category, expiry } = newReport
+            setReportData((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+          }
+        }
+      }
+
+      if (newReport && coordsData2 && coordsData2.length > 1) {
+        const newReportCoords = newReport.coordinates 
+        for (const coordinate of coordsData2) {
+          const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
+          if (distance <= thresholdDistance) {
+            const { _id, source, coordinates, category, expiry } = newReport
+            setReportData2((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+          }
+        }
+      }
+    }, [newReport])
 
     const {setOptions, toggleDrawer} = useNavigation();
     
