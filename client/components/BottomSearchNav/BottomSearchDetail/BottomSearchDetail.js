@@ -9,16 +9,15 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import colors from '../../../assets/themes/colors';
 import CustomButton from '../../commons/CustomButton';
 import styles from './styles';
-import BestProgressComp from './BestProgress/BestProgressComp';
-import AlternateProgressComp from './AlternateProgress/AlternateProgressComp';
 import { STARTNAV } from '../../../context/initialRoutenNames';
 import { ActivityIndicator } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import ProgressComp from './ProgressComp/ProgressComp';
 
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
-const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions, handleConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
+const BottomSearchDetail = ({ preference, handleCloseModal, location, conditions, handleConditions, handleCoordsData, handleCoordsData2, handleLoadingData, handleSafestCoverage, handleFastestCoverage, handleModal, source, destination, results, results2, safestCoverage, fastestCoverage, error, setError, loading, setLoading, setSource, setDestination, setResults, setResults2, destinationCoords, setDestinationCoords, sourceCoords, setSourceCoords, begin, setBegin, bestCoords, setBestCoords, otherCoords, setOtherCoords, bestSteps, setBestSteps, otherSteps, setOtherSteps, currentLoc, setCurrentLoc, handlePress }) => {
   const navigation = useNavigation();
 
   const toRadians = (degrees) => {
@@ -276,19 +275,19 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
   };
   const [isConnected, setIsConnected] = useState(false);
 
-    useEffect(() => {
-        const handleConnectivityChange = (connectionInfo) => {
-        setIsConnected(connectionInfo.isConnected);
-        };
+  useEffect(() => {
+    const handleConnectivityChange = (connectionInfo) => {
+    setIsConnected(connectionInfo.isConnected);
+    };
 
-        // Subscribe to network connection changes
-        const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
+    // Subscribe to network connection changes
+    const unsubscribe = NetInfo.addEventListener(handleConnectivityChange);
 
-        // Cleanup subscription on component unmount
-        return () => {
-        unsubscribe();
-        };
-    }, []);
+    // Cleanup subscription on component unmount
+    return () => {
+    unsubscribe();
+    };
+  }, []);
 
   const handleSubmitWithRetry = async (retryCount) => {
     if (retryCount === 0) {
@@ -502,7 +501,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
               
                 {/* Start your safe nav here */}
                 {begin && <View style={styles.beginNav}>
-                {/* <Button title="tite" onPress={() => {handleCloseModal();}}></Button> */}
+
                 <CustomButton primary title='Start Navigation' 
                   onPress={() => {
                     handleCloseModal();
@@ -521,7 +520,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
 
                 </View>}
                 {/* Safest Progress Detail */}
-                <BestProgressComp safestCoverage={safestCoverage} conditions={conditions}/>
+                <ProgressComp coverage={safestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                 
@@ -583,7 +582,7 @@ const BottomSearchDetail = ({ preference,handleCloseModal, location, conditions,
                 </View>}
 
                 {/* Alternate Progress Detail */}
-                <AlternateProgressComp fastestCoverage={fastestCoverage} conditions={conditions}/>
+                <ProgressComp coverage={fastestCoverage} conditions={conditions}/>
 
                 <View style={styles.secondView}>
                   {results2.steps && (
