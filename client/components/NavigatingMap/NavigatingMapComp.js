@@ -31,10 +31,11 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
 
-  const MapModal = () => {
-    setIsModalVisible(true);
-  }; 
+  // const MapModal = () => {
+  //   setIsModalVisible(true);
+  // }; 
   
   const { user } = useAuthContext();
 
@@ -686,8 +687,38 @@ const NavigatingMapComp = ({ location, coords, steps, option, loading, setLoadin
               {/* </ScrollView>     */}
             </View>
             </Modal>
+            
+
+            <Modal
+            visible={NewOptModalVisible} 
+            transparent={true}
+            animationType="fade"
+            onBackdropPress={() => setNewOptIsModalVisible(false)}
+            >
+              <View style={styles.NewOptmodalContent}>
+                <View style={styles.NewOptmodalContent2}>
+                  <View>
+                    <Text style={styles.modaltext}> 
+                    Warning: Road closure ahead. Would you like to re-route?
+                    </Text>
+                  </View>
+                  <View style={styles.NewOptVoteView}>
+                    <TouchableOpacity style={styles.NewOptpressAccept}>
+                      <Text style={styles.NewOptmodaltext}>Accept</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.NewOptpressDecline}>
+                      <Text style={styles.NewOptmodaltext}>Decline</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
+            
             </View>
             <Toast ref={(ref) => Toast.setRef(ref)}  />
+
+            
         </MapContainer>
               
     );
