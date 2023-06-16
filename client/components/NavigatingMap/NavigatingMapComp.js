@@ -19,6 +19,8 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
+import { STARTNAV } from '../../context/initialRoutenNames';
+import { useNavigation } from '@react-navigation/native';
 import BackgroundService from 'react-native-background-actions';
 import {decode as atob, encode as btoa} from 'base-64'
 
@@ -33,6 +35,8 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (optimizedCoords) {
@@ -64,7 +68,10 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     const [error, setError] = useState(null)
     const [successful, setSuccessful] = useState(null)
 
+    const [self, setSelf] = useState(false)
+
     const [reportId, setReportId] = useState(null)
+    const [paramId, setParamId] = useState('')
     const [listenedReportId, setListenedReportId] = useState(null)
     const [source, setSource] = useState(null)
     const [category, setCategory] = useState(null)
@@ -136,8 +143,12 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       const postData = { preferences, sourceCoords, destCoords }
       console.log(postData)
 
+      console.log(paramId)
+      const endpoint = `${Config.FLASK}/route/${self ? `?id=${paramId}` : ''}`;
+      console.log(endpoint)
+
       try {
-        const response = await fetch(`${Config.FLASK}/route/`, {
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -196,9 +207,11 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             setShortestCoverage(null)
           }
           console.log("New routes. Nice")
+          setSelf(false)
           return
+        } else {
+          setSelf(false)
         }
-
       } catch (err) {
         // ignore
       }
@@ -219,7 +232,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
           if (result) {
             reRoute()
           } else {
-            console.log("nothing happened.")
+            console.log("Update: nothing happened.")
           }
         }
       } catch (err) {
@@ -228,6 +241,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     }
 
     const getSelfUpdate = async () => {
+      setParamId(newReport._id)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/self/${newReport._id}`, {
           headers: {'Authorization': `Bearer ${user.token}`}
@@ -235,10 +249,11 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
         const result = await response.json()
         if (response.ok) {
           if (result) {
+            setSelf(true)
             reRoute()
           } else {
             getUpdate()
-            console.log('nothing happened.')
+            console.log('Self update: nothing happened.')
           }
         }
       } catch (err) {
@@ -281,6 +296,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     const thumbsUp = async () => {
       setModalLoading(true)
       setVoteLoading(true)
+      setParamId(reportId)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/add/${reportId}`, {
               method: 'PATCH',
@@ -306,6 +322,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
                 bottomOffset: deviceHeight * 0.7
               })
           if (category === 'closure') {
+            setSelf(true)
             reRoute()
           }
           setSuccessful(true)
@@ -505,17 +522,15 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     }, []);
 
     useEffect(() => {
-      setTimeout(() => {
-        if (reportData && listenedReportId) {
-          for (const report in reportData) {
-            if (report._id == listenedReportId) {
-              if (report.category === 'closure') {
-                getUpdate()
-              }
+      if (reportData && listenedReportId) {
+        for (const report in reportData) {
+          if (report._id == listenedReportId) {
+            if (report.category === 'closure') {
+              getUpdate()
             }
           }
         }
-      }, 15000)
+      }
     }, [listenedReportId])
 
     useEffect(() => {
