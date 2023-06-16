@@ -27,8 +27,8 @@ function App() {
         console.log('Previous Screen:', previousScreenRef.current);
 
         if (
-          previousScreenRef.current === 'Map Navigation' &&
-          currentScreen === 'Find Path'
+          (previousScreenRef.current === 'Map Navigation' &&
+          currentScreen === 'Find Path')
         ) {
           resetStack('Map Navigation');
         }
