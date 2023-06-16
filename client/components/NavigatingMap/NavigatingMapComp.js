@@ -136,7 +136,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     const [optimizedCoverage, setOptimizedCoverage] = useState(null)
     const [shortestCoverage, setShortestCoverage] = useState(null)
 
-    const reRoute = async ({id}) => {
+    const reRoute = async ({id} = {}) => {
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
       setSourceCoords([location.longitude, location.latitude])
       const destCoords = destination
@@ -230,6 +230,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
         const result = await response.json()
         if (response.ok) {
           if (result) {
+            console.log("3rd: from getUpdate", result)
             reRoute()
           } else {
             console.log("Update: nothing happened.")
@@ -514,7 +515,8 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
         setNewReport(repData)
       })
 
-      socket.on('voteUpReport', (repId) => {
+      socket.on('reportCountUp', (repId) => {
+        console.log("1st: socket", repId)
         setListenedReportId(repId)
       })
 
@@ -523,17 +525,41 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       }
     }, []);
 
+    // useEffect(() => {
+    //   if (reportData && listenedReportId) {
+    //     console.log(reportData)
+    //     for (const report in reportData) {
+    //       console.log(report._id)
+    //       console.log(report.category)
+    //       console.log(listenedReportId)
+    //       if (report._id == listenedReportId) {
+    //         if (report.category === 'closure') {
+    //           console.log("2nd: going to getUpdate()")
+    //           getUpdate()
+    //         }
+    //       }
+    //     }
+    //   }
+    //   setListenedReportId(null)
+    // }, [listenedReportId])
+
     useEffect(() => {
       if (reportData && listenedReportId) {
-        for (const report in reportData) {
-          if (report._id == listenedReportId) {
+        console.log(reportData)
+        reportData.forEach(report => {
+          console.log(report._id)
+          console.log(report.category)
+          console.log(listenedReportId)
+          if (report._id === listenedReportId) {
             if (report.category === 'closure') {
-              getUpdate()
+              console.log("2nd: going to getUpdate()")
+              getUpdate();
             }
           }
-        }
+        });
       }
-    }, [listenedReportId])
+      setListenedReportId(null)
+    }, [listenedReportId]);
 
     useEffect(() => {
       if (newReport && coords && coords.length > 1) {
@@ -543,14 +569,11 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
             if (distance <= thresholdDistance) {
               setReportData((prev) => {
-                if (!prev.includes(newReport)) {
-                  console.log("test 1")
+                if (!prev.some((report) => report.id === newReport.id)) {
                   return [...prev, newReport];
                 }
-                console.log("test 2")
                 return prev;
               });
-              console.log("test 3", reportData)
             }
           }
           if (newReport.category === 'closure') {
@@ -842,7 +865,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             >
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
-
+            
           {reportData && reportData.map(report => {
             if (!completedReport.includes(report._id)) {
               return (
