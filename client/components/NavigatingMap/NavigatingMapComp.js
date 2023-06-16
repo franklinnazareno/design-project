@@ -136,15 +136,15 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     const [optimizedCoverage, setOptimizedCoverage] = useState(null)
     const [shortestCoverage, setShortestCoverage] = useState(null)
 
-    const reRoute = async () => {
+    const reRoute = async ({id}) => {
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
       setSourceCoords([location.longitude, location.latitude])
       const destCoords = destination
       const postData = { preferences, sourceCoords, destCoords }
       console.log(postData)
 
-      console.log(paramId)
-      const endpoint = `${Config.FLASK}/route/${self ? `?id=${paramId}` : ''}`;
+      console.log(id)
+      const endpoint = `${Config.FLASK}/route/${id ? `?id=${id}` : ''}`;
       console.log(endpoint)
 
       try {
@@ -240,17 +240,19 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       }
     }
 
-    const getSelfUpdate = async () => {
-      setParamId(newReport._id)
+    const getSelfUpdate = async ({id}) => {
+      console.log(`the id is ${id}`)
       try {
-        const response = await fetch(`${Config.EXPRESS}/api/report/self/${newReport._id}`, {
+        const response = await fetch(`${Config.EXPRESS}/api/report/self/${id}`, {
           headers: {'Authorization': `Bearer ${user.token}`}
         })
         const result = await response.json()
         if (response.ok) {
           if (result) {
+            setParamId(id)
+            console.log('getSelfUpdated')
             setSelf(true)
-            reRoute()
+            reRoute({id: id})
           } else {
             getUpdate()
             console.log('Self update: nothing happened.')
@@ -552,7 +554,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             }
           }
           if (newReport.category === 'closure') {
-            getSelfUpdate()
+            getSelfUpdate({id: newReport._id})
           }
         }
     }, [newReport])

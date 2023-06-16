@@ -213,7 +213,9 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
           const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
           if (distance <= thresholdDistance) {
             const { _id, source, coordinates, category, expiry } = newReport
-            setReportData((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+            if (!(newReport in reportData)) {
+              setReportData((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+            }
           }
         }
       }
@@ -224,7 +226,9 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
           const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
           if (distance <= thresholdDistance) {
             const { _id, source, coordinates, category, expiry } = newReport
-            setReportData2((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+            if (!(newReport in reportData)) {
+              setReportData((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+            }
           }
         }
       }
