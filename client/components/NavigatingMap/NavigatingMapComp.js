@@ -569,7 +569,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
             if (distance <= thresholdDistance) {
               setReportData((prev) => {
-                if (!prev.some((report) => report.id === newReport.id)) {
+                if (!prev.some((report) => report.id == newReport.id)) {
                   return [...prev, newReport];
                 }
                 return prev;
