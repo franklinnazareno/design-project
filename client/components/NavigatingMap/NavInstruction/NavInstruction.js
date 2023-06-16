@@ -8,15 +8,15 @@ import { useNavigation } from '@react-navigation/native';
 import { REPORT_DETAIL } from "../../../context/initialRoutenNames";
 
 
-const NavInstruction = ({ steps, location, conditions }) => {
+const NavInstruction = ({ newSteps, location, conditions, setSteps }) => {
 
   const navigation = useNavigation();
-  const [newSteps, setNewSteps] = useState(steps)
+  // const [newSteps, setNewSteps] = useState(steps)
   const [completedSteps, setCompletedSteps] = useState([])
   const [currentCondition, setCurrentCondition] = useState(conditions)
-  const [currentStep, setCurrentStep] = useState(steps[0].instruction)
-  const [currentDistance, setCurrentDistance] = useState(steps[0].distance)
-  const [safetyFactors, setSafetyFactors] = useState(steps[0].factorsPresent)
+  const [currentStep, setCurrentStep] = useState(newSteps[0].instruction)
+  const [currentDistance, setCurrentDistance] = useState(newSteps[0].distance)
+  const [safetyFactors, setSafetyFactors] = useState(newSteps[0].factorsPresent)
   const [landmarkEnabled, setLandmarkEnabled] = useState(false)
   const [lightingEnabled, setLightingEnabled] = useState(false)
   const [pwdEnabled, setPWDEnabled] = useState(false)
