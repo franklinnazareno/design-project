@@ -26,13 +26,19 @@ import {decode as atob, encode as btoa} from 'base-64'
 var deviceHeight = Dimensions.get('window').height;
 
 
-const NavigatingMapComp = ({ preference, location, destination, coords, steps, option, loading, setLoading }) => {
+const NavigatingMapComp = ({ preference, location, destination, coords, newSteps, completedSteps, option, loading, setLoading, setSteps, setCompletedSteps }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
+
+  useEffect(() => {
+    if (optimizedCoords) {
+      Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+    }
+  },[optimizedCoords])
 
   // const MapModal = () => {
   //   setIsModalVisible(true);
@@ -50,8 +56,8 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     const [regionTemp, setRegionTemp] = useState();
     const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
     const [newCoords, setCoords] = useState(coords)
-    const [newSteps, setSteps] = useState(steps)
-    const [completedSteps, setCompletedSteps] = useState([])
+    // const [newSteps, setSteps] = useState(steps)
+    // const [completedSteps, setCompletedSteps] = useState([])
     const [reportData, setReportData] = useState([]);
     const [newReport, setNewReport] = useState(null)
     const [completedReport, setCompletedReport] = useState([])
@@ -82,6 +88,35 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       return R * c
+    }
+
+    const declineNewRoute = () => {
+      setNewOptIsModalVisible(false)
+      setOptimizedCoords(null)
+      setOptimizedSteps(null)
+      setShortestCoords(null)
+      setShortestSteps(null)
+    }
+
+    const acceptNewRoute = () => {
+      if (option === 'steps_with_coords_safest') {
+        setCoords(optimizedCoords)
+        setSteps(optimizedSteps)
+      } else {
+        if (shortestCoords) {
+          setCoords(shortestCoords)
+          setSteps(shortestSteps)
+        } else {
+          setCoords(optimizedCoords)
+          setSteps(optimizedSteps)
+        }
+      }
+      setCompletedSteps([])
+      setNewOptIsModalVisible(false)
+      setOptimizedCoords(null)
+      setOptimizedSteps(null)
+      setShortestCoords(null)
+      setShortestSteps(null)
     }
 
     const [conditions, setConditions] = useState(null)
@@ -145,7 +180,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
             setOptimizedCoords(json['optimized_route']['coordinates'])
-            setShortestCoords(json['shortest_route']['coordinates'])
+            setShortestCoords(null)
             const optimizedStepsJson = json['optimized_route']['steps']
             const optimizedStepsTemp = optimizedStepsJson.map(step => {
               return {
@@ -158,7 +193,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             setOptimizedSteps(optimizedStepsTemp)
             setShortestSteps(null)
             setOptimizedCoverage(json['optimized_route']['coverage'])
-            setShortestCoverage(json['shortest_route']['coverage'])
+            setShortestCoverage(null)
           }
           console.log("New routes. Nice")
           return
@@ -185,6 +220,25 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             reRoute()
           } else {
             console.log("nothing happened.")
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+
+    const getSelfUpdate = async () => {
+      try {
+        const response = await fetch(`${Config.EXPRESS}/api/report/self/${newReport._id}`, {
+          headers: {'Authorization': `Bearer ${user.token}`}
+        })
+        const result = await response.json()
+        if (response.ok) {
+          if (result) {
+            reRoute()
+          } else {
+            getUpdate()
+            console.log('nothing happened.')
           }
         }
       } catch (err) {
@@ -251,6 +305,9 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                 position: 'bottom',
                 bottomOffset: deviceHeight * 0.7
               })
+          if (category === 'closure') {
+            reRoute()
+          }
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -406,7 +463,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
 
     useEffect(() => {
       setReportData(null)
-      if (coords && coords.length > 1) {
+      if (newCoords && newCoords.length > 1) {
         // Send GET request for report
         const getReportCoords = async () => {
           try {
@@ -416,7 +473,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`,
               },
-              body: JSON.stringify({coordsData: coords})}
+              body: JSON.stringify({coordsData: newCoords})}
             )
             const reports = await response.json();
             if (response.ok){
@@ -429,7 +486,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
         }
         getReportCoords()
       }
-    }, [coords])
+    }, [newCoords])
 
     useEffect(() => {
       const socket = io(`${Config.EXPRESS}`);
@@ -448,36 +505,41 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     }, []);
 
     useEffect(() => {
-      if (reportData && listenedReportId) {
-        for (const report in reportData) {
-          if (report._id == listenedReportId) {
-            if (report.category === 'closure') {
-              getUpdate()
+      setTimeout(() => {
+        if (reportData && listenedReportId) {
+          for (const report in reportData) {
+            if (report._id == listenedReportId) {
+              if (report.category === 'closure') {
+                getUpdate()
+              }
             }
           }
         }
-      }
+      }, 15000)
     }, [listenedReportId])
 
     useEffect(() => {
       if (newReport && coords && coords.length > 1) {
-        const thresholdDistance = 50
-        const newReportCoords = newReport.coordinates 
-        for (const coordinate of coords) {
-          const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
-          if (distance <= thresholdDistance) {
-            setReportData((prev) => {
-              if (!prev.includes(newReport)) {
-                return [...prev, newReport];
-              }
-              return prev;
-            });
+          const thresholdDistance = 50
+          const newReportCoords = newReport.coordinates 
+          for (const coordinate of coords) {
+            const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
+            if (distance <= thresholdDistance) {
+              setReportData((prev) => {
+                if (!prev.includes(newReport)) {
+                  console.log("test 1")
+                  return [...prev, newReport];
+                }
+                console.log("test 2")
+                return prev;
+              });
+              console.log("test 3", reportData)
+            }
+          }
+          if (newReport.category === 'closure') {
+            getSelfUpdate()
           }
         }
-        if (newReport.category === 'closure') {
-          getUpdate()
-        }
-      }
     }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -861,8 +923,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             </View>
             </Modal>
             
-
-            <Modal
+            {newOptimized && <Modal
             visible={NewOptModalVisible} 
             transparent={true}
             animationType="fade"
@@ -876,16 +937,16 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                     </Text>
                   </View>
                   <View style={styles.NewOptVoteView}>
-                    <TouchableOpacity style={styles.NewOptpressAccept}>
+                    <TouchableOpacity style={styles.NewOptpressAccept} onPress={acceptNewRoute}>
                       <Text style={styles.NewOptmodaltext}>Accept</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.NewOptpressDecline}>
+                    <TouchableOpacity style={styles.NewOptpressDecline} onPress={declineNewRoute}>
                       <Text style={styles.NewOptmodaltext}>Decline</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
-            </Modal>
+            </Modal>}
 
             
             </View>
