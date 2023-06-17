@@ -579,25 +579,30 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     // }, [listenedReportId])
 
     useEffect(() => {
-      if (reportData && listenedReportId) {
-        console.log(reportData)
-        reportData.forEach(report => {
-          console.log(report._id)
-          console.log(report.category)
-          console.log(listenedReportId)
-          if (report._id === listenedReportId) {
-            if (report.category === 'closure') {
-              console.log("2nd: going to getUpdate()")
-              getUpdate();
+      const processReportId = async () => {
+        if (reportData && listenedReportId) {
+          console.log(reportData)
+          reportData.forEach(report => {
+            console.log(report._id)
+            console.log(report.category)
+            console.log(listenedReportId)
+            if (report._id === listenedReportId) {
+              if (report.category === 'closure') {
+                console.log("2nd: going to getUpdate()")
+                getUpdate();
+              }
             }
-          }
-        });
+          });
+        }
+        setListenedReportId(null)
+        await sleep (30000)
       }
-      setListenedReportId(null)
+      processReportId()
     }, [listenedReportId]);
 
     useEffect(() => {
-      if (newReport && coords && coords.length > 1) {
+      const processNewReport = async () => {
+        if (newReport && coords && coords.length > 1) {
           const thresholdDistance = 50
           const newReportCoords = newReport.coordinates 
           for (const coordinate of coords) {
@@ -615,6 +620,9 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             getSelfUpdate({id: newReport._id})
           }
         }
+        await sleep (30000)
+      }
+      processNewReport()
     }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -622,6 +630,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     const veryIntensiveTask = async (taskDataArguments) => {
       // Your code from the useEffect can go here
       const thresholdDistance = 10;
+
+      if (!equal) {
+        Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+      }
 
       for (const step of newSteps) {
         const distance = haversineDistance(
