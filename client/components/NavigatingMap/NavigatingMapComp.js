@@ -28,13 +28,13 @@ import {decode as atob, encode as btoa} from 'base-64'
 var deviceHeight = Dimensions.get('window').height;
 
 
-const NavigatingMapComp = ({ preference, location, destination, coords, newSteps, completedSteps, option, loading, setLoading, setSteps, setCompletedSteps }) => {
+const NavigatingMapComp = ({ preference, location, sauce, destination, coords, newSteps, completedSteps, option, loading, setLoading, setSteps, setCompletedSteps }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
+  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
@@ -58,7 +58,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       longitudeDelta: 0.001
     })
     const [regionTemp, setRegionTemp] = useState();
-    const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
+    // const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
     const [newCoords, setCoords] = useState(coords)
     // const [newSteps, setSteps] = useState(steps)
     // const [completedSteps, setCompletedSteps] = useState([])
@@ -71,6 +71,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
     const [self, setSelf] = useState(false)
 
     const [reportId, setReportId] = useState(null)
+    const [equal, setEqual] = useState(true)
     const [paramId, setParamId] = useState('')
     const [listenedReportId, setListenedReportId] = useState(null)
     const [source, setSource] = useState(null)
@@ -103,6 +104,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
+      setEqual(true)
     }
 
     const acceptNewRoute = () => {
@@ -124,7 +126,34 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
+      setEqual(true)
     }
+
+    useEffect(() => {
+      if (optimizedCoords) {
+        if (option === 'steps_with_coords_safest') {
+          if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+            setEqual(false)
+          }
+        } else {
+          if (shortestCoords) {
+            if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
+              setEqual(false)
+            }
+          } else {
+            if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+              setEqual(false)
+            }
+          }
+        }
+      }
+    }, [optimizedCoords])
+
+    useEffect(() => {
+      if (!equal) {
+        setNewOptIsModalVisible(true)
+      }
+    }, [equal])
 
     const [conditions, setConditions] = useState(null)
     const [newOptimized, setNewOptimized] = useState(null)
@@ -138,7 +167,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
 
     const reRoute = async ({id} = {}) => {
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
-      setSourceCoords([location.longitude, location.latitude])
+      const sourceCoords = sauce
       const destCoords = destination
       const postData = { preferences, sourceCoords, destCoords }
       console.log(postData)
@@ -225,7 +254,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.token}`,
           },
-          body: JSON.stringify({coordsData: coords})}
+          body: JSON.stringify({coordsData: newCoords})}
         )
         const result = await response.json()
         if (response.ok) {
@@ -245,8 +274,13 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       console.log(`the id is ${id}`)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/self/${id}`, {
-          headers: {'Authorization': `Bearer ${user.token}`}
-        })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({coordsData: newCoords})}
+        )
         const result = await response.json()
         if (response.ok) {
           if (result) {
@@ -963,7 +997,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
             </View>
             </Modal>
             
-            {newOptimized && <Modal
+            <Modal
             visible={NewOptModalVisible} 
             transparent={true}
             animationType="fade"
@@ -986,7 +1020,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
                   </View>
                 </View>
               </View>
-            </Modal>}
+            </Modal>
 
             
             </View>
