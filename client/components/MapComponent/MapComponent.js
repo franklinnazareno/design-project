@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import React, { useState, useEffect, memo, useRef} from 'react';
 import { View, TouchableOpacity, Dimensions, ScrollView, Text } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -194,17 +194,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
         }
     }, [reportData, reportData2])
 
-    useEffect(() => {
-      const socket = io(`${Config.EXPRESS}`);
-      
-      socket.on('reportUpdate', (reportData) => {
-        setNewReport(reportData)
-      })
-
-      return () => {
-        socket.disconnect();
-      }
-    }, []);
+    useFocusEffect(
+      React.useCallback(() => {
+        const socket = io(`${Config.EXPRESS}`);
+    
+        socket.on('reportUpdate', (reportData) => {
+          setNewReport(reportData);
+        });
+    
+        return () => {
+          socket.disconnect();
+        };
+      }, [])
+    );
 
     useEffect(() => {
       if (newReport && coordsData && coordsData.length > 1) {
