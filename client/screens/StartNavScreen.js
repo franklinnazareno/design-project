@@ -44,7 +44,7 @@ const StartNavScreen = ({ route, navigation }) => {
       <View style={{ position: 'relative', height: '100%' }}>
         <NavigatingMapComp
           preference={preference}
-          source={source}
+          sauce={source}
           destination={destination}
           location={location}
           coords={coords}
