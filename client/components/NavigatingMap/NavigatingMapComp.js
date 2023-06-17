@@ -152,6 +152,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     useEffect(() => {
       if (!equal) {
         setNewOptIsModalVisible(true)
+        Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
       }
     }, [equal])
 
