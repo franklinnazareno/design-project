@@ -579,6 +579,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
           if (newReport.category === 'closure') {
             getSelfUpdate({id: newReport._id})
           }
+          setNewReport(null)
         }
     }, [newReport])
 
@@ -818,6 +819,44 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
       closure: 'Road Closure',
       'not  closure': 'Road Closure'
     };
+    const CustomReportIcon = ({category}) => {
+      let icon
+
+      switch (category) {
+        case 'lighting':
+          icon = () => <Icon name='lightbulb' size={30} color='green'/>
+          break;
+        case 'not lighting':
+          icon = () => <Icon name='lightbulb' size={30} color='red'/>
+          break;
+        case 'pwd':
+          icon = () => <Icon name='directions-walk' size={30} color='green'/>
+          break;
+        case 'not pwd':
+          icon = () => <Icon name='directions-walk' size={30} color='red'/>
+          break;
+        case 'cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='green'/>
+          break;
+        case 'not cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='red'/>
+          break;
+        case 'flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='red'/>
+          break;
+        case 'not flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='green'/>
+          break;
+        case 'closure':
+          icon = () => <Icon name='do-not-disturb-on' size={30} color='red'/>
+          break;
+        default:
+          break;
+      }
+
+      return icon && icon();
+    };
+
     return (
       
       <MapContainer>
@@ -886,7 +925,8 @@ const NavigatingMapComp = ({ preference, location, destination, coords, newSteps
                       imageBufferData={report.image}
                     />
                   </Callout> */}
-                  <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple" />
+                  {/* <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple" /> */}
+                  <CustomReportIcon category={report.category.toLowerCase()}/>
                 </Marker>
               );
             } else {
