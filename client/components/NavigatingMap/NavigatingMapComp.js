@@ -1178,6 +1178,8 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               {/* </ScrollView>     */}
             </View>
             </Modal>
+          </View>
+          <View>
             {/* {optimizedCoords && ( */}
               <Modal
                 visible={NewOptModalVisible} 
