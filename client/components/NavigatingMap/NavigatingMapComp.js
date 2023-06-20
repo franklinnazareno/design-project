@@ -188,13 +188,15 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
           console.log('i set the steps sir')
           setSteps(optimizedSteps);
         }
-      }
+      } else 
       if (optimizedCoords) {
         console.log("old:", coords);
         console.log("new:", optimizedCoords);
+        console.log("roadClosure:", roadClosure)
         setSteps(optimizedSteps);
         
         if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+          console.log("in if coords !== opt")
           setNewOptIsModalVisible(true);
           if (roadClosure) {
             Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
@@ -710,6 +712,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             if (report._id === listenedReportId) {
               if (report.category === 'closure') {
                 console.log("2nd: going to getUpdate()")
+                setRoadClosure(true)
                 getUpdate(true);
               } else {
                 reRoute()
@@ -1175,7 +1178,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               {/* </ScrollView>     */}
             </View>
             </Modal>
-            
+            {/* {optimizedCoords && ( */}
               <Modal
                 visible={NewOptModalVisible} 
                 transparent={true}
@@ -1204,6 +1207,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                   </View>
                 </View>
               </Modal>
+            {/* )} */}
 
 
             
