@@ -50,6 +50,19 @@ const ProgressComp = ({ coverage, conditions }) => {
     return null;
   };
 
+    const safetyValue = (item, conditions) => {
+        if (item.key === 'not_major_road')
+            return 100 - coverage[item.key]
+        else if (item.key === 'not_flood_hazard') {
+            if (conditions.weather == true) 
+                return 100 - coverage[item.key]
+            else
+                return 0
+        }
+        else
+            return coverage[item.key]
+    }
+
   const getModalContent = (key) => {
     switch (key) {
       case 'landmark':
@@ -90,12 +103,12 @@ const ProgressComp = ({ coverage, conditions }) => {
         <View key={index}>
           <TouchableOpacity onPress={() => showModal(index)}>
             <SmallCustomCircularProgress
-              title={item.title}
-              value={item.key === 'not_major_road' || item.key === 'not_flood_hazard' ? 100 - coverage[item.key] : coverage[item.key]}
-              progressValueColor={progressValueColor}
-              percentageTextColor={percentageTextColor}
-              radius={35}
-              conditions={conditions}
+                title={item.title}
+                value={safetyValue(item, conditions)}
+                progressValueColor={progressValueColor}
+                percentageTextColor={percentageTextColor}
+                radius={35}
+                conditions={conditions}
             />
           </TouchableOpacity>
         </View>
