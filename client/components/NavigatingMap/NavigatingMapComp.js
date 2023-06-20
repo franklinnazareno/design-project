@@ -186,6 +186,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       if (option === 'steps_with_coords_safest') {
         if (optimizedCoords) {
           console.log('i set the steps sir')
+          console.log("old:", coords);
+          console.log("new:", optimizedCoords);
+          console.log("roadClosure:", roadClosure)
+          console.log(JSON.stringify(coords) != JSON.stringify(optimizedCoords))
           setSteps(optimizedSteps);
           if (JSON.stringify(coords) != JSON.stringify(optimizedCoords)) {
           console.log("in if coords !== opt")
@@ -317,7 +321,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(shorestStepsTemp)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(json['shortest_route']['coverage'])
-            handleRouteChange(coords, roadClosure, option, optimizedCoords, optimizedSteps, shortestCoords, shortestSteps);
+            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp, shortestCoords, shortestSteps);
           } else {
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
@@ -336,7 +340,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(null)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(null)
-            handleRouteChange(coords, roadClosure, option, optimizedCoords, optimizedSteps);
+            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp);
           }
           // if (optimizedCoords) {
           //   console.log("old:", coords)
