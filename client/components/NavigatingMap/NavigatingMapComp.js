@@ -1189,9 +1189,8 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             </Modal>
           </View>
           <View>
-            {NewOptModalVisible && (
               <Modal
-                visible={true} 
+                visible={NewOptModalVisible} 
                 transparent={true}
                 animationType="fade"
                 onBackdropPress={() => setNewOptIsModalVisible(false)}
@@ -1218,8 +1217,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                   </View>
                 </View>
               </Modal>
-            )}
-
 
             
             </View>
