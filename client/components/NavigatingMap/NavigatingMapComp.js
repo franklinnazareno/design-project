@@ -34,7 +34,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
+  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
@@ -656,6 +656,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         await sleep (30000)
       }
       processReportId()
+      reRoute()
     }, [listenedReportId]);
 
     useEffect(() => {
@@ -674,12 +675,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               });
             }
           }
-          if (newReport.category === 'closure') {
-            getSelfUpdate({id: newReport._id})
-          }
-          setNewReport(null)
+          getSelfUpdate({id: newReport._id})
         }
         await sleep (30000)
+        setNewReport(null)
       }
       processNewReport()
     }, [newReport])
