@@ -1174,7 +1174,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             </View>
             </Modal>
             
-            {optimizedCoords && (
               <Modal
                 visible={NewOptModalVisible} 
                 transparent={true}
@@ -1203,7 +1202,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                   </View>
                 </View>
               </Modal>
-            )}
 
 
             
