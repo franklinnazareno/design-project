@@ -656,7 +656,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         await sleep (30000)
       }
       processReportId()
-      reRoute()
     }, [listenedReportId]);
 
     useEffect(() => {
@@ -681,6 +680,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         setNewReport(null)
       }
       processNewReport()
+      reRoute()
     }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
