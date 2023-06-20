@@ -310,6 +310,44 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
       'not  closure': 'Road Closure'
     };
 
+    const CustomReportIcon = ({category}) => {
+      let icon
+
+      switch (category) {
+        case 'lighting':
+          icon = () => <MaterialIcon name='lightbulb' size={30} color='green'/>
+          break;
+        case 'not lighting':
+          icon = () => <MaterialIcon name='lightbulb' size={30} color='red'/>
+          break;
+        case 'pwd':
+          icon = () => <MaterialIcon name='directions-walk' size={30} color='green'/>
+          break;
+        case 'not pwd':
+          icon = () => <MaterialIcon name='directions-walk' size={30} color='red'/>
+          break;
+        case 'cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='green'/>
+          break;
+        case 'not cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='red'/>
+          break;
+        case 'flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='red'/>
+          break;
+        case 'not flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='green'/>
+          break;
+        case 'closure':
+          icon = () => <MaterialIcon name='do-not-disturb-on' size={30} color='red'/>
+          break;
+        default:
+          break;
+      }
+
+      return icon && icon();
+    }
+
     return (
       
       <MapContainer>
@@ -365,7 +403,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
               coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
               title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
               tracksViewChanges={false}>
-              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+              <CustomReportIcon category={report.category.toLowerCase()}/>
             </Marker>
           ))}
 
