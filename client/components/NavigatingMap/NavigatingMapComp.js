@@ -34,15 +34,15 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(false);
+  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (optimizedCoords) {
-      Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-    }
-  },[optimizedCoords])
+  // useEffect(() => {
+  //   if (optimizedCoords) {
+  //     Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+  //   }
+  // },[optimizedCoords])
 
   // const MapModal = () => {
   //   setIsModalVisible(true);
@@ -105,7 +105,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
-      setEqual(true)
+      // setEqual(true)
     }
 
     const acceptNewRoute = () => {
@@ -127,39 +127,57 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
-      setEqual(true)
+      // setEqual(true)
     }
 
     useEffect(() => {
       if (optimizedCoords) {
+        console.log("old:", coords)
+        console.log("new:", optimizedCoords)
         if (option === 'steps_with_coords_safest') {
           if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-            setEqual(false)
+            setNewOptIsModalVisible(true)
+            if (roadClosure) {
+              Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+            } else {
+              Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+            }
           }
         } else {
           if (shortestCoords) {
             if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-              setEqual(false)
+              setNewOptIsModalVisible(true)
+              if (roadClosure) {
+                Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+              } else {
+                Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+              }
             }
           } else {
             if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-              setEqual(false)
+              setNewOptIsModalVisible(true)
+              if (roadClosure) {
+                Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+              } else {
+                Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+              }
             }
           }
         }
+        console.log(equal)
       }
     }, [optimizedCoords])
 
-    useEffect(() => {
-      if (!equal) {
-        setNewOptIsModalVisible(true)
-        if (roadClosure) {
-          Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-        } else {
-          Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-        }
-      }
-    }, [equal])
+    // useEffect(() => {
+    //   if (!equal) {
+    //     setNewOptIsModalVisible(true)
+    //     if (roadClosure) {
+    //       Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+    //     } else {
+    //       Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+    //     }
+    //   }
+    // }, [equal])
 
     const [conditions, setConditions] = useState(null)
     const [newOptimized, setNewOptimized] = useState(null)
@@ -241,6 +259,26 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(null)
           }
+          // if (optimizedCoords) {
+          //   console.log("old:", coords)
+          //   console.log("new:", optimizedCoords)
+          //   if (option === 'steps_with_coords_safest') {
+          //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+          //       setEqual(false)
+          //     }
+          //   } else {
+          //     if (shortestCoords) {
+          //       if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
+          //         setEqual(false)
+          //       }
+          //     } else {
+          //       if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+          //         setEqual(false)
+          //       }
+          //     }
+          //   }
+          //   console.log(equal)
+          // }
           console.log("New routes. Nice")
           setSelf(false)
           return
@@ -1068,34 +1106,37 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             </View>
             </Modal>
             
-            <Modal
-            visible={NewOptModalVisible} 
-            transparent={true}
-            animationType="fade"
-            onBackdropPress={() => setNewOptIsModalVisible(false)}
-            >
-              <View style={styles.NewOptmodalContent}>
-                <View style={styles.NewOptmodalContent2}>
-                  <View>
-                    <Text style={styles.modaltext}>
-                      {roadClosure ? (
-                        "Warning: Road closure ahead. Would you like to re-route?"
-                      ) : (
-                        "Suggestion: We found a better path. Would you like to re-route?"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.NewOptVoteView}>
-                    <TouchableOpacity style={styles.NewOptpressAccept} onPress={acceptNewRoute}>
-                      <Text style={styles.NewOptmodaltext}>Accept</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.NewOptpressDecline} onPress={declineNewRoute}>
-                      <Text style={styles.NewOptmodaltext}>Decline</Text>
-                    </TouchableOpacity>
+            {optimizedCoords && (
+              <Modal
+                visible={NewOptModalVisible} 
+                transparent={true}
+                animationType="fade"
+                onBackdropPress={() => setNewOptIsModalVisible(false)}
+              >
+                <View style={styles.NewOptmodalContent}>
+                  <View style={styles.NewOptmodalContent2}>
+                    <View>
+                      <Text style={styles.modaltext}>
+                        {roadClosure ? (
+                          "Warning: Road closure ahead. Would you like to re-route?"
+                        ) : (
+                          "Suggestion: We found a better path. Would you like to re-route?"
+                        )}
+                      </Text>
+                    </View>
+                    <View style={styles.NewOptVoteView}>
+                      <TouchableOpacity style={styles.NewOptpressAccept} onPress={acceptNewRoute}>
+                        <Text style={styles.NewOptmodaltext}>Accept</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.NewOptpressDecline} onPress={declineNewRoute}>
+                        <Text style={styles.NewOptmodaltext}>Decline</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
+            )}
+
 
             
             </View>
