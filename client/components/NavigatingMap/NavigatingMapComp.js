@@ -254,7 +254,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     const [optimizedCoverage, setOptimizedCoverage] = useState(null)
     const [shortestCoverage, setShortestCoverage] = useState(null)
 
-    const reRoute = async ({id} = {}) => {
+    const reRoute = async ({id} = {}, roadClosure = false) => {
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
       const sourceCoords = sauce
       const destCoords = destination
@@ -357,7 +357,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       }
     }
     
-    const getUpdate = async () => {
+    const getUpdate = async (roadClosure = false) => {
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/check`, {
           method: 'POST',
@@ -371,7 +371,11 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         if (response.ok) {
           if (result) {
             console.log("3rd: from getUpdate", result)
-            reRoute()
+            if (roadClosure){
+              reRoute(undefined, true)
+            } else {
+              reRoute()
+            }
           } else {
             console.log("Update: nothing happened.")
           }
@@ -705,8 +709,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             if (report._id === listenedReportId) {
               if (report.category === 'closure') {
                 console.log("2nd: going to getUpdate()")
-                setRoadClosure(true)
-                getUpdate();
+                getUpdate(true);
               } else {
                 reRoute()
               }
