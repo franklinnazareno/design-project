@@ -201,35 +201,36 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
           } else {
             Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
           }
-        } else {
-          if (shortestCoords) {
-            console.log("old:", coords);
-            console.log("new:", shortestCoords);
-            setSteps(shortestSteps);
-            
-            if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-              setNewOptIsModalVisible(true);
-              if (roadClosure) {
-                Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
-              } else {
-                Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
-              }
-            }
-          } else {
-            console.log("old:", coords);
-            console.log("new:", optimizedCoords);
-            setSteps(optimizedSteps);
-            
-            if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-              setNewOptIsModalVisible(true);
-              if (roadClosure) {
-                Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
-              } else {
-                Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
-              }
-            }
-          }
         }
+        // else {
+        //   if (shortestCoords) {
+        //     console.log("old:", coords);
+        //     console.log("new:", shortestCoords);
+        //     setSteps(shortestSteps);
+            
+        //     if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
+        //       setNewOptIsModalVisible(true);
+        //       if (roadClosure) {
+        //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
+        //       } else {
+        //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
+        //       }
+        //     }
+        //   } else {
+        //     console.log("old:", coords);
+        //     console.log("new:", optimizedCoords);
+        //     setSteps(optimizedSteps);
+            
+        //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+        //       setNewOptIsModalVisible(true);
+        //       if (roadClosure) {
+        //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
+        //       } else {
+        //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
+        //       }
+        //     }
+        //   }
+        // }
       }
     };
 
