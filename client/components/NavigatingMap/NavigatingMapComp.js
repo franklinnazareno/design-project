@@ -130,52 +130,110 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       // setEqual(true)
     }
 
-    useEffect(() => {
+    // useEffect(() => {
+    //   if (option === 'steps_with_coords_safest') {
+    //     if (optimizedCoords) {
+    //       setSteps(optimizedSteps)
+    //     }
+    //   }
+    //   if (optimizedCoords) {
+    //     console.log("old:", coords)
+    //     console.log("new:", optimizedCoords)
+    //     setSteps(optimizedSteps)
+    //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+    //       setNewOptIsModalVisible(true)
+    //       if (roadClosure) {
+    //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+    //       } else {
+    //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+    //       }
+    //     } else {
+    //       if (shortestCoords) {
+    //         console.log("old:", coords)
+    //         console.log("new:", shortestCoords)
+    //         setSteps(shortestSteps)
+    //         if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
+    //           setNewOptIsModalVisible(true)
+    //           if (roadClosure) {
+    //             Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+    //           } else {
+    //             Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+    //           }
+    //         }
+    //       } else {
+    //         console.log("old:", coords)
+    //         console.log("new:", optimizedCoords)
+    //         setSteps(optimizedSteps)
+    //         if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+    //           setNewOptIsModalVisible(true)
+    //           if (roadClosure) {
+    //             Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+    //           } else {
+    //             Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }, [optimizedCoords, shortestCoords])
+    const handleRouteChange = (
+      optimizedCoords,
+      optimizedSteps,
+      coords,
+      option,
+      roadClosure,
+      shortestCoords = null,
+      shortestSteps = null
+    ) => {
       if (option === 'steps_with_coords_safest') {
         if (optimizedCoords) {
-          setSteps(optimizedSteps)
+          console.log('i set the steps sir')
+          setSteps(optimizedSteps);
         }
       }
       if (optimizedCoords) {
-        console.log("old:", coords)
-        console.log("new:", optimizedCoords)
-        setSteps(optimizedSteps)
+        console.log("old:", coords);
+        console.log("new:", optimizedCoords);
+        setSteps(optimizedSteps);
+        
         if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-          setNewOptIsModalVisible(true)
+          setNewOptIsModalVisible(true);
           if (roadClosure) {
-            Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+            Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
           } else {
-            Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+            Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
           }
         } else {
           if (shortestCoords) {
-            console.log("old:", coords)
-            console.log("new:", shortestCoords)
-            setSteps(shortestSteps)
+            console.log("old:", coords);
+            console.log("new:", shortestCoords);
+            setSteps(shortestSteps);
+            
             if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-              setNewOptIsModalVisible(true)
+              setNewOptIsModalVisible(true);
               if (roadClosure) {
-                Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+                Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
               } else {
-                Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+                Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
               }
             }
           } else {
-            console.log("old:", coords)
-            console.log("new:", optimizedCoords)
-            setSteps(optimizedSteps)
+            console.log("old:", coords);
+            console.log("new:", optimizedCoords);
+            setSteps(optimizedSteps);
+            
             if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-              setNewOptIsModalVisible(true)
+              setNewOptIsModalVisible(true);
               if (roadClosure) {
-                Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+                Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
               } else {
-                Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+                Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
               }
             }
           }
         }
       }
-    }, [optimizedCoords, shortestCoords])
+    };
 
     // useEffect(() => {
     //   if (!equal) {
@@ -249,6 +307,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(shorestStepsTemp)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(json['shortest_route']['coverage'])
+            handleRouteChange(optimizedCoords, optimizedSteps, shortestCoords, shortestSteps);
           } else {
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
@@ -267,6 +326,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(null)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(null)
+            handleRouteChange(optimizedCoords, optimizedSteps);
           }
           // if (optimizedCoords) {
           //   console.log("old:", coords)
