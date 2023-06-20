@@ -72,6 +72,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
 
     const [reportId, setReportId] = useState(null)
     const [equal, setEqual] = useState(true)
+    const [roadClosure, setRoadClosure] = useState(false)
     const [paramId, setParamId] = useState('')
     const [listenedReportId, setListenedReportId] = useState(null)
     const [source, setSource] = useState(null)
@@ -152,7 +153,11 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     useEffect(() => {
       if (!equal) {
         setNewOptIsModalVisible(true)
-        Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+        if (roadClosure) {
+          Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+        } else {
+          Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+        }
       }
     }, [equal])
 
@@ -288,7 +293,12 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setParamId(id)
             console.log('getSelfUpdated')
             setSelf(true)
-            reRoute({id: id})
+            if (newReport.category === 'closure') {
+              setRoadClosure(true)
+              reRoute({id: id})
+            } else {
+              reRoute()
+            }
           } else {
             getUpdate()
             console.log('Self update: nothing happened.')
@@ -359,10 +369,11 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                 position: 'bottom',
                 bottomOffset: deviceHeight * 0.7
               })
-          if (category === 'closure') {
-            setSelf(true)
-            reRoute()
-          }
+          // if (category === 'closure') {
+          //   setSelf(true)
+          //   reRoute()
+          // }
+          reRoute()
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -589,7 +600,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             if (report._id === listenedReportId) {
               if (report.category === 'closure') {
                 console.log("2nd: going to getUpdate()")
+                setRoadClosure(true)
                 getUpdate();
+              } else {
+                reRoute()
               }
             }
           });
@@ -616,9 +630,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               });
             }
           }
-          if (newReport.category === 'closure') {
-            getSelfUpdate({id: newReport._id})
-          }
+          // if (newReport.category === 'closure') {
+          //   getSelfUpdate({id: newReport._id})
+          // }
+          getSelfUpdate({id: newReport._id})
         }
         await sleep (30000)
       }
@@ -632,7 +647,11 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       const thresholdDistance = 10;
 
       if (!equal) {
-        Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+        if (roadClosure) {
+          Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+        } else {
+          Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+        }
       }
 
       for (const step of newSteps) {
@@ -1019,8 +1038,12 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               <View style={styles.NewOptmodalContent}>
                 <View style={styles.NewOptmodalContent2}>
                   <View>
-                    <Text style={styles.modaltext}> 
-                    Warning: Road closure ahead. Would you like to re-route?
+                    <Text style={styles.modaltext}>
+                      {roadClosure ? (
+                        "Warning: Road closure ahead. Would you like to re-route?"
+                      ) : (
+                        "Suggestion: We found a better path. Would you like to re-route?"
+                      )}
                     </Text>
                   </View>
                   <View style={styles.NewOptVoteView}>
