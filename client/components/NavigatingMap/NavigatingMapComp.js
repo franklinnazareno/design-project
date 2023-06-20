@@ -179,9 +179,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     const handleRouteChange = (
       optimizedCoords,
       optimizedSteps,
-      coords,
-      option,
-      roadClosure,
       shortestCoords = null,
       shortestSteps = null
     ) => {
