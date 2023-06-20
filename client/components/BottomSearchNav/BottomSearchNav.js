@@ -166,7 +166,6 @@ const BottomSearchNav = ({ preference, location, handleCoordsData, handleCoordsD
       { text: 'Home', index: 0 },
       { text: 'Best', index: 1 },
       results2 !== null && Object.keys(results2).length > 0 && { text: 'Other', index: 2 },
-      { text: 'test 1', index: 4 },
     ].map((button) => (
       button && (
         <TouchableOpacity
