@@ -131,18 +131,21 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     }
 
     useEffect(() => {
+      if (option === 'steps_with_coords_safest') {
+        if (optimizedCoords) {
+          setSteps(optimizedSteps)
+        }
+      }
       if (optimizedCoords) {
         console.log("old:", coords)
         console.log("new:", optimizedCoords)
         setSteps(optimizedSteps)
-        if (option === 'steps_with_coords_safest') {
-          if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-            setNewOptIsModalVisible(true)
-            if (roadClosure) {
-              Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-            } else {
-              Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-            }
+        if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+          setNewOptIsModalVisible(true)
+          if (roadClosure) {
+            Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+          } else {
+            Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
           }
         } else {
           if (shortestCoords) {
