@@ -177,6 +177,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     //   }
     // }, [optimizedCoords, shortestCoords])
     const handleRouteChange = (
+      coords, roadClosure, option,
       optimizedCoords,
       optimizedSteps,
       shortestCoords = null,
@@ -304,7 +305,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(shorestStepsTemp)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(json['shortest_route']['coverage'])
-            handleRouteChange(optimizedCoords, optimizedSteps, shortestCoords, shortestSteps);
+            handleRouteChange(coords, roadClosure, option, optimizedCoords, optimizedSteps, shortestCoords, shortestSteps);
           } else {
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
@@ -323,7 +324,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestSteps(null)
             setOptimizedCoverage(json['optimized_route']['coverage'])
             setShortestCoverage(null)
-            handleRouteChange(optimizedCoords, optimizedSteps);
+            handleRouteChange(coords, roadClosure, option, optimizedCoords, optimizedSteps);
           }
           // if (optimizedCoords) {
           //   console.log("old:", coords)
