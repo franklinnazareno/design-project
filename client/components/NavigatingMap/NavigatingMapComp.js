@@ -134,6 +134,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       if (optimizedCoords) {
         console.log("old:", coords)
         console.log("new:", optimizedCoords)
+        setSteps(optimizedSteps)
         if (option === 'steps_with_coords_safest') {
           if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
             setNewOptIsModalVisible(true)
@@ -145,6 +146,9 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
           }
         } else {
           if (shortestCoords) {
+            console.log("old:", coords)
+            console.log("new:", shortestCoords)
+            setSteps(shortestSteps)
             if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
               setNewOptIsModalVisible(true)
               if (roadClosure) {
@@ -154,6 +158,9 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
               }
             }
           } else {
+            console.log("old:", coords)
+            console.log("new:", optimizedCoords)
+            setSteps(optimizedSteps)
             if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
               setNewOptIsModalVisible(true)
               if (roadClosure) {
@@ -164,9 +171,8 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             }
           }
         }
-        console.log(equal)
       }
-    }, [optimizedCoords])
+    }, [optimizedCoords, shortestCoords])
 
     // useEffect(() => {
     //   if (!equal) {
