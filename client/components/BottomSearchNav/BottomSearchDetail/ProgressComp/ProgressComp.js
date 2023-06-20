@@ -91,7 +91,7 @@ const ProgressComp = ({ coverage, conditions }) => {
           <TouchableOpacity onPress={() => showModal(index)}>
             <SmallCustomCircularProgress
               title={item.title}
-              value={coverage[item.key]}
+              value={item.key === 'not_major_road' || item.key === 'not_flood_hazard' ? 100 - coverage[item.key] : coverage[item.key]}
               progressValueColor={progressValueColor}
               percentageTextColor={percentageTextColor}
               radius={35}
