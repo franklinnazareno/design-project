@@ -187,6 +187,15 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         if (optimizedCoords) {
           console.log('i set the steps sir')
           setSteps(optimizedSteps);
+          if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
+          console.log("in if coords !== opt")
+          setNewOptIsModalVisible(true);
+          if (roadClosure) {
+            Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
+          } else {
+            Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
+          }
+        }
         }
       } else 
       if (optimizedCoords) {
