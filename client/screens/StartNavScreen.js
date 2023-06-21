@@ -8,6 +8,8 @@ import { useFocusEffect } from '@react-navigation/native';
 const StartNavScreen = ({ route, navigation }) => {
   const { preference, source, destination, conditions, coords, steps, option } = route.params;
   const [location] = useContext(LocationContext);
+  const [newSteps, setSteps] = useState(steps)
+  const [completedSteps, setCompletedSteps] = useState([])
   const [loading, setLoading] = useState(true);
 
   useFocusEffect(
@@ -42,14 +44,17 @@ const StartNavScreen = ({ route, navigation }) => {
       <View style={{ position: 'relative', height: '100%' }}>
         <NavigatingMapComp
           preference={preference}
-          source={source}
+          sauce={source}
           destination={destination}
           location={location}
           coords={coords}
-          steps={steps}
+          newSteps={newSteps}
+          completedSteps={completedSteps}
           option={option}
           loading={loading}
           setLoading={setLoading}
+          setSteps={setSteps}
+          setCompletedSteps={setCompletedSteps}
         ></NavigatingMapComp>
         {loading && (
           <View
@@ -67,7 +72,7 @@ const StartNavScreen = ({ route, navigation }) => {
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         )}
-        <NavInstruction steps={steps} location={location} conditions={conditions}></NavInstruction>
+        <NavInstruction newSteps={newSteps} completedSteps={completedSteps} location={location} conditions={conditions} setSteps={setSteps} setCompletedSteps={setCompletedSteps}></NavInstruction>
       </View>
     ) : (
       <View>

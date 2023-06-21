@@ -19,6 +19,8 @@ import Config from 'react-native-config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../assets/themes/colors';
+import { STARTNAV } from '../../context/initialRoutenNames';
+import { useNavigation } from '@react-navigation/native';
 import BackgroundService from 'react-native-background-actions';
 import {decode as atob, encode as btoa} from 'base-64'
 
@@ -26,13 +28,21 @@ import {decode as atob, encode as btoa} from 'base-64'
 var deviceHeight = Dimensions.get('window').height;
 
 
-const NavigatingMapComp = ({ preference, location, destination, coords, steps, option, loading, setLoading }) => {
+const NavigatingMapComp = ({ preference, location, sauce, destination, coords, newSteps, completedSteps, option, loading, setLoading, setSteps, setCompletedSteps }) => {
   // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
   // const [magnetometerSubscription, setMagnetometerSubscription] = useState(null);
   const [heading, setHeading] = useState(0);
   // const [compassEnabled, setCompassEnabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(true);
+  const [NewOptModalVisible, setNewOptIsModalVisible] = useState(false);
+
+  const navigation = useNavigation();
+
+  // useEffect(() => {
+  //   if (optimizedCoords) {
+  //     Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+  //   }
+  // },[optimizedCoords])
 
   // const MapModal = () => {
   //   setIsModalVisible(true);
@@ -48,17 +58,19 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       longitudeDelta: 0.001
     })
     const [regionTemp, setRegionTemp] = useState();
-    const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
     const [newCoords, setCoords] = useState(coords)
-    const [newSteps, setSteps] = useState(steps)
-    const [completedSteps, setCompletedSteps] = useState([])
     const [reportData, setReportData] = useState([]);
     const [newReport, setNewReport] = useState(null)
     const [completedReport, setCompletedReport] = useState([])
     const [error, setError] = useState(null)
     const [successful, setSuccessful] = useState(null)
 
+    const [self, setSelf] = useState(false)
+
     const [reportId, setReportId] = useState(null)
+    const [equal, setEqual] = useState(true)
+    const [roadClosure, setRoadClosure] = useState(false)
+    const [paramId, setParamId] = useState('')
     const [listenedReportId, setListenedReportId] = useState(null)
     const [source, setSource] = useState(null)
     const [category, setCategory] = useState(null)
@@ -84,6 +96,85 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       return R * c
     }
 
+    const declineNewRoute = () => {
+      setNewOptIsModalVisible(false)
+      setOptimizedCoords(null)
+      setOptimizedSteps(null)
+      setShortestCoords(null)
+      setShortestSteps(null)
+      setRoadClosure(false)
+      // setEqual(true)
+    }
+
+    const acceptNewRoute = () => {
+      if (option === 'steps_with_coords_safest') {
+        setCoords(optimizedCoords)
+        setSteps(optimizedSteps)
+      } else {
+        if (shortestCoords) {
+          setCoords(shortestCoords)
+          setSteps(shortestSteps)
+        } else {
+          setCoords(optimizedCoords)
+          setSteps(optimizedSteps)
+        }
+      }
+      setCompletedSteps([])
+      setNewOptIsModalVisible(false)
+      setOptimizedCoords(null)
+      setOptimizedSteps(null)
+      setShortestCoords(null)
+      setShortestSteps(null)
+      setRoadClosure(false)
+      // setEqual(true)
+    }
+
+    const handleRouteChange = (
+      coords, roadClosure, option,
+      optimizedCoords,
+      optimizedSteps,
+      shortestCoords = null,
+      shortestSteps = null
+    ) => {
+      if (option === 'steps_with_coords_safest') {
+        if (optimizedCoords) {
+          console.log('option is', option, 'so steps have been set (optimized)')
+          console.log('i set the steps sir')
+          console.log("old:", coords);
+          console.log("new:", optimizedCoords);
+          console.log("roadClosure:", roadClosure)
+          console.log(JSON.stringify(coords) != JSON.stringify(optimizedCoords))
+          setSteps(optimizedSteps);
+          if (JSON.stringify(coords) != JSON.stringify(optimizedCoords)) {
+          console.log("in if coords !== opt")
+          setNewOptIsModalVisible(true);
+          if (roadClosure) {
+            Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
+          } else {
+            Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
+          }
+        }
+        }
+      } else 
+      if (shortestCoords) {
+        console.log('option is', option, 'so steps have been set (shortest)')
+        console.log("old:", coords);
+        console.log("new:", shortestCoords);
+        console.log("roadClosure:", roadClosure)
+        console.log(JSON.stringify(coords) != JSON.stringify(shortestCoords))
+        setSteps(shortestSteps);
+        if (JSON.stringify(coords) != JSON.stringify(shortestCoords)) {
+          console.log("in if coords !== shortest")
+          setNewOptIsModalVisible(true);
+          if (roadClosure) {
+            Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
+          } else {
+            Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
+          }
+        }
+      }
+    };
+
     const [conditions, setConditions] = useState(null)
     const [newOptimized, setNewOptimized] = useState(null)
     const [newShortest, setNewShortest] = useState(null)
@@ -94,15 +185,19 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     const [optimizedCoverage, setOptimizedCoverage] = useState(null)
     const [shortestCoverage, setShortestCoverage] = useState(null)
 
-    const reRoute = async () => {
+    const reRoute = async ({id} = {}, roadClosure = false) => {
       const preferences = preference.preferences.map(({ name, value }) => ({ name, value }))
-      setSourceCoords([location.longitude, location.latitude])
+      const sourceCoords = sauce
       const destCoords = destination
       const postData = { preferences, sourceCoords, destCoords }
       console.log(postData)
 
+      console.log(id)
+      const endpoint = `${Config.FLASK}/route/${id ? `?id=${id}` : ''}`;
+      console.log(endpoint)
+
       try {
-        const response = await fetch(`${Config.FLASK}/route/`, {
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -138,14 +233,12 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                 factorsPresent: step.factors_present
               }
             })
-            setShortestSteps(shorestStepsTemp)
-            setOptimizedCoverage(json['optimized_route']['coverage'])
-            setShortestCoverage(json['shortest_route']['coverage'])
+            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp, json['shortest_route']['coordinates'], shorestStepsTemp);
           } else {
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
             setOptimizedCoords(json['optimized_route']['coordinates'])
-            setShortestCoords(json['shortest_route']['coordinates'])
+            setShortestCoords(null)
             const optimizedStepsJson = json['optimized_route']['steps']
             const optimizedStepsTemp = optimizedStepsJson.map(step => {
               return {
@@ -158,18 +251,21 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             setOptimizedSteps(optimizedStepsTemp)
             setShortestSteps(null)
             setOptimizedCoverage(json['optimized_route']['coverage'])
-            setShortestCoverage(json['shortest_route']['coverage'])
+            setShortestCoverage(null)
+            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp);
           }
-          console.log("New routes. Nice")
+          console.log("Response OK from reRoute()")
+          setSelf(false)
           return
+        } else {
+          setSelf(false)
         }
-
       } catch (err) {
-        // ignore
+        console.error('error during reRoute encountered:', err)
       }
     }
     
-    const getUpdate = async () => {
+    const getUpdate = async (roadClosure = false) => {
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/check`, {
           method: 'POST',
@@ -177,18 +273,57 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.token}`,
           },
-          body: JSON.stringify({coordsData: coords})}
+          body: JSON.stringify({coordsData: newCoords})}
         )
         const result = await response.json()
         if (response.ok) {
           if (result) {
-            reRoute()
+            console.log("3rd: from getUpdate", result)
+            console.log('reRoute() called from if roadClosure in getUpdate()')
+            reRoute(undefined, true)
+            } else {
+              console.log("getUpdate() else triggered: reRoute() called with safety factor.")
+              reRoute()
+            }
+          }
+      } catch (err) {
+        console.error('error during getUpdate encountered:', err)
+      }
+    }
+
+    const getSelfUpdate = async ({id}) => {
+      try {
+        const endpoint = `${Config.EXPRESS}/api/report/self/${id}`
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({coordsData: newCoords})}
+        )
+        const result = await response.json()
+        if (response.ok) {
+          if (result) {
+            console.log('inside the result')
+            setParamId(id)
+            console.log('getSelfUpdated')
+            setSelf(true)
+            if (newReport.category === 'closure') {
+              setRoadClosure(true)
+              reRoute({id: id})
+              console.log('reRoute() with id ', id, ' called from getSelfUpdate()')
+            } else {
+              console.log('reRoute() called from else in getSelfUpdate()')
+              reRoute()
+            }
           } else {
-            console.log("nothing happened.")
+            getUpdate()
+            console.log('else during getSelfUpdate() triggered. getUpdate() called.')
           }
         }
       } catch (err) {
-        // ignore
+        console.error('error during getSelfUpdate encountered:', err)
       }
     }
 
@@ -227,6 +362,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     const thumbsUp = async () => {
       setModalLoading(true)
       setVoteLoading(true)
+      setParamId(reportId)
       try {
         const response = await fetch(`${Config.EXPRESS}/api/report/add/${reportId}`, {
               method: 'PATCH',
@@ -251,6 +387,11 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                 position: 'bottom',
                 bottomOffset: deviceHeight * 0.7
               })
+          // if (category === 'closure') {
+          //   setSelf(true)
+          //   reRoute()
+          // }
+          // reRoute()
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -311,43 +452,14 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       }
     }
 
-    // const MAGNETOMETER_SENSITIVITY = 5;
     useEffect(() => {
       try {
-      // if (compassEnabled) {
-        // setMagnetometerSubscription(magnetometer.subscribe(({ x, y, z, timestamp }) => {
-          // const angle = Math.atan2(y, x) * (180 / Math.PI);
-          // const newHeading = angle >= 0 ? angle + 90 : 450 + angle;
-          // if (compassEnabled && Math.abs(newHeading - heading) > MAGNETOMETER_SENSITIVITY) {
-          //   setHeading(newHeading)
-            if (mapRef.current) {
-              const newCamera = {
-                  center: { latitude: location.latitude, longitude: location.longitude }
-              }
-              mapRef.current.animateCamera(newCamera, { duration: 500 });
-            }
-        // }
-        // }
-        // ))
-      // }
-      // if (!compassEnabled){
-      //   magnetometerSubscription.unsubscribe();
-      //   if (!compassEnabled) {
-      //     setHeading(0)
-      //     if (mapRef.current) {
-      //       const newCamera = {
-      //           center: { latitude: location.latitude, longitude: location.longitude },
-      //           heading: heading
-      //       }
-      //       mapRef.current.animateCamera(newCamera, { duration: 500 });
-      //     }
-      //   }
-      // }
-      // return () => {
-      //   if (magnetometerSubscription){
-      //     magnetometerSubscription.unsubscribe();
-      //   }
-      // };
+        if (mapRef.current) {
+          const newCamera = {
+              center: { latitude: location.latitude, longitude: location.longitude }
+          }
+          mapRef.current.animateCamera(newCamera, { duration: 500 });
+        }
       } catch (error) {
         console.log('No magnetometer found')
       }
@@ -365,31 +477,6 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       };
     },[]);
 
-    // const toggleCompass = () => {
-    //   setCompassEnabled(!compassEnabled);
-    //   var deviceHeight = Dimensions.get('window').height;
-    //   if(!compassEnabled){
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Following user',
-    //       text2: 'Double-tap to stop following',
-    //       visibilityTime: 3000,
-    //       autoHide: true,
-    //       position: 'bottom',
-    //       bottomOffset: deviceHeight * 0.6
-    //     })
-    //   } else {
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Stopped following user',
-    //       text2: 'Double-tap to start following again',
-    //       visibilityTime: 3000,
-    //       autoHide: true,
-    //       position: 'bottom',
-    //       bottomOffset: deviceHeight * 0.6
-    //     })
-    //   }
-    // };
     useEffect(() => {
       const latitude = location.latitude
       const longitude = location.longitude 
@@ -406,7 +493,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
 
     useEffect(() => {
       setReportData(null)
-      if (coords && coords.length > 1) {
+      if (newCoords && newCoords.length > 1) {
         // Send GET request for report
         const getReportCoords = async () => {
           try {
@@ -416,7 +503,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`,
               },
-              body: JSON.stringify({coordsData: coords})}
+              body: JSON.stringify({coordsData: newCoords})}
             )
             const reports = await response.json();
             if (response.ok){
@@ -424,12 +511,12 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             }
 
           } catch (error) {
-            console.log(error)
+            console.error('error during getReportCoords encountered:', error)
           }
         }
         getReportCoords()
       }
-    }, [coords])
+    }, [newCoords])
 
     useEffect(() => {
       const socket = io(`${Config.EXPRESS}`);
@@ -438,7 +525,8 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
         setNewReport(repData)
       })
 
-      socket.on('voteUpReport', (repId) => {
+      socket.on('reportCountUp', (repId) => {
+        console.log("1st: socket", repId)
         setListenedReportId(repId)
       })
 
@@ -448,36 +536,54 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     }, []);
 
     useEffect(() => {
-      if (reportData && listenedReportId) {
-        for (const report in reportData) {
-          if (report._id == listenedReportId) {
-            if (report.category === 'closure') {
-              getUpdate()
+      const processReportId = async () => {
+        if (reportData && listenedReportId) {
+          console.log(reportData)
+          reportData.forEach(report => {
+            console.log(report._id)
+            console.log(report.category)
+            console.log(listenedReportId)
+            if (report._id === listenedReportId) {
+              if (report.category === 'closure') {
+                console.log("2nd: going to getUpdate()")
+                setRoadClosure(true)
+                getUpdate(true);
+              } else {
+                console.log('reRoute() called from processReportId')
+                reRoute()
+              }
             }
-          }
+          });
         }
+        setListenedReportId(null)
+        await sleep (30000)
       }
-    }, [listenedReportId])
+      processReportId()
+    }, [listenedReportId]);
 
     useEffect(() => {
-      if (newReport && coords && coords.length > 1) {
-        const thresholdDistance = 50
-        const newReportCoords = newReport.coordinates 
-        for (const coordinate of coords) {
-          const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
-          if (distance <= thresholdDistance) {
-            setReportData((prev) => {
-              if (!prev.includes(newReport)) {
-                return [...prev, newReport];
-              }
-              return prev;
-            });
+      const processNewReport = async () => {
+        if (newReport && coords && coords.length > 1) {
+          const thresholdDistance = 50
+          const newReportCoords = newReport.coordinates 
+          for (const coordinate of coords) {
+            const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
+            if (distance <= thresholdDistance) {
+              setReportData((prev) => {
+                if (!prev.some((report) => report.id == newReport.id)) {
+                  return [...prev, newReport];
+                }
+                return prev;
+              });
+            }
           }
+          getSelfUpdate({id: newReport._id})
         }
-        if (newReport.category === 'closure') {
-          getUpdate()
-        }
+        await sleep (30000)
+        setNewReport(null)
       }
+      processNewReport()
+      // reRoute()
     }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -485,6 +591,14 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     const veryIntensiveTask = async (taskDataArguments) => {
       // Your code from the useEffect can go here
       const thresholdDistance = 10;
+
+      if (!equal) {
+        if (roadClosure) {
+          Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
+        } else {
+          Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
+        }
+      }
 
       for (const step of newSteps) {
         const distance = haversineDistance(
@@ -523,25 +637,6 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
     const stopBackgroundTask = async () => {
       await BackgroundService.stop();
     };
-
-    // useEffect(() => {
-    //   const thresholdDistance = 10;
-
-    //   for (const step of newSteps) {
-    //     const distance = haversineDistance(
-    //       location.latitude,
-    //       location.longitude,
-    //       step.coordinates[0],
-    //       step.coordinates[1]
-    //     );
-
-    //     if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-    //       Tts.speak(step.instruction);
-    //       setCompletedSteps(prev => [...prev, step]);
-    //       setTimeout(() => {}, 2000);
-    //     }
-    //   }
-    // }, [location]);
 
     const handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'active') {
@@ -588,22 +683,6 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
         }, 2000);
       }
     }, [])
-
-    // useEffect(() => {
-    //   const thresholdDistance = 100
-
-    //   if (reportData && reportData.length > 1) {
-    //     for (const report of reportData) {
-    //       const { coordinates } = report
-    //       const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
-
-    //       if (distance <= thresholdDistance && !completedReport.includes(report)) {
-    //         console.log(report)
-    //         setCompletedReport(prev => [...prev, report])
-    //       }
-    //     }
-    //   }
-    // }, [location])
 
     useEffect(() => {
       if (newCoords) {
@@ -679,25 +758,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
         ]
       }
     ]
-    // const CustomCallout = ({key, source, category, description, imageBufferData}) => {
-    //   const base64String = btoa(String.fromCharCode(...new Uint8Array(imageBufferData.data)));
-    //   return (
-    //       <View style={styles.calloutContainer}>
-    //         <View style={styles.container}>
-    //           <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt=""/>
-    //             <View style={styles.detailsContainer}>
-    //               <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
-    //                 {source}
-    //               </Text>
-    //               <Text style={styles.category}>{category}</Text>
-    //               {/* <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
-    //                 {description}
-    //               </Text> */}
-    //             </View>
-    //         </View>
-    //       </View>
-    //   )
-    // }
+
     const ReportImage = ({imageData}) => {
         const base64String = btoa(new Uint8Array(imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
         return(
@@ -716,6 +777,44 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
       closure: 'Road Closure',
       'not  closure': 'Road Closure'
     };
+    const CustomReportIcon = ({category}) => {
+      let icon
+
+      switch (category) {
+        case 'lighting':
+          icon = () => <Icon name='lightbulb' size={30} color='green'/>
+          break;
+        case 'not lighting':
+          icon = () => <Icon name='lightbulb' size={30} color='red'/>
+          break;
+        case 'pwd':
+          icon = () => <Icon name='directions-walk' size={30} color='green'/>
+          break;
+        case 'not pwd':
+          icon = () => <Icon name='directions-walk' size={30} color='red'/>
+          break;
+        case 'cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='green'/>
+          break;
+        case 'not cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='red'/>
+          break;
+        case 'flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='red'/>
+          break;
+        case 'not flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='green'/>
+          break;
+        case 'closure':
+          icon = () => <Icon name='do-not-disturb-on' size={30} color='red'/>
+          break;
+        default:
+          break;
+      }
+
+      return icon && icon();
+    };
+
     return (
       
       <MapContainer>
@@ -763,7 +862,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
             >
               <Icon name="location-pin" size={30} color="red" />
             </Marker>}
-
+            
           {reportData && reportData.map(report => {
             if (!completedReport.includes(report._id)) {
               return (
@@ -775,16 +874,7 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
                   tracksInfoWindowChanges={true}
                   onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image, report.counter, report.coordinates)}
                 >
-                  {/* <Callout tooltip>
-                    <CustomCallout
-                      key={report._id}
-                      source={report.source}
-                      category={report.category}
-                      description={report.description}
-                      imageBufferData={report.image}
-                    />
-                  </Callout> */}
-                  <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple" />
+                  <CustomReportIcon category={report.category.toLowerCase()}/>
                 </Marker>
               );
             } else {
@@ -860,32 +950,36 @@ const NavigatingMapComp = ({ preference, location, destination, coords, steps, o
               {/* </ScrollView>     */}
             </View>
             </Modal>
-            
-
-            <Modal
-            visible={NewOptModalVisible} 
-            transparent={true}
-            animationType="fade"
-            onBackdropPress={() => setNewOptIsModalVisible(false)}
-            >
-              <View style={styles.NewOptmodalContent}>
-                <View style={styles.NewOptmodalContent2}>
-                  <View>
-                    <Text style={styles.modaltext}> 
-                    Warning: Road closure ahead. Would you like to re-route?
-                    </Text>
-                  </View>
-                  <View style={styles.NewOptVoteView}>
-                    <TouchableOpacity style={styles.NewOptpressAccept}>
-                      <Text style={styles.NewOptmodaltext}>Accept</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.NewOptpressDecline}>
-                      <Text style={styles.NewOptmodaltext}>Decline</Text>
-                    </TouchableOpacity>
+          </View>
+          <View>
+              <Modal
+                visible={NewOptModalVisible} 
+                transparent={true}
+                animationType="fade"
+                onBackdropPress={() => setNewOptIsModalVisible(false)}
+              >
+                <View style={styles.NewOptmodalContent}>
+                  <View style={styles.NewOptmodalContent2}>
+                    <View>
+                      <Text style={styles.modaltext}>
+                        {roadClosure ? (
+                          "Warning: Road closure ahead. Would you like to re-route?"
+                        ) : (
+                          "Suggestion: We found a better path. Would you like to re-route?"
+                        )}
+                      </Text>
+                    </View>
+                    <View style={styles.NewOptVoteView}>
+                      <TouchableOpacity style={styles.NewOptpressAccept} onPress={acceptNewRoute}>
+                        <Text style={styles.NewOptmodaltext}>Accept</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.NewOptpressDecline} onPress={declineNewRoute}>
+                        <Text style={styles.NewOptmodaltext}>Decline</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
 
             
             </View>

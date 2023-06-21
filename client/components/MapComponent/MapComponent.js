@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import React, { useState, useEffect, memo, useRef} from 'react';
 import { View, TouchableOpacity, Dimensions, ScrollView, Text } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -194,17 +194,19 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
         }
     }, [reportData, reportData2])
 
-    useEffect(() => {
-      const socket = io(`${Config.EXPRESS}`);
-      
-      socket.on('reportUpdate', (reportData) => {
-        setNewReport(reportData)
-      })
-
-      return () => {
-        socket.disconnect();
-      }
-    }, []);
+    useFocusEffect(
+      React.useCallback(() => {
+        const socket = io(`${Config.EXPRESS}`);
+    
+        socket.on('reportUpdate', (reportData) => {
+          setNewReport(reportData);
+        });
+    
+        return () => {
+          socket.disconnect();
+        };
+      }, [])
+    );
 
     useEffect(() => {
       if (newReport && coordsData && coordsData.length > 1) {
@@ -224,7 +226,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
           const distance = haversineDistance(coordinate.latitude, coordinate.longitude, newReportCoords.latitude, newReportCoords.longitude)
           if (distance <= thresholdDistance) {
             const { _id, source, coordinates, category, expiry } = newReport
-            setReportData2((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
+            setReportData((prev) => [...prev, { _id, source, coordinates, category, expiry }]);
           }
         }
       }
@@ -308,6 +310,44 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
       'not  closure': 'Road Closure'
     };
 
+    const CustomReportIcon = ({category}) => {
+      let icon
+
+      switch (category) {
+        case 'lighting':
+          icon = () => <MaterialIcon name='lightbulb' size={30} color='green'/>
+          break;
+        case 'not lighting':
+          icon = () => <MaterialIcon name='lightbulb' size={30} color='red'/>
+          break;
+        case 'pwd':
+          icon = () => <MaterialIcon name='directions-walk' size={30} color='green'/>
+          break;
+        case 'not pwd':
+          icon = () => <MaterialIcon name='directions-walk' size={30} color='red'/>
+          break;
+        case 'cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='green'/>
+          break;
+        case 'not cctv':
+          icon = () => <MaterialCommunityIcon name='cctv' size={30} color='red'/>
+          break;
+        case 'flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='red'/>
+          break;
+        case 'not flood':
+          icon = () => <MaterialCommunityIcon name='home-flood' size={30} color='green'/>
+          break;
+        case 'closure':
+          icon = () => <MaterialIcon name='do-not-disturb-on' size={30} color='red'/>
+          break;
+        default:
+          break;
+      }
+
+      return icon && icon();
+    }
+
     return (
       
       <MapContainer>
@@ -363,7 +403,7 @@ const MapComponent = ({ coordsData, coordsData2, location, userView  }) => {
               coordinate={{latitude: report.coordinates.latitude, longitude: report.coordinates.longitude}}
               title={`${categoryMapping[report.category.toLowerCase()]} Reported`}
               tracksViewChanges={false}>
-              <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple"/>
+              <CustomReportIcon category={report.category.toLowerCase()}/>
             </Marker>
           ))}
 
