@@ -58,10 +58,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       longitudeDelta: 0.001
     })
     const [regionTemp, setRegionTemp] = useState();
-    // const [sourceCoords, setSourceCoords] = useState([location.longitude, location.latitude])
     const [newCoords, setCoords] = useState(coords)
-    // const [newSteps, setSteps] = useState(steps)
-    // const [completedSteps, setCompletedSteps] = useState([])
     const [reportData, setReportData] = useState([]);
     const [newReport, setNewReport] = useState(null)
     const [completedReport, setCompletedReport] = useState([])
@@ -105,6 +102,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
+      setRoadClosure(false)
       // setEqual(true)
     }
 
@@ -127,55 +125,10 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       setOptimizedSteps(null)
       setShortestCoords(null)
       setShortestSteps(null)
+      setRoadClosure(false)
       // setEqual(true)
     }
 
-    // useEffect(() => {
-    //   if (option === 'steps_with_coords_safest') {
-    //     if (optimizedCoords) {
-    //       setSteps(optimizedSteps)
-    //     }
-    //   }
-    //   if (optimizedCoords) {
-    //     console.log("old:", coords)
-    //     console.log("new:", optimizedCoords)
-    //     setSteps(optimizedSteps)
-    //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-    //       setNewOptIsModalVisible(true)
-    //       if (roadClosure) {
-    //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-    //       } else {
-    //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-    //       }
-    //     } else {
-    //       if (shortestCoords) {
-    //         console.log("old:", coords)
-    //         console.log("new:", shortestCoords)
-    //         setSteps(shortestSteps)
-    //         if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-    //           setNewOptIsModalVisible(true)
-    //           if (roadClosure) {
-    //             Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-    //           } else {
-    //             Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-    //           }
-    //         }
-    //       } else {
-    //         console.log("old:", coords)
-    //         console.log("new:", optimizedCoords)
-    //         setSteps(optimizedSteps)
-    //         if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-    //           setNewOptIsModalVisible(true)
-    //           if (roadClosure) {
-    //             Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-    //           } else {
-    //             Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }, [optimizedCoords, shortestCoords])
     const handleRouteChange = (
       coords, roadClosure, option,
       optimizedCoords,
@@ -185,6 +138,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
     ) => {
       if (option === 'steps_with_coords_safest') {
         if (optimizedCoords) {
+          console.log('option is', option, 'so steps have been set (optimized)')
           console.log('i set the steps sir')
           console.log("old:", coords);
           console.log("new:", optimizedCoords);
@@ -202,14 +156,15 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         }
         }
       } else 
-      if (optimizedCoords) {
+      if (shortestCoords) {
+        console.log('option is', option, 'so steps have been set (shortest)')
         console.log("old:", coords);
-        console.log("new:", optimizedCoords);
+        console.log("new:", shortestCoords);
         console.log("roadClosure:", roadClosure)
-        setSteps(optimizedSteps);
-        
-        if (JSON.stringify(coords) != JSON.stringify(optimizedCoords)) {
-          console.log("in if coords !== opt")
+        console.log(JSON.stringify(coords) != JSON.stringify(shortestCoords))
+        setSteps(shortestSteps);
+        if (JSON.stringify(coords) != JSON.stringify(shortestCoords)) {
+          console.log("in if coords !== shortest")
           setNewOptIsModalVisible(true);
           if (roadClosure) {
             Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
@@ -217,48 +172,8 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
           }
         }
-        // else {
-        //   if (shortestCoords) {
-        //     console.log("old:", coords);
-        //     console.log("new:", shortestCoords);
-        //     setSteps(shortestSteps);
-            
-        //     if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-        //       setNewOptIsModalVisible(true);
-        //       if (roadClosure) {
-        //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
-        //       } else {
-        //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
-        //       }
-        //     }
-        //   } else {
-        //     console.log("old:", coords);
-        //     console.log("new:", optimizedCoords);
-        //     setSteps(optimizedSteps);
-            
-        //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-        //       setNewOptIsModalVisible(true);
-        //       if (roadClosure) {
-        //         Tts.speak("Warning: Road closure ahead. Would you like to re-route?");
-        //       } else {
-        //         Tts.speak("Suggestion: We found a better path. Would you like to re-route?");
-        //       }
-        //     }
-        //   }
-        // }
       }
     };
-
-    // useEffect(() => {
-    //   if (!equal) {
-    //     setNewOptIsModalVisible(true)
-    //     if (roadClosure) {
-    //       Tts.speak("Warning: Road closure ahead. Would you like to re-route?")
-    //     } else {
-    //       Tts.speak("Suggestion: We found a better path. Would you like to re-route?")
-    //     }
-    //   }
-    // }, [equal])
 
     const [conditions, setConditions] = useState(null)
     const [newOptimized, setNewOptimized] = useState(null)
@@ -318,10 +233,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                 factorsPresent: step.factors_present
               }
             })
-            setShortestSteps(shorestStepsTemp)
-            setOptimizedCoverage(json['optimized_route']['coverage'])
-            setShortestCoverage(json['shortest_route']['coverage'])
-            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp, shortestCoords, shortestSteps);
+            handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp, json['shortest_route']['coordinates'], shorestStepsTemp);
           } else {
             setNewOptimized(json['optimized_route'])
             setNewShortest(json['shortest_route'])
@@ -342,34 +254,14 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             setShortestCoverage(null)
             handleRouteChange(coords, roadClosure, option, json['optimized_route']['coordinates'], optimizedStepsTemp);
           }
-          // if (optimizedCoords) {
-          //   console.log("old:", coords)
-          //   console.log("new:", optimizedCoords)
-          //   if (option === 'steps_with_coords_safest') {
-          //     if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-          //       setEqual(false)
-          //     }
-          //   } else {
-          //     if (shortestCoords) {
-          //       if (JSON.stringify(coords) !== JSON.stringify(shortestCoords)) {
-          //         setEqual(false)
-          //       }
-          //     } else {
-          //       if (JSON.stringify(coords) !== JSON.stringify(optimizedCoords)) {
-          //         setEqual(false)
-          //       }
-          //     }
-          //   }
-          //   console.log(equal)
-          // }
-          console.log("New routes. Nice")
+          console.log("Response OK from reRoute()")
           setSelf(false)
           return
         } else {
           setSelf(false)
         }
       } catch (err) {
-        // ignore
+        console.error('error during reRoute encountered:', err)
       }
     }
     
@@ -388,23 +280,25 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
           if (result) {
             console.log("3rd: from getUpdate", result)
             if (roadClosure){
+              console.log('reRoute() called from if roadClosure in getUpdate()')
               reRoute(undefined, true)
             } else {
+              console.log('reRoute() called from else getUpdate()')
               reRoute()
             }
           } else {
-            console.log("Update: nothing happened.")
+            console.log("getUpdate() else triggered: No reRoute().")
           }
         }
       } catch (err) {
-        // ignore
+        console.error('error during getUpdate encountered:', err)
       }
     }
 
     const getSelfUpdate = async ({id}) => {
-      console.log(`the id is ${id}`)
       try {
-        const response = await fetch(`${Config.EXPRESS}/api/report/self/${id}`, {
+        const endpoint = `${Config.EXPRESS}/api/report/self/${id}`
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -415,22 +309,25 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         const result = await response.json()
         if (response.ok) {
           if (result) {
+            console.log('inside the result')
             setParamId(id)
             console.log('getSelfUpdated')
             setSelf(true)
             if (newReport.category === 'closure') {
               setRoadClosure(true)
               reRoute({id: id})
+              console.log('reRoute() with id ', id, ' called from getSelfUpdate()')
             } else {
+              console.log('reRoute() called from else in getSelfUpdate()')
               reRoute()
             }
           } else {
             getUpdate()
-            console.log('Self update: nothing happened.')
+            console.log('else during getSelfUpdate() triggered. getUpdate() called.')
           }
         }
       } catch (err) {
-        // ignore
+        console.error('error during getSelfUpdate encountered:', err)
       }
     }
 
@@ -498,7 +395,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
           //   setSelf(true)
           //   reRoute()
           // }
-          reRoute()
+          // reRoute()
           setSuccessful(true)
           setModalLoading(false)
           setVoteLoading(false)
@@ -559,43 +456,14 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       }
     }
 
-    // const MAGNETOMETER_SENSITIVITY = 5;
     useEffect(() => {
       try {
-      // if (compassEnabled) {
-        // setMagnetometerSubscription(magnetometer.subscribe(({ x, y, z, timestamp }) => {
-          // const angle = Math.atan2(y, x) * (180 / Math.PI);
-          // const newHeading = angle >= 0 ? angle + 90 : 450 + angle;
-          // if (compassEnabled && Math.abs(newHeading - heading) > MAGNETOMETER_SENSITIVITY) {
-          //   setHeading(newHeading)
-            if (mapRef.current) {
-              const newCamera = {
-                  center: { latitude: location.latitude, longitude: location.longitude }
-              }
-              mapRef.current.animateCamera(newCamera, { duration: 500 });
-            }
-        // }
-        // }
-        // ))
-      // }
-      // if (!compassEnabled){
-      //   magnetometerSubscription.unsubscribe();
-      //   if (!compassEnabled) {
-      //     setHeading(0)
-      //     if (mapRef.current) {
-      //       const newCamera = {
-      //           center: { latitude: location.latitude, longitude: location.longitude },
-      //           heading: heading
-      //       }
-      //       mapRef.current.animateCamera(newCamera, { duration: 500 });
-      //     }
-      //   }
-      // }
-      // return () => {
-      //   if (magnetometerSubscription){
-      //     magnetometerSubscription.unsubscribe();
-      //   }
-      // };
+        if (mapRef.current) {
+          const newCamera = {
+              center: { latitude: location.latitude, longitude: location.longitude }
+          }
+          mapRef.current.animateCamera(newCamera, { duration: 500 });
+        }
       } catch (error) {
         console.log('No magnetometer found')
       }
@@ -613,31 +481,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       };
     },[]);
 
-    // const toggleCompass = () => {
-    //   setCompassEnabled(!compassEnabled);
-    //   var deviceHeight = Dimensions.get('window').height;
-    //   if(!compassEnabled){
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Following user',
-    //       text2: 'Double-tap to stop following',
-    //       visibilityTime: 3000,
-    //       autoHide: true,
-    //       position: 'bottom',
-    //       bottomOffset: deviceHeight * 0.6
-    //     })
-    //   } else {
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Stopped following user',
-    //       text2: 'Double-tap to start following again',
-    //       visibilityTime: 3000,
-    //       autoHide: true,
-    //       position: 'bottom',
-    //       bottomOffset: deviceHeight * 0.6
-    //     })
-    //   }
-    // };
     useEffect(() => {
       const latitude = location.latitude
       const longitude = location.longitude 
@@ -672,7 +515,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
             }
 
           } catch (error) {
-            console.log(error)
+            console.error('error during getReportCoords encountered:', error)
           }
         }
         getReportCoords()
@@ -696,24 +539,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       }
     }, []);
 
-    // useEffect(() => {
-    //   if (reportData && listenedReportId) {
-    //     console.log(reportData)
-    //     for (const report in reportData) {
-    //       console.log(report._id)
-    //       console.log(report.category)
-    //       console.log(listenedReportId)
-    //       if (report._id == listenedReportId) {
-    //         if (report.category === 'closure') {
-    //           console.log("2nd: going to getUpdate()")
-    //           getUpdate()
-    //         }
-    //       }
-    //     }
-    //   }
-    //   setListenedReportId(null)
-    // }, [listenedReportId])
-
     useEffect(() => {
       const processReportId = async () => {
         if (reportData && listenedReportId) {
@@ -728,6 +553,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                 setRoadClosure(true)
                 getUpdate(true);
               } else {
+                console.log('reRoute() called from processReportId')
                 reRoute()
               }
             }
@@ -761,7 +587,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         setNewReport(null)
       }
       processNewReport()
-      reRoute()
+      // reRoute()
     }, [newReport])
 
     const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -816,25 +642,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
       await BackgroundService.stop();
     };
 
-    // useEffect(() => {
-    //   const thresholdDistance = 10;
-
-    //   for (const step of newSteps) {
-    //     const distance = haversineDistance(
-    //       location.latitude,
-    //       location.longitude,
-    //       step.coordinates[0],
-    //       step.coordinates[1]
-    //     );
-
-    //     if (distance <= thresholdDistance && !completedSteps.includes(step)) {
-    //       Tts.speak(step.instruction);
-    //       setCompletedSteps(prev => [...prev, step]);
-    //       setTimeout(() => {}, 2000);
-    //     }
-    //   }
-    // }, [location]);
-
     const handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'active') {
         // Screen is on and active
@@ -880,22 +687,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         }, 2000);
       }
     }, [])
-
-    // useEffect(() => {
-    //   const thresholdDistance = 100
-
-    //   if (reportData && reportData.length > 1) {
-    //     for (const report of reportData) {
-    //       const { coordinates } = report
-    //       const distance = haversineDistance(location.latitude, location.longitude, coordinates.latitude, coordinates.longitude)
-
-    //       if (distance <= thresholdDistance && !completedReport.includes(report)) {
-    //         console.log(report)
-    //         setCompletedReport(prev => [...prev, report])
-    //       }
-    //     }
-    //   }
-    // }, [location])
 
     useEffect(() => {
       if (newCoords) {
@@ -971,25 +762,7 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         ]
       }
     ]
-    // const CustomCallout = ({key, source, category, description, imageBufferData}) => {
-    //   const base64String = btoa(String.fromCharCode(...new Uint8Array(imageBufferData.data)));
-    //   return (
-    //       <View style={styles.calloutContainer}>
-    //         <View style={styles.container}>
-    //           <Image style={styles.image} source={{uri: `data:image/jpeg;base64,${base64String}`}} alt=""/>
-    //             <View style={styles.detailsContainer}>
-    //               <Text style={styles.source} numberOfLines={1} ellipsizeMode="tail">
-    //                 {source}
-    //               </Text>
-    //               <Text style={styles.category}>{category}</Text>
-    //               {/* <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
-    //                 {description}
-    //               </Text> */}
-    //             </View>
-    //         </View>
-    //       </View>
-    //   )
-    // }
+
     const ReportImage = ({imageData}) => {
         const base64String = btoa(new Uint8Array(imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
         return(
@@ -1105,16 +878,6 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
                   tracksInfoWindowChanges={true}
                   onPress={() => handleMarkerPress(report._id, report.source, categoryMapping[report.category.toLowerCase()], report.image, report.counter, report.coordinates)}
                 >
-                  {/* <Callout tooltip>
-                    <CustomCallout
-                      key={report._id}
-                      source={report.source}
-                      category={report.category}
-                      description={report.description}
-                      imageBufferData={report.image}
-                    />
-                  </Callout> */}
-                  {/* <MaterialCommunityIcon name='map-marker-alert' size={30} color="purple" /> */}
                   <CustomReportIcon category={report.category.toLowerCase()}/>
                 </Marker>
               );
