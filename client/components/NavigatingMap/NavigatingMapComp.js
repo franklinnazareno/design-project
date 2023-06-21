@@ -279,17 +279,13 @@ const NavigatingMapComp = ({ preference, location, sauce, destination, coords, n
         if (response.ok) {
           if (result) {
             console.log("3rd: from getUpdate", result)
-            if (roadClosure){
-              console.log('reRoute() called from if roadClosure in getUpdate()')
-              reRoute(undefined, true)
-            } else {
-              console.log('reRoute() called from else getUpdate()')
-              reRoute()
+            console.log('reRoute() called from if roadClosure in getUpdate()')
+            reRoute(undefined, true)
             }
           } else {
-            console.log("getUpdate() else triggered: No reRoute().")
+            console.log("getUpdate() else triggered: reRoute() called with safety factor.")
+            reRoute()
           }
-        }
       } catch (err) {
         console.error('error during getUpdate encountered:', err)
       }
