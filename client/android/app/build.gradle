@@ -99,8 +99,8 @@ android {
         applicationId "com.jovelites.pathfinder"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "Pathfinder 1.3.3"
+        versionCode 10
+        versionName "Pathfinder 1.4.0"
     }
 
     splits {
