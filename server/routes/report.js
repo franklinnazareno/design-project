@@ -1,6 +1,8 @@
 const express = require('express')
 const { getReport,
     getReportWithImage, 
+    roadClosureCheck,
+    roadClosureSelf,
     createReport, 
     addExpiry,
     subtractExpiry } = require('../controllers/reportController')
@@ -19,10 +21,16 @@ router.use(requireAuth)
 router.post('/', upload.single('image'), createReport)
 
 // POST a report based on coordsData
-router.post('/filter', getReport )
+router.post('/filter', getReport)
 
 // POST a report with image based on coordsData
 router.post('/filterwithimage', upload.none(), getReportWithImage)
+
+// POST a report based on counter
+router.post('/check', roadClosureCheck)
+
+// GET a report based on self report road closure
+router.post('/self/:id', roadClosureSelf)
 
 // PATCH a report by adding expiry
 router.patch('/add/:id', upload.none(), addExpiry)
