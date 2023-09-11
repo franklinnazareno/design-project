@@ -7,9 +7,7 @@ Welcome to the official repository for the Pathfinder for Pedestrians mobile app
 📱 **Download the App**: [Google Play Store](https://play.google.com/store/apps/details?id=com.jovelites.pathfinder)
 
 ## Deployment Video
-You can watch the deployment video of our application [here](https://youtu.be/ncReSGisI_0):
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ncReSGisI_0" frameborder="0" allowfullscreen></iframe>
+[![Deployment Video](https://img.youtube.com/vi/ncReSGisI_0/0.jpg)](https://www.youtube.com/watch?v=ncReSGisI_0)
 
 ## About
 
