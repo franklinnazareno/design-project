@@ -6,6 +6,11 @@ Welcome to the official repository for the Pathfinder for Pedestrians mobile app
 
 📱 **Download the App**: [Google Play Store](https://play.google.com/store/apps/details?id=com.jovelites.pathfinder)
 
+## Deployment Video
+You can watch the deployment video of our application [here](https://youtu.be/ncReSGisI_0):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ncReSGisI_0" frameborder="0" allowfullscreen></iframe>
+
 ## About
 
 This repository is the heart of the Pathfinder for Pedestrians app, encompassing every aspect from front-end to back-end. If you're interested in the path generation utilizing Dijkstra's algorithm, feel free to explore our companion repository: [Pathfinder API](https://github.com/spider4929/Pathfinder_API)
