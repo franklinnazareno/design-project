@@ -38,4 +38,4 @@ Meet the brilliant minds behind Pathfinder for Pedestrians:
 - Front-end Development (React Native)
 - UI / UX
 
-Feel free to explore, contribute, and enhance the pedestrian experience with us! 🌟
+Feel free to explore the pedestrian experience with us! 🌟
